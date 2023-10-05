@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { Button } from '$lib/components/ui/button';
-	import { Card } from '$lib/components/ui/card';
-	import { Mail } from 'lucide-svelte';
-	import { ChevronRight } from 'lucide-svelte';
-	import { Loader } from '$lib/components/custom/loader';
+	import { Button } from "$lib/components/ui/button";
+	import { Card } from "$lib/components/ui/card";
+	import { Mail } from "lucide-svelte";
+	import { ChevronRight } from "lucide-svelte";
+	import { Loader } from "$lib/components/custom/loader";
 </script>
 
 <Loader />

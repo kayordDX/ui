@@ -1,11 +1,19 @@
 <script lang="ts">
-	import { cn } from '$lib/utils';
-	import { Loader2, type IconProps, type IconEvents } from 'lucide-svelte';
-	import type { SvelteComponent } from 'svelte';
+	import { cn } from "$lib/utils";
+	import { Loader2, type IconProps } from "lucide-svelte";
 
-	type $$Props = SvelteComponent<IconProps, IconEvents, {}>;
+	interface LoaderIconProps extends IconProps {
+		isLoading?: boolean;
+	}
 
-	let className: $$Props['class'] = undefined;
+	type $$Props = LoaderIconProps;
+	let className: $$Props["class"] = undefined;
+	export let isLoading: $$Props["isLoading"] = true;
+	export { className as class };
 </script>
 
-<Loader2 class={cn('mr-2 h-4 w-4 animate-spin', className)} {...$$restProps} />
+{#if isLoading}
+	<div class="flex justify-center">
+		<Loader2 class={cn("h-8 w-8 animate-spin m-2", className)} {...$$restProps} />
+	</div>
+{/if}
