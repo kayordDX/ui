@@ -4,8 +4,6 @@
 	export let path: string;
 	export let text: string;
 	let isActive = $page.url.pathname == path;
-
-	console.log($page.url.pathname, path);
 </script>
 
 <div class="space-y-1">
