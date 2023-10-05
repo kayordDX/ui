@@ -1,0 +1,8 @@
+<script lang="ts">
+	import MenuItem from "./MenuItem.svelte";
+</script>
+
+<div class="space-y-4 py-4 p-2 w-1/6">
+	<MenuItem path="/" text="Home" />
+	<MenuItem path="/custom" text="Custom" />
+</div>

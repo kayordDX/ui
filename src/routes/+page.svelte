@@ -1,23 +1,28 @@
 <script lang="ts">
-	import { Button } from "$lib/components/ui/button";
-	import { Card } from "$lib/components/ui/card";
+	import { Button } from "$lib";
+	import { Card, CardContent, CardHeader, CardTitle } from "$lib/components/ui/card";
 	import { Mail } from "lucide-svelte";
 	import { ChevronRight } from "lucide-svelte";
-	import { Loader } from "$lib/components/custom/loader";
 </script>
 
-<Loader />
-<div class="m-5">
-	<Card class="p-5">
+<Card class="m-5">
+	<CardHeader>
+		<CardTitle>Buttons</CardTitle>
+	</CardHeader>
+	<CardContent>
 		<div class="flex space-x-2">
-			<Button>Button</Button>
+			<Button>Default</Button>
+			<Button variant="ghost">Ghost</Button>
+			<Button variant="outline">Outline</Button>
+			<Button variant="link">Link</Button>
+			<Button variant="secondary">Secondary</Button>
 			<Button>
 				<Mail class="mr-2 h-4 w-4" />
-				Login with Email
+				Icon Text
 			</Button>
 			<Button variant="outline" size="icon">
 				<ChevronRight className="h-4 w-4" />
 			</Button>
 		</div>
-	</Card>
-</div>
+	</CardContent>
+</Card>
