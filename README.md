@@ -42,7 +42,7 @@ import { kayordPlugin } from "@kayord/ui";
 
 export default {
  darkMode: ["class"],
- content: ["./src/**/*.{html,js,svelte,ts}"],
+ content: ["./src/**/*.{html,js,svelte,ts}", "./node_modules/@kayord/ui/**/*.{html,js,svelte,ts}"],
  theme: {
   container: {
    center: true,
