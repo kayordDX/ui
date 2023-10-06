@@ -1,6 +1,5 @@
 import type { Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
-import { kayordPlugin } from "./src/lib/tailwind/plugin";
 import forms from "@tailwindcss/forms";
 
 export default {
@@ -60,5 +59,5 @@ export default {
 			},
 		},
 	},
-	plugins: [forms, kayordPlugin],
+	plugins: [forms],
 } satisfies Config;
