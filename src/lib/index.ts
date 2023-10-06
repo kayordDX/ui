@@ -1,3 +1,4 @@
+// Utils
 export { cn, flyAndScale } from "./utils";
 
 // ShadCN components
@@ -37,3 +38,6 @@ export { Tooltip } from "$lib/components/ui/tooltip";
 // Custom components
 export { Loader } from "$lib/components/custom/loader";
 export { ThemeSwitch } from "$lib/components/custom/theme-switch";
+
+// Tailwind Plugin
+export { kayordPlugin } from "$lib/tailwind";
