@@ -41,3 +41,4 @@ export { ThemeSwitch } from "$lib/components/custom/theme-switch";
 
 // Tailwind Plugin
 export { kayordPlugin } from "$lib/tailwind";
+export type { ConfigOptions, CustomThemeConfig, ThemeConfig, ThemeProperties } from "$lib/tailwind";

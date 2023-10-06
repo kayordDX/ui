@@ -1,7 +1,7 @@
 {
 	"name": "@kayord/ui",
 	"private": false,
-	"version": "0.0.9",
+	"version": "0.0.10",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -38,7 +38,8 @@
 		"sveltekit-superforms": "^1.8.0",
 		"zod": "^3.22.4",
 		"tailwind-merge": "^1.14.0",
-		"tailwind-variants": "^0.1.14"
+		"tailwind-variants": "^0.1.14",
+		"tailwindcss": "^3.3.2"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.28.1",
@@ -59,7 +60,6 @@
 		"publint": "^0.2.3",
 		"svelte": "^4.0.5",
 		"svelte-check": "^3.4.3",
-		"tailwindcss": "^3.3.2",
 		"tslib": "^2.4.1",
 		"typescript": "^5.0.0",
 		"vite": "^4.4.11",
