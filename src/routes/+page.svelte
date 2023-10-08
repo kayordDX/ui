@@ -1,15 +1,5 @@
 <script lang="ts">
-	import {
-		Accordion,
-		AccordionItem,
-		AccordionContent,
-		AccordionTrigger,
-		Button,
-		Card,
-		CardContent,
-		CardHeader,
-		CardTitle,
-	} from "$lib";
+	import { Accordion, AccordionItem, AccordionContent, AccordionTrigger, Button, Card, CardContent, CardHeader, CardTitle } from "$lib";
 	import { Mail } from "lucide-svelte";
 	import { ChevronRight } from "lucide-svelte";
 </script>
@@ -20,7 +10,7 @@
 	</CardHeader>
 	<CardContent>
 		<div class="flex space-x-2">
-			<Button>Default</Button>
+			<Button variant="default">Default</Button>
 			<Button variant="ghost">Ghost</Button>
 			<Button variant="outline">Outline</Button>
 			<Button variant="link">Link</Button>

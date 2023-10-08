@@ -1,6 +1,6 @@
 // Utils
 export * from "./utils.js";
 // ShadCN components
-export * from "$lib/components/ui/index.js";
+export * from "./components/ui/index.js";
 // Custom components
-export * from "$lib/components/custom/index.js";
+export * from "./components/custom/index.js";
