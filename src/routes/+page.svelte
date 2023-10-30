@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { Accordion, AccordionItem, AccordionContent, AccordionTrigger, Button, Card, CardContent, CardHeader, CardTitle } from "$lib";
-	import { Mail } from "lucide-svelte";
+	import { Mail, type IconProps, type IconEvents } from "lucide-svelte";
 	import { ChevronRight } from "lucide-svelte";
+	import { ModeWatcher } from "mode-watcher";
 </script>
 
 <Card class="m-5">
@@ -65,3 +66,7 @@
 		</div>
 	</CardContent>
 </Card>
+
+What
+<ModeWatcher />
+After
