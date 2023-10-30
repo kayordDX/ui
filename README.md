@@ -9,6 +9,7 @@ Pnpm command to install ui library.
 ```bash
 # create a new project in the current directory
 pnpm add -D @kayord/ui
+pnpm add -D @kayord/tw-plugin
 ```
 
 ### Manual Setup New Project
@@ -16,7 +17,6 @@ pnpm add -D @kayord/ui
 ```bash
 # Setup new sveltekit project
 npm create svelte@latest my-app
-
 npx svelte-add@latest tailwindcss
 pnpm i
 ```
@@ -35,9 +35,11 @@ module.exports = {
 ```
 
 ```ts
+// postcss.config.ts
+
 import type { Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
-import { kayordPlugin } from "@kayord/ui";
+import { kayordPlugin } from '@kayord/tw-plugin';
 // import forms from '@tailwindcss/forms';
 
 export default {
