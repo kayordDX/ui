@@ -24,5 +24,6 @@
 	</CardHeader>
 	<CardContent>
 		<ThemeSwitch />
+		<ThemeSwitch class="text-orange-400" />
 	</CardContent>
 </Card>
