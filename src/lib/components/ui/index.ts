@@ -53,7 +53,7 @@ export {
 	DropdownMenuSubTrigger,
 	DropdownMenuTrigger,
 } from "./dropdown-menu/index.js";
-export { Form, FormField, FormItem, FormLabel, FormDescription, FormValidation } from "./form/index.js";
+export * as Form from "./form/index.js";
 export { HoverCard, HoverCardContent, HoverCardTrigger } from "./hover-card/index.js";
 export { Input, type InputEvents } from "./input/index.js";
 export { Label } from "./label/index.js";
