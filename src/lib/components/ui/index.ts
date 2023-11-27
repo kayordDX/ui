@@ -88,3 +88,5 @@ export { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs/index.js";
 export { Textarea, type TextareaEvents } from "./textarea/index.js";
 export { Toggle } from "./toggle/index.js";
 export { Tooltip } from "./tooltip/index.js";
+export { ToggleGroup, ToggleGroupItem } from "./toggle-group";
+export * as Command from "./command/index.js";

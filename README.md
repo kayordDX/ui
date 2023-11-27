@@ -2,6 +2,12 @@
 
 The UI components used to build kayord applications.
 
+## Update
+
+```bash
+npx shadcn-svelte@latest
+```
+
 ## Installing
 
 Pnpm command to install ui library.

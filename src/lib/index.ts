@@ -6,3 +6,5 @@ export * from "./components/ui/index.js";
 export * from "./components/custom/index.js";
 // External components
 export * from "./external.js";
+// Extra exports required
+export * from "./extra.js";
