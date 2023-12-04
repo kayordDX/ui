@@ -1,31 +1,23 @@
 <script lang="ts">
-	import {
-		Card,
-		CardContent,
-		CardHeader,
-		CardTitle,
-		Alert,
-		AlertDescription,
-		AlertTitle,
-	} from "$lib";
+	import { Card, Alert } from "$lib";
 	import { AlertCircle } from "lucide-svelte";
 </script>
 
-<Card class="m-5">
-	<CardHeader>
-		<CardTitle>Alert</CardTitle>
-	</CardHeader>
-	<CardContent>
+<Card.Root class="m-5">
+	<Card.Header>
+		<Card.Title>Alert</Card.Title>
+	</Card.Header>
+	<Card.Content>
 		<div class="space-y-2">
-			<Alert>
-				<AlertTitle>Title</AlertTitle>
-				<AlertDescription>Description</AlertDescription>
-			</Alert>
+			<Alert.Root>
+				<Alert.Title>Title</Alert.Title>
+				<Alert.Description>Description</Alert.Description>
+			</Alert.Root>
 
-			<Alert variant="destructive">
-				<AlertTitle><div class="flex"><AlertCircle class="h-4 w-4 mr-2" />Error</div></AlertTitle>
-				<AlertDescription>Destructive</AlertDescription>
-			</Alert>
+			<Alert.Root variant="destructive">
+				<Alert.Title><div class="flex"><AlertCircle class="h-4 w-4 mr-2" />Error</div></Alert.Title>
+				<Alert.Description>Destructive</Alert.Description>
+			</Alert.Root>
 		</div>
-	</CardContent>
-</Card>
+	</Card.Content>
+</Card.Root>

@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { Card, CardContent, CardHeader, CardTitle, Button } from "$lib";
+	import { Card, Button } from "$lib";
 	import { ChevronRight, Mail } from "lucide-svelte";
 </script>
 
-<Card class="m-5">
-	<CardHeader>
-		<CardTitle>Button</CardTitle>
-	</CardHeader>
-	<CardContent>
+<Card.Root class="m-5">
+	<Card.Header>
+		<Card.Title>Button</Card.Title>
+	</Card.Header>
+	<Card.Content>
 		<div class="flex space-x-2">
 			<Button>Default</Button>
 			<Button variant="ghost">Ghost</Button>
@@ -22,5 +22,5 @@
 				<ChevronRight className="h-4 w-4" />
 			</Button>
 		</div>
-	</CardContent>
-</Card>
+	</Card.Content>
+</Card.Root>

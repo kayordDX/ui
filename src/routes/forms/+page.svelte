@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Card, CardContent, CardHeader, CardTitle, Form } from "$lib";
+	import { Card, Form } from "$lib";
 	// import * as Form from "$lib/components/ui/form";
 
 	import { z } from "zod";
@@ -14,11 +14,11 @@
 	type FormSchema = typeof formSchema;
 </script>
 
-<Card class="m-5">
-	<CardHeader>
-		<CardTitle>Forms</CardTitle>
-	</CardHeader>
-	<CardContent>
+<Card.Root class="m-5">
+	<Card.Header>
+		<Card.Title>Forms</Card.Title>
+	</Card.Header>
+	<Card.Content>
 		<div class="flex space-x-2">
 			<Form.Root method="POST" {form} schema={formSchema} let:config>
 				<Form.Field {config} name="username">
@@ -32,5 +32,5 @@
 				<Form.Button>Submit</Form.Button>
 			</Form.Root>
 		</div>
-	</CardContent>
-</Card>
+	</Card.Content>
+</Card.Root>

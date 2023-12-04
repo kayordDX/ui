@@ -1,32 +1,23 @@
 <script lang="ts">
-	import {
-		Card,
-		CardContent,
-		CardHeader,
-		CardTitle,
-		Avatar,
-		AvatarFallback,
-		AvatarImage,
-	} from "$lib";
-	import { AlertCircle } from "lucide-svelte";
+	import { Card, Avatar } from "$lib";
 </script>
 
-<Card class="m-5">
-	<CardHeader>
-		<CardTitle>Avatar</CardTitle>
-	</CardHeader>
-	<CardContent>
+<Card.Root class="m-5">
+	<Card.Header>
+		<Card.Title>Avatar</Card.Title>
+	</Card.Header>
+	<Card.Content>
 		<div class="flex space-x-4">
-			<Avatar>
-				<AvatarImage src="https://github.com/jacokok.png" alt="@jacokok" />
-				<AvatarFallback>KJ</AvatarFallback>
-			</Avatar>
-			<Avatar>
-				<AvatarFallback>KJ</AvatarFallback>
-			</Avatar>
-			<Avatar>
-				<AvatarFallback class="bg-green-500">KJ</AvatarFallback>
-			</Avatar>
+			<Avatar.Root>
+				<Avatar.Image src="https://github.com/jacokok.png" alt="@jacokok" />
+				<Avatar.Fallback>KJ</Avatar.Fallback>
+			</Avatar.Root>
+			<Avatar.Root>
+				<Avatar.Fallback>KJ</Avatar.Fallback>
+			</Avatar.Root>
+			<Avatar.Root>
+				<Avatar.Fallback class="bg-green-500">KJ</Avatar.Fallback>
+			</Avatar.Root>
 		</div>
-	</CardContent>
-</Card>
+	</Card.Content>
+</Card.Root>
