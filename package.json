@@ -35,6 +35,7 @@
 		"svelte": "^4.0.0"
 	},
 	"dependencies": {
+		"@tanstack/svelte-table": "^8.10.7",
 		"bits-ui": "^0.10.1",
 		"clsx": "^2.0.0",
 		"cmdk-sv": "^0.0.12",
