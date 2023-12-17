@@ -41,7 +41,8 @@
 	];
 </script>
 
-<DataTable columns={columnsOther} {data} title="The world is ending" isLoading={false}>
+<DataTable columns={columnsOther} {data} title="The world is ending" isLoading={false} enablePagination={true} manualPagination={true} rowCount={2}>
 	<!-- <div slot="header" class="bg-muted text-center p-2 text-xl font-bold"><h1>Title</h1></div> -->
-	<!-- <div slot="subHeader" class="bg-red-500">test</div> -->
+	<!-- <div slot="subHeader" class="bg-red-500">testsss</div>
+	<div slot="footer" class="bg-red-500">testsss</div> -->
 </DataTable>
