@@ -7,11 +7,6 @@
 
 	const columnHelper = createColumnHelper<Payment>();
 	columnHelper.accessor("id", { header: "", enableSorting: false, cell: (val) => flexRender(DataTableActions, { id: val.getValue() }), size: 1 });
-	const columns2 = [
-		columnHelper.accessor("amount", {
-			header: "Last Name",
-		}),
-	];
 
 	const columnsOther: ColumnDef<Payment>[] = [
 		{
@@ -41,7 +36,7 @@
 	];
 </script>
 
-<DataTable columns={columnsOther} {data} title="The world is ending" isLoading={false} enablePagination={true} manualPagination={true} rowCount={2}>
+<DataTable columns={columnsOther} {data} title="The world is endings" isLoading={false} enablePagination={true} manualPagination={false} pageCount={1} rowCount={5}>
 	<!-- <div slot="header" class="bg-muted text-center p-2 text-xl font-bold"><h1>Title</h1></div> -->
 	<!-- <div slot="subHeader" class="bg-red-500">testsss</div>
 	<div slot="footer" class="bg-red-500">testsss</div> -->

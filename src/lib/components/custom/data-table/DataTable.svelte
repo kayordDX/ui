@@ -5,8 +5,8 @@
 	import { Table } from "$lib";
 	import DataTableFooter from "./DataTableFooter.svelte";
 	import DataTablePagination from "./DataTablePagination.svelte";
-	import DataTableHeader from "./DataTableHeader.svelte";
 	import DataTableBody from "./DataTableBody.svelte";
+	import DataTableHeader from "./DataTableHeader.svelte";
 
 	type MRT_RowData = Record<string, any>;
 	type T = $$Generic<MRT_RowData>;
@@ -58,7 +58,7 @@
 		getCoreRowModel: getCoreRowModel(),
 		getPaginationRowModel: enablePagination ? getPaginationRowModel() : undefined,
 		manualPagination: manualPagination,
-		pageCount: 2,
+		pageCount: pageCount,
 		debugTable: false,
 	});
 
