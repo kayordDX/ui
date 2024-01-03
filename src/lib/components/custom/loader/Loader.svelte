@@ -1,8 +1,9 @@
 <script lang="ts">
+	import type { ComponentProps } from "svelte";
 	import { cn } from "$lib/utils";
-	import { Loader2, type IconProps } from "lucide-svelte";
+	import { Loader2, type Icon } from "lucide-svelte";
 
-	interface LoaderIconProps extends IconProps {
+	interface LoaderIconProps extends ComponentProps<Icon> {
 		isLoading?: boolean;
 	}
 

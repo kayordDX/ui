@@ -1,43 +1,72 @@
 <script lang="ts">
 	import { DataTableActions } from "$lib/components/custom/data-table";
-	import { Badge } from "$lib";
-	import { data, type Payment } from "$lib/components/custom/data-table/data";
+	import { Badge, cn } from "$lib";
+	import { data } from "$lib/components/custom/data-table/data";
+	import { createRender, createTable, Render } from "svelte-headless-table";
+	import { readable, writable } from "svelte/store";
+	import { addHiddenColumns, addPagination, addSelectedRows, addSortBy, addTableFilter } from "svelte-headless-table/plugins";
 	import { DataTable } from "$lib/components/custom/data-table";
-	import { flexRender, type ColumnDef, createColumnHelper } from "@tanstack/svelte-table";
 
-	const columnHelper = createColumnHelper<Payment>();
-	columnHelper.accessor("id", { header: "", enableSorting: false, cell: (val) => flexRender(DataTableActions, { id: val.getValue() }), size: 1 });
+	const serverCount = readable(1);
 
-	const columnsOther: ColumnDef<Payment>[] = [
-		{
-			accessorKey: "id",
+	const table = createTable(readable(data), {
+		sort: addSortBy({ serverSide: true }),
+		// sort: addSortBy({ disableMultiSort: true }),
+		// page: addPagination({ serverSide: true, serverItemCount: serverCount }),
+		page: addPagination(),
+		filter: addTableFilter({
+			fn: ({ filterValue, value }) => value.includes(filterValue),
+		}),
+		select: addSelectedRows(),
+		hide: addHiddenColumns(),
+	});
+
+	const columns = table.createColumns([
+		table.column({
 			header: "",
-			enableSorting: false,
-			cell: (val) => flexRender(DataTableActions, { id: val.getValue() }),
-			size: 1,
-		},
-		{
-			accessorKey: "id",
-			header: () => "Id",
-		},
-		{
-			accessorKey: "status",
-			header: () => "Status",
-			cell: (te) => flexRender(Badge, { name: te.getValue(), slot: flexRender("test", te.cell.getContext()) }),
-		},
-		{
-			accessorKey: "email",
-			header: () => "Email",
-		},
-		{
-			accessorKey: "amount",
+			accessor: ({ id }) => id,
+			cell: (item) => {
+				return createRender(DataTableActions, { id: item.value });
+			},
+			plugins: {
+				sort: {
+					disable: true,
+				},
+			},
+		}),
+		table.column({
+			header: "Status",
+			accessor: "status",
+			cell: ({ value }) => {
+				let color: string | undefined = undefined;
+				if (value == "failed") {
+					color = "border-red-500";
+				}
+				if (value == "success") {
+					color = "border-green-500";
+				}
+				return createRender(Badge, { variant: "outline", class: cn(color, "p-2") }).slot(value);
+			},
+			// plugins: { sort: { disable: true }, filter: { exclude: true } },
+		}),
+		table.column({
+			header: "Email",
+			accessor: "email",
+			cell: ({ value }) => value.toLowerCase(),
+		}),
+		table.column({
 			header: "Amount",
-		},
-	];
+			accessor: "amount",
+		}),
+	]);
+
+	const tableViewModel = table.createViewModel(columns);
+
+	const { pluginStates } = tableViewModel;
+	const { pageCount, pageIndex } = pluginStates.page;
+	$: {
+		console.log($pageIndex);
+	}
 </script>
 
-<DataTable columns={columnsOther} {data} title="The world is endings" isLoading={false} enablePagination={true} manualPagination={false} pageCount={1} rowCount={5}>
-	<!-- <div slot="header" class="bg-muted text-center p-2 text-xl font-bold"><h1>Title</h1></div> -->
-	<!-- <div slot="subHeader" class="bg-red-500">testsss</div>
-	<div slot="footer" class="bg-red-500">testsss</div> -->
-</DataTable>
+<DataTable title="The world is endings" isLoading={false} {tableViewModel} />

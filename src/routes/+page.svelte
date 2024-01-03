@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Accordion, Button, Card } from "$lib";
-	import { Mail, type IconProps, type IconEvents } from "lucide-svelte";
+	import { Mail } from "lucide-svelte";
 	import { ChevronRight } from "lucide-svelte";
 	import { ModeWatcher } from "mode-watcher";
 </script>
