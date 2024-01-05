@@ -1,19 +1,9 @@
 <script lang="ts">
-	import { Skeleton } from "$lib";
+	import { ArrowDown, ArrowUp } from "lucide-svelte";
 
-	import { json } from "@sveltejs/kit";
-
-	import { createTable, Subscribe, Render, createRender, Table as TableT, Column, type TableViewModel } from "svelte-headless-table";
-	import { addSortBy, addPagination, addTableFilter, addSelectedRows, addHiddenColumns } from "svelte-headless-table/plugins";
-	import { readable } from "svelte/store";
+	import { Button, Skeleton } from "$lib";
+	import { Subscribe, Render, type TableViewModel } from "svelte-headless-table";
 	import * as Table from "$lib/components/ui/table";
-	import { DataTableActions } from "$lib/components/custom/data-table";
-	import { Button } from "$lib/components/ui/button";
-	import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
-	import { cn } from "$lib/utils";
-	import { Input } from "$lib/components/ui/input";
-
-	import { ArrowDown, ArrowUp, ArrowUpDown, ChevronDown } from "lucide-svelte";
 	import * as Pagination from "$lib/components/ui/pagination";
 
 	type RowData = Record<string, any>;
@@ -26,11 +16,6 @@
 	// const { headerRows, pageRows, tableAttrs, tableBodyAttrs, pluginStates } = table.createViewModel(columns);
 	const { headerRows, pageRows, tableAttrs, tableBodyAttrs, pluginStates, rows } = tableViewModel;
 
-	$: {
-		console.log("TVM", tableViewModel);
-		console.log("T", $rows);
-	}
-
 	// Sorting
 	const isSortEnabled = pluginStates.sort != undefined;
 	const sortKeys = isSortEnabled ? pluginStates.sort.sortKeys : undefined;
@@ -40,8 +25,6 @@
 
 	// Filtering
 	const { filterValue } = pluginStates.filter;
-
-	$: $sortKeys && console.log($pageSize, $pageRows.length, $pageCount, $rows.length);
 </script>
 
 <div class="w-full">
@@ -67,7 +50,7 @@
 						<Table.Row>
 							{#each headerRow.cells as cell (cell.id)}
 								<Subscribe attrs={cell.attrs()} let:attrs props={cell.props()} let:props>
-									<Table.Head {...attrs} class={cn("[&:has([role=checkbox])]:pl-3")}>
+									<Table.Head {...attrs}>
 										{#if isSortEnabled}
 											<Button variant="ghost" on:click={props.sort.toggle}>
 												<Render of={cell.render()} />
