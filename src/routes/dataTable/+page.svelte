@@ -1,24 +1,24 @@
 <script lang="ts">
-	import { DataTableActions } from "$lib/components/custom/data-table";
 	import { Badge, cn } from "$lib";
 	import { data } from "$lib/components/custom/data-table/data";
 	import { createRender, createTable, Render } from "svelte-headless-table";
-	import { readable, writable } from "svelte/store";
 	import { addHiddenColumns, addPagination, addSelectedRows, addSortBy, addTableFilter } from "svelte-headless-table/plugins";
-	import { DataTable } from "$lib/components/custom/data-table";
+	import { readable, writable } from "svelte/store";
+	import { DataTable } from "$lib/index";
+	import DataTableActions from "$lib/components/custom/data-table/DataTableActions.svelte";
 
 	const serverCount = readable(1);
 
 	const table = createTable(readable(data), {
-		sort: addSortBy({ serverSide: true }),
+		// sort: addSortBy({ serverSide: true }),
 		// sort: addSortBy({ disableMultiSort: true }),
 		// page: addPagination({ serverSide: true, serverItemCount: serverCount }),
 		page: addPagination(),
-		filter: addTableFilter({
-			fn: ({ filterValue, value }) => value.includes(filterValue),
-		}),
-		select: addSelectedRows(),
-		hide: addHiddenColumns(),
+		// filter: addTableFilter({
+		// 	fn: ({ filterValue, value }) => value.includes(filterValue),
+		// }),
+		// select: addSelectedRows(),
+		// hide: addHiddenColumns(),
 	});
 
 	const columns = table.createColumns([
@@ -28,11 +28,11 @@
 			cell: (item) => {
 				return createRender(DataTableActions, { id: item.value });
 			},
-			plugins: {
-				sort: {
-					disable: true,
-				},
-			},
+			// plugins: {
+			// 	sort: {
+			// 		disable: true,
+			// 	},
+			// },
 		}),
 		table.column({
 			header: "Status",
@@ -63,10 +63,9 @@
 	const tableViewModel = table.createViewModel(columns);
 
 	const { pluginStates } = tableViewModel;
-	const { pageCount, pageIndex } = pluginStates.page;
-	$: {
-		console.log($pageIndex);
-	}
+	// const { pageCount, pageIndex } = pluginStates.page;
 </script>
 
-<DataTable title="The world is endings" isLoading={false} {tableViewModel} />
+<DataTable title="The world is endings" isLoading={false} {tableViewModel} hideHeader={false}>
+	<!-- <div slot="header">Test</div> -->
+</DataTable>

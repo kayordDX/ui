@@ -12,8 +12,8 @@
 
 	export let title: string = "";
 	export let isLoading: boolean = false;
+	export let hideHeader: boolean = false;
 
-	// const { headerRows, pageRows, tableAttrs, tableBodyAttrs, pluginStates } = table.createViewModel(columns);
 	const { headerRows, pageRows, tableAttrs, tableBodyAttrs, pluginStates, rows } = tableViewModel;
 
 	// Sorting
@@ -21,10 +21,9 @@
 	const sortKeys = isSortEnabled ? pluginStates.sort.sortKeys : undefined;
 
 	// Paging
-	const { hasNextPage, hasPreviousPage, pageIndex, pageCount, pageSize } = pluginStates.page;
-
-	// Filtering
-	const { filterValue } = pluginStates.filter;
+	const isPagingEnabled = pluginStates.page != undefined;
+	const pageIndex = isPagingEnabled ? pluginStates.page.pageIndex : undefined;
+	const pageSize = isPagingEnabled ? pluginStates.page.pageSize : undefined;
 </script>
 
 <div class="w-full">
@@ -44,34 +43,36 @@
 			<slot name="subHeader" />
 		{/if}
 		<Table.Root {...$tableAttrs} class="table-auto">
-			<Table.Header>
-				{#each $headerRows as headerRow}
-					<Subscribe rowAttrs={headerRow.attrs()}>
-						<Table.Row>
-							{#each headerRow.cells as cell (cell.id)}
-								<Subscribe attrs={cell.attrs()} let:attrs props={cell.props()} let:props>
-									<Table.Head {...attrs}>
-										{#if isSortEnabled}
-											<Button variant="ghost" on:click={props.sort.toggle}>
+			{#if !hideHeader}
+				<Table.Header>
+					{#each $headerRows as headerRow}
+						<Subscribe rowAttrs={headerRow.attrs()}>
+							<Table.Row>
+								{#each headerRow.cells as cell (cell.id)}
+									<Subscribe attrs={cell.attrs()} let:attrs props={cell.props()} let:props>
+										<Table.Head {...attrs}>
+											{#if isSortEnabled}
+												<Button variant="ghost" on:click={props.sort.toggle}>
+													<Render of={cell.render()} />
+													{#each $sortKeys as sortKey}
+														{#if sortKey?.id === cell.id && sortKey?.order == "desc"}
+															<ArrowDown class="ml-2 h-4 w-4" />
+														{:else if sortKey?.id === cell.id && sortKey?.order === "asc"}
+															<ArrowUp class="ml-2 h-4 w-4" />
+														{/if}
+													{/each}
+												</Button>
+											{:else}
 												<Render of={cell.render()} />
-												{#each $sortKeys as sortKey}
-													{#if sortKey?.id === cell.id && sortKey?.order == "desc"}
-														<ArrowDown class="ml-2 h-4 w-4" />
-													{:else if sortKey?.id === cell.id && sortKey?.order === "asc"}
-														<ArrowUp class="ml-2 h-4 w-4" />
-													{/if}
-												{/each}
-											</Button>
-										{:else}
-											<Render of={cell.render()} />
-										{/if}
-									</Table.Head>
-								</Subscribe>
-							{/each}
-						</Table.Row>
-					</Subscribe>
-				{/each}
-			</Table.Header>
+											{/if}
+										</Table.Head>
+									</Subscribe>
+								{/each}
+							</Table.Row>
+						</Subscribe>
+					{/each}
+				</Table.Header>
+			{/if}
 			<Table.Body {...$tableBodyAttrs}>
 				{#if isLoading}
 					{#each { length: 5 } as _, i}
@@ -103,29 +104,31 @@
 			</Table.Body>
 		</Table.Root>
 	</div>
-	<Pagination.Root count={$rows.length} perPage={$pageSize} let:pages let:currentPage>
-		<Pagination.Content>
-			<Pagination.Item>
-				<Pagination.PrevButton on:click={() => ($pageIndex = $pageIndex - 1)} />
-			</Pagination.Item>
-			{#each pages as page (page.key)}
-				{#if page.type === "ellipsis"}
-					<Pagination.Item>
-						<Pagination.Ellipsis />
-					</Pagination.Item>
-				{:else}
-					<Pagination.Item>
-						<Pagination.Link {page} isActive={currentPage == page.value} on:click={() => ($pageIndex = page.value - 1)}>
-							{page.value}
-						</Pagination.Link>
-					</Pagination.Item>
-				{/if}
-			{/each}
-			<Pagination.Item>
-				<Pagination.NextButton on:click={() => ($pageIndex = $pageIndex + 1)} />
-			</Pagination.Item>
-		</Pagination.Content>
-	</Pagination.Root>
+	{#if isPagingEnabled}
+		<Pagination.Root count={$rows.length} perPage={$pageSize} let:pages let:currentPage>
+			<Pagination.Content>
+				<Pagination.Item>
+					<Pagination.PrevButton on:click={() => ($pageIndex = $pageIndex - 1)} />
+				</Pagination.Item>
+				{#each pages as page (page.key)}
+					{#if page.type === "ellipsis"}
+						<Pagination.Item>
+							<Pagination.Ellipsis />
+						</Pagination.Item>
+					{:else}
+						<Pagination.Item>
+							<Pagination.Link {page} isActive={currentPage == page.value} on:click={() => ($pageIndex = page.value - 1)}>
+								{page.value}
+							</Pagination.Link>
+						</Pagination.Item>
+					{/if}
+				{/each}
+				<Pagination.Item>
+					<Pagination.NextButton on:click={() => ($pageIndex = $pageIndex + 1)} />
+				</Pagination.Item>
+			</Pagination.Content>
+		</Pagination.Root>
+	{/if}
 	{#if $$slots.footer}
 		<div class="rounded-b-md overflow-hidden">
 			<slot name="footer" />
