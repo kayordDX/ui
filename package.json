@@ -1,7 +1,7 @@
 {
 	"name": "@kayord/ui",
 	"private": false,
-	"version": "0.2.2",
+	"version": "0.2.3",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -41,12 +41,12 @@
 		"formsnap": "^0.4.2",
 		"lucide-svelte": "^0.304.0",
 		"mode-watcher": "^0.1.2",
+		"svelte-headless-table": "^0.18.1",
 		"svelte-sonner": "^0.3.10",
 		"sveltekit-superforms": "^1.13.1",
 		"tailwind-merge": "^2.2.0",
 		"tailwind-variants": "^0.1.20",
 		"vaul-svelte": "^0.0.4",
-		"svelte-headless-table": "^0.18.1",
 		"zod": "^3.22.4"
 	},
 	"devDependencies": {
@@ -71,8 +71,8 @@
 		"tailwindcss": "^3.4.0",
 		"tslib": "^2.6.2",
 		"typescript": "^5.3.3",
-		"vite": "^5.0.10",
-		"vitest": "^1.1.2"
+		"vite": "^5.0.11",
+		"vitest": "^1.1.3"
 	},
 	"svelte": "./dist/index.js",
 	"types": "./dist/index.d.ts",
