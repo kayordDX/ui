@@ -9,7 +9,7 @@
 
 	const serverCount = readable(1);
 
-	const table = createTable(readable(data), {
+	const table = createTable(readable(undefined ?? []), {
 		// sort: addSortBy({ serverSide: true }),
 		// sort: addSortBy({ disableMultiSort: true }),
 		// page: addPagination({ serverSide: true, serverItemCount: serverCount }),
@@ -49,11 +49,11 @@
 			},
 			// plugins: { sort: { disable: true }, filter: { exclude: true } },
 		}),
-		table.column({
-			header: "Email",
-			accessor: "email",
-			cell: ({ value }) => value.toLowerCase(),
-		}),
+		// table.column({
+		// 	header: "Email",
+		// 	accessor: "email",
+		// 	cell: ({ value }) => value.toLowerCase(),
+		// }),
 		table.column({
 			header: "Amount",
 			accessor: "amount",
@@ -66,6 +66,6 @@
 	// const { pageCount, pageIndex } = pluginStates.page;
 </script>
 
-<DataTable title="The world is endings" isLoading={false} {tableViewModel} hideHeader={false}>
+<DataTable title="The world is endings" isLoading={true} {tableViewModel} hideHeader={false}>
 	<!-- <div slot="header">Test</div> -->
 </DataTable>

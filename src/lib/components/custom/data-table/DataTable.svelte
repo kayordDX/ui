@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { ArrowDown, ArrowUp } from "lucide-svelte";
 
-	import { Button, Skeleton } from "$lib";
+	import { Button, ProgressLoading, Skeleton } from "$lib";
 	import { Subscribe, Render, type TableViewModel } from "svelte-headless-table";
 	import * as Table from "$lib/components/ui/table";
 	import * as Pagination from "$lib/components/ui/pagination";
@@ -42,6 +42,9 @@
 		{#if $$slots.subHeader}
 			<slot name="subHeader" />
 		{/if}
+		{#if isLoading}
+			<ProgressLoading class="h-1" />
+		{/if}
 		<Table.Root {...$tableAttrs} class="table-auto">
 			{#if !hideHeader}
 				<Table.Header>
@@ -77,12 +80,10 @@
 				{#if isLoading}
 					{#each { length: 5 } as _, i}
 						<Table.Row>
-							{#each $pageRows[0].cells as cell (cell.id)}
-								<Subscribe attrs={cell.attrs()} let:attrs>
-									<Table.Cell>
-										<Skeleton class="h-4" />
-									</Table.Cell>
-								</Subscribe>
+							{#each $headerRows[0].cells as cell (cell.id)}
+								<Table.Cell>
+									<Skeleton class="h-4" />
+								</Table.Cell>
 							{/each}
 						</Table.Row>
 					{/each}
