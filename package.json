@@ -35,13 +35,13 @@
 		"svelte": "^4.0.0"
 	},
 	"dependencies": {
-		"bits-ui": "^0.13.0",
+		"bits-ui": "^0.13.2",
 		"clsx": "^2.1.0",
 		"cmdk-sv": "^0.0.12",
 		"formsnap": "^0.4.2",
-		"lucide-svelte": "^0.303.0",
+		"lucide-svelte": "^0.304.0",
 		"mode-watcher": "^0.1.2",
-		"svelte-sonner": "^0.3.9",
+		"svelte-sonner": "^0.3.10",
 		"sveltekit-superforms": "^1.13.1",
 		"tailwind-merge": "^2.2.0",
 		"tailwind-variants": "^0.1.20",
@@ -60,7 +60,7 @@
 		"eslint": "^8.56.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-svelte": "^2.35.1",
-		"postcss": "^8.4.32",
+		"postcss": "^8.4.33",
 		"postcss-load-config": "^5.0.2",
 		"prettier": "^3.1.1",
 		"prettier-plugin-svelte": "^3.1.2",
@@ -72,7 +72,7 @@
 		"tslib": "^2.6.2",
 		"typescript": "^5.3.3",
 		"vite": "^5.0.10",
-		"vitest": "^1.1.1"
+		"vitest": "^1.1.2"
 	},
 	"svelte": "./dist/index.js",
 	"types": "./dist/index.d.ts",
