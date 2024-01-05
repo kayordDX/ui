@@ -23,6 +23,9 @@ dependencies:
   mode-watcher:
     specifier: ^0.1.2
     version: 0.1.2(svelte@4.2.8)
+  svelte-headless-table:
+    specifier: ^0.18.1
+    version: 0.18.1(svelte@4.2.8)
   svelte-sonner:
     specifier: ^0.3.10
     version: 0.3.10(svelte@4.2.8)
@@ -97,9 +100,6 @@ devDependencies:
   svelte-check:
     specifier: ^3.6.2
     version: 3.6.2(postcss-load-config@5.0.2)(postcss@8.4.33)(svelte@4.2.8)
-  svelte-headless-table:
-    specifier: ^0.18.1
-    version: 0.18.1(svelte@4.2.8)
   tailwindcss:
     specifier: ^3.4.0
     version: 3.4.0
@@ -2692,7 +2692,7 @@ packages:
       svelte-keyed: 2.0.0(svelte@4.2.8)
       svelte-render: 2.0.0(svelte@4.2.8)
       svelte-subscribe: 2.0.1(svelte@4.2.8)
-    dev: true
+    dev: false
 
   /svelte-hmr@0.15.3(svelte@4.2.8):
     resolution: {integrity: sha512-41snaPswvSf8TJUhlkoJBekRrABDXDMdpNpT2tfHIv4JuhgvHqLMhEPGtaQn0BmbNSTkuz2Ed20DF2eHw0SmBQ==}
@@ -2708,7 +2708,7 @@ packages:
       svelte: ^4.0.0
     dependencies:
       svelte: 4.2.8
-    dev: true
+    dev: false
 
   /svelte-preprocess@5.1.1(postcss-load-config@5.0.2)(postcss@8.4.33)(svelte@4.2.8)(typescript@5.3.3):
     resolution: {integrity: sha512-p/Dp4hmrBW5mrCCq29lEMFpIJT2FZsRlouxEc5qpbOmXRbaFs7clLs8oKPwD3xCFyZfv1bIhvOzpQkhMEVQdMw==}
@@ -2766,7 +2766,7 @@ packages:
     dependencies:
       svelte: 4.2.8
       svelte-subscribe: 2.0.1(svelte@4.2.8)
-    dev: true
+    dev: false
 
   /svelte-sonner@0.3.10(svelte@4.2.8):
     resolution: {integrity: sha512-iJf1olTpIdfUI1l27d022LNXM9EaQmRk2TmWAI7SOaT1Y4Mmd8p05oWz1MQ87rIaS4h9MmfGlOxfIeGtMM6EzA==}
@@ -2782,7 +2782,7 @@ packages:
       svelte: ^4.0.0
     dependencies:
       svelte: 4.2.8
-    dev: true
+    dev: false
 
   /svelte2tsx@0.6.27(svelte@4.2.8)(typescript@5.3.3):
     resolution: {integrity: sha512-E1uPW1o6VsbRz+nUk3fznZ2lSmCITAJoNu8AYefWSvIwE2pSB01i5sId4RMbWNzfcwCQl1DcgGShCPcldl4rvg==}
