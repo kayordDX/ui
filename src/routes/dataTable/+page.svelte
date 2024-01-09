@@ -66,6 +66,6 @@
 	// const { pageCount, pageIndex } = pluginStates.page;
 </script>
 
-<DataTable title="The world is endings" isLoading={false} {tableViewModel} hideHeader={false}>
+<DataTable title="The world is endings" isLoading={false} {tableViewModel} hideHeader={false} noDataMessage="You have nothring left">
 	<!-- <div slot="header">Test</div> -->
 </DataTable>

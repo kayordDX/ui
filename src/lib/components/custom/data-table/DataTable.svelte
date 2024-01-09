@@ -14,7 +14,9 @@
 	export let isLoading: boolean = false;
 	export let hideHeader: boolean = false;
 
-	const { headerRows, pageRows, tableAttrs, tableBodyAttrs, pluginStates, rows } = tableViewModel;
+	export let noDataMessage: string | undefined = "No Data";
+
+	const { headerRows, pageRows, tableAttrs, tableBodyAttrs, pluginStates, rows, flatColumns } = tableViewModel;
 
 	// Sorting
 	const isSortEnabled = pluginStates.sort != undefined;
@@ -80,7 +82,7 @@
 				{#if isLoading}
 					{#each { length: 5 } as _, i}
 						<Table.Row>
-							{#each $headerRows[0].cells as cell (cell.id)}
+							{#each flatColumns as cell}
 								<Table.Cell>
 									<Skeleton class="h-4" />
 								</Table.Cell>
@@ -88,6 +90,13 @@
 						</Table.Row>
 					{/each}
 				{:else}
+					{#if $rows.length == 0}
+						<Table.Row>
+							<Table.Cell colspan={flatColumns.length}>
+								<div>{noDataMessage}</div>
+							</Table.Cell>
+						</Table.Row>
+					{/if}
 					{#each $pageRows as row (row.id)}
 						<Subscribe rowAttrs={row.attrs()} let:rowAttrs>
 							<Table.Row {...rowAttrs}>
