@@ -15,6 +15,7 @@
 	export let hideHeader: boolean = false;
 
 	export let noDataMessage: string | undefined = "No Data";
+	export let serverItemCount: number | undefined = undefined;
 
 	const { headerRows, pageRows, tableAttrs, tableBodyAttrs, pluginStates, rows, flatColumns } = tableViewModel;
 
@@ -93,7 +94,7 @@
 					{#if $rows.length == 0}
 						<Table.Row>
 							<Table.Cell colspan={flatColumns.length}>
-								<div>{noDataMessage}</div>
+								<div class="text-center">{noDataMessage}</div>
 							</Table.Cell>
 						</Table.Row>
 					{/if}
@@ -115,7 +116,7 @@
 		</Table.Root>
 	</div>
 	{#if isPagingEnabled}
-		<Pagination.Root count={$rows.length} perPage={$pageSize} let:pages let:currentPage>
+		<Pagination.Root count={serverItemCount ?? $rows.length} perPage={$pageSize} let:pages let:currentPage>
 			<Pagination.Content>
 				<Pagination.Item>
 					<Pagination.PrevButton on:click={() => ($pageIndex = $pageIndex - 1)} />

@@ -7,13 +7,13 @@
 	import { DataTable } from "$lib/index";
 	import DataTableActions from "$lib/components/custom/data-table/DataTableActions.svelte";
 
-	const serverCount = readable(1);
+	const serverCount = readable(20);
 
 	const table = createTable(readable(data), {
 		// sort: addSortBy({ serverSide: true }),
 		// sort: addSortBy({ disableMultiSort: true }),
 		// page: addPagination({ serverSide: true, serverItemCount: serverCount }),
-		page: addPagination(),
+		page: addPagination({ serverSide: true, serverItemCount: serverCount, initialPageSize: 10 }),
 		// filter: addTableFilter({
 		// 	fn: ({ filterValue, value }) => value.includes(filterValue),
 		// }),
@@ -66,6 +66,6 @@
 	// const { pageCount, pageIndex } = pluginStates.page;
 </script>
 
-<DataTable title="The world is endings" isLoading={false} {tableViewModel} hideHeader={false} noDataMessage="You have nothring left">
+<DataTable title="The world is endings" isLoading={false} {tableViewModel} hideHeader={false} noDataMessage="You have nothring left" serverItemCount={$serverCount}>
 	<!-- <div slot="header">Test</div> -->
 </DataTable>
