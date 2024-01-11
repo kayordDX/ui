@@ -28,6 +28,7 @@ export * as Sheet from "./sheet/index.js";
 export { Skeleton } from "./skeleton/index.js";
 export { Slider } from "./slider/index.js";
 export { Toaster } from "./sonner/index.js";
+export { toast } from "svelte-sonner";
 export { Switch } from "./switch/index.js";
 export * as Table from "./table/index.js";
 export * as Tabs from "./tabs/index.js";

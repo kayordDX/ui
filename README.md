@@ -6,6 +6,8 @@ The UI components used to build kayord applications.
 
 ```bash
 npx shadcn-svelte@latest
+
+npx shadcn-svelte@latest update -a
 ```
 
 ## Installing
