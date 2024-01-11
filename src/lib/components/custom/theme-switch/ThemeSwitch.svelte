@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { toggleMode, mode } from "mode-watcher";
 	import { Moon, Sun } from "lucide-svelte";
-	import { cn } from "$lib";
+	import { cn } from "$lib/utils";
 
 	let className: string | undefined | null = undefined;
 	export { className as class };

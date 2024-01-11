@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { Badge, cn } from "$lib";
+	import { Badge } from "$lib";
+	import { cn } from "$lib/utils";
 	import { data } from "$lib/components/custom/data-table/data";
 	import { createRender, createTable, Render } from "svelte-headless-table";
 	import { addHiddenColumns, addPagination, addSelectedRows, addSortBy, addTableFilter } from "svelte-headless-table/plugins";
