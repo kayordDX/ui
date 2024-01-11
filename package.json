@@ -1,7 +1,7 @@
 {
 	"name": "@kayord/ui",
 	"private": false,
-	"version": "0.3.1",
+	"version": "0.3.2",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -21,15 +21,15 @@
 			"types": "./dist/index.d.ts",
 			"svelte": "./dist/index.js"
 		},
-		"./utils/*": {
+		"./utils": {
 			"types": "./dist/utils.d.ts",
 			"svelte": "./dist/utils.js"
 		},
-		"./mode-watcher/*": {
+		"./mode-watcher": {
 			"types": "./dist/mode-watcher.d.ts",
 			"svelte": "./dist/mode-watcher.js"
 		},
-		"./formsnap/*": {
+		"./formsnap": {
 			"types": "./dist/formsnap.d.ts",
 			"svelte": "./dist/formsnap.js"
 		}
