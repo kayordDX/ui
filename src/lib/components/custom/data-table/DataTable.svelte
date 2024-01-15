@@ -128,7 +128,11 @@
 						</Pagination.Item>
 					{:else}
 						<Pagination.Item>
-							<Pagination.Link {page} isActive={currentPage == page.value} on:click={() => ($pageIndex = page.value - 1)}>
+							<Pagination.Link
+								{page}
+								isActive={currentPage == page.value}
+								on:click={() => ($pageIndex = page.value - 1)}
+							>
 								{page.value}
 							</Pagination.Link>
 						</Pagination.Item>

@@ -3,7 +3,13 @@
 	import { cn } from "$lib/utils";
 	import { data } from "$lib/components/custom/data-table/data";
 	import { createRender, createTable, Render } from "svelte-headless-table";
-	import { addHiddenColumns, addPagination, addSelectedRows, addSortBy, addTableFilter } from "svelte-headless-table/plugins";
+	import {
+		addHiddenColumns,
+		addPagination,
+		addSelectedRows,
+		addSortBy,
+		addTableFilter,
+	} from "svelte-headless-table/plugins";
 	import { readable, writable } from "svelte/store";
 	import { DataTable } from "$lib/index";
 	import DataTableActions from "$lib/components/custom/data-table/DataTableActions.svelte";
@@ -67,6 +73,13 @@
 	// const { pageCount, pageIndex } = pluginStates.page;
 </script>
 
-<DataTable title="The world is endings" isLoading={false} {tableViewModel} hideHeader={false} noDataMessage="You have nothring left" serverItemCount={$serverCount}>
+<DataTable
+	title="The world is endings"
+	isLoading={false}
+	{tableViewModel}
+	hideHeader={false}
+	noDataMessage="You have nothring left"
+	serverItemCount={$serverCount}
+>
 	<!-- <div slot="header">Test</div> -->
 </DataTable>
