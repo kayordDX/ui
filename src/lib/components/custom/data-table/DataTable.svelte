@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { ArrowDown, ArrowUp } from "lucide-svelte";
+	import { fade } from "svelte/transition";
 
 	import { Button, ProgressLoading, Skeleton } from "$lib";
 	import { Subscribe, Render, type TableViewModel } from "svelte-headless-table";
@@ -31,6 +32,13 @@
 
 <div class="w-full">
 	<div class="rounded-md border m-2">
+		{#if isLoading}
+			<span in:fade={{ duration: 300 }}>
+				<ProgressLoading class="h-1" />
+			</span>
+		{:else}
+			<div class="h-1"></div>
+		{/if}
 		{#if $$slots.header || title.length > 0}
 			<div class="rounded-t-md overflow-hidden">
 				{#if $$slots.header}
@@ -44,9 +52,6 @@
 		{/if}
 		{#if $$slots.subHeader}
 			<slot name="subHeader" />
-		{/if}
-		{#if isLoading}
-			<ProgressLoading class="h-1" />
 		{/if}
 		<Table.Root {...$tableAttrs} class="table-auto">
 			{#if !hideHeader}
@@ -80,7 +85,7 @@
 				</Table.Header>
 			{/if}
 			<Table.Body {...$tableBodyAttrs}>
-				{#if isLoading}
+				{#if isLoading && $rows.length == 0}
 					{#each { length: 5 } as _, i}
 						<Table.Row>
 							{#each flatColumns as cell}
@@ -114,6 +119,11 @@
 				{/if}
 			</Table.Body>
 		</Table.Root>
+		{#if isLoading}
+			<span in:fade={{ duration: 300 }}>
+				<ProgressLoading class="h-1" />
+			</span>
+		{/if}
 	</div>
 	{#if isPagingEnabled}
 		<Pagination.Root count={serverItemCount ?? $rows.length} perPage={$pageSize} let:pages let:currentPage>

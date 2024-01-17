@@ -75,7 +75,7 @@
 
 <DataTable
 	title="The world is endings"
-	isLoading={false}
+	isLoading={true}
 	{tableViewModel}
 	hideHeader={false}
 	noDataMessage="You have nothring left"
