@@ -7,6 +7,7 @@ export { Badge, type Variant as BadgeVariant, badgeVariants } from "./badge/inde
 export { Button, type ButtonEvents, type ButtonProps, buttonVariants } from "./button/index.js";
 export * as Calendar from "./calendar/index.js";
 export * as Card from "./card/index.js";
+export * as Carousel from "./carousel/index.js";
 export { Checkbox } from "./checkbox/index.js";
 export * as Collapsible from "./collapsible/index.js";
 export * as Command from "./command/index.js";
