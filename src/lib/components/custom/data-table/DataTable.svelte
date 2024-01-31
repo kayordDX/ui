@@ -28,6 +28,10 @@
 	const isPagingEnabled = pluginStates.page != undefined;
 	const pageIndex = isPagingEnabled ? pluginStates.page.pageIndex : undefined;
 	const pageSize = isPagingEnabled ? pluginStates.page.pageSize : undefined;
+
+	// Select
+	const isSelectEnabled = pluginStates.select != undefined;
+	const selectedDataIds = isSelectEnabled ? pluginStates.select.selectedDataIds : undefined;
 </script>
 
 <div class="w-full">
@@ -61,7 +65,7 @@
 							<Table.Row>
 								{#each headerRow.cells as cell (cell.id)}
 									<Subscribe attrs={cell.attrs()} let:attrs props={cell.props()} let:props>
-										<Table.Head {...attrs}>
+										<Table.Head {...attrs} class="[&:has([role=checkbox])]:pl-4">
 											{#if isSortEnabled}
 												<Button variant="ghost" on:click={props.sort.toggle}>
 													<Render of={cell.render()} />
@@ -105,7 +109,7 @@
 					{/if}
 					{#each $pageRows as row (row.id)}
 						<Subscribe rowAttrs={row.attrs()} let:rowAttrs>
-							<Table.Row {...rowAttrs}>
+							<Table.Row {...rowAttrs} data-state={!isSelectEnabled ? false : $selectedDataIds[row.id] && "selected"}>
 								{#each row.cells as cell (cell.id)}
 									<Subscribe attrs={cell.attrs()} let:attrs>
 										<Table.Cell {...attrs}>
@@ -125,6 +129,12 @@
 			</span>
 		{/if}
 	</div>
+	{#if isSelectEnabled}
+		<div class="flex-1 text-sm text-muted-foreground ml-4">
+			{Object.keys($selectedDataIds).length} of{" "}
+			{$rows.length} row(s) selected.
+		</div>
+	{/if}
 	{#if isPagingEnabled}
 		<Pagination.Root count={serverItemCount ?? $rows.length} perPage={$pageSize} let:pages let:currentPage>
 			<Pagination.Content>
@@ -154,6 +164,7 @@
 			</Pagination.Content>
 		</Pagination.Root>
 	{/if}
+
 	{#if $$slots.footer}
 		<div class="rounded-b-md overflow-hidden">
 			<slot name="footer" />

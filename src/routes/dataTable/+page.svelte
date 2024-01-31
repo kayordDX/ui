@@ -13,6 +13,7 @@
 	import { readable, writable } from "svelte/store";
 	import { DataTable } from "$lib/index";
 	import DataTableActions from "$lib/components/custom/data-table/DataTableActions.svelte";
+	import DataTableCheckbox from "$lib/components/custom/data-table/DataTableCheckbox.svelte";
 
 	const serverCount = readable(20);
 
@@ -21,14 +22,29 @@
 		// sort: addSortBy({ disableMultiSort: true }),
 		// page: addPagination({ serverSide: true, serverItemCount: serverCount }),
 		page: addPagination({ serverSide: true, serverItemCount: serverCount, initialPageSize: 10 }),
+
 		// filter: addTableFilter({
 		// 	fn: ({ filterValue, value }) => value.includes(filterValue),
 		// }),
-		// select: addSelectedRows(),
+		select: addSelectedRows(),
 		// hide: addHiddenColumns(),
 	});
 
 	const columns = table.createColumns([
+		table.column({
+			header: (_, { pluginStates }) => {
+				const { allPageRowsSelected } = pluginStates.select;
+				return createRender(DataTableCheckbox, {
+					checked: allPageRowsSelected,
+				});
+			},
+			accessor: ({ id }) => id,
+			cell: ({ row }, { pluginStates }) => {
+				const { getRowState } = pluginStates.select;
+				const { isSelected } = getRowState(row);
+				return createRender(DataTableCheckbox, { checked: isSelected });
+			},
+		}),
 		table.column({
 			header: "",
 			accessor: ({ id }) => id,
@@ -41,6 +57,7 @@
 			// 	},
 			// },
 		}),
+
 		table.column({
 			header: "Status",
 			accessor: "status",
