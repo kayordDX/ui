@@ -18,6 +18,8 @@
 	export let noDataMessage: string | undefined = "No Data";
 	export let serverItemCount: number | undefined = undefined;
 
+	export let rowAction: (() => void) | undefined = undefined;
+
 	const { headerRows, pageRows, tableAttrs, tableBodyAttrs, pluginStates, rows, flatColumns } = tableViewModel;
 
 	// Sorting
@@ -109,7 +111,12 @@
 					{/if}
 					{#each $pageRows as row (row.id)}
 						<Subscribe rowAttrs={row.attrs()} let:rowAttrs>
-							<Table.Row {...rowAttrs} data-state={!isSelectEnabled ? false : $selectedDataIds[row.id] && "selected"}>
+							<Table.Row
+								{...rowAttrs}
+								data-state={!isSelectEnabled ? false : $selectedDataIds[row.id] && "selected"}
+								class={rowAction == undefined ? "" : "hover:cursor-pointer"}
+								on:click={rowAction}
+							>
 								{#each row.cells as cell (cell.id)}
 									<Subscribe attrs={cell.attrs()} let:attrs>
 										<Table.Cell {...attrs}>

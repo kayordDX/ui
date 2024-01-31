@@ -97,6 +97,7 @@
 	hideHeader={false}
 	noDataMessage="You have nothring left"
 	serverItemCount={$serverCount}
+	rowAction={() => console.log("action")}
 >
 	<!-- <div slot="header">Test</div> -->
 </DataTable>
