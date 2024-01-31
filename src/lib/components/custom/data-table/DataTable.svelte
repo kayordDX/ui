@@ -117,10 +117,10 @@
 						</Table.Row>
 					{/if}
 					{#each $pageRows as row (row.id)}
-						<Subscribe rowAttrs={row.attrs()} let:rowAttrs>
+						<Subscribe rowAttrs={row.attrs()} let:rowAttrs rowProps={row.props()} let:rowProps>
 							<Table.Row
 								{...rowAttrs}
-								data-state={!isSelectEnabled ? false : $selectedDataIds[row.id] && "selected"}
+								data-state={isSelectEnabled && rowProps.select.selected ? "selected" : "false"}
 								class={rowAction == undefined ? "" : "hover:cursor-pointer"}
 								on:click={() => (rowAction != undefined ? rowAction(getOriginalData(row.id)) : undefined)}
 							>

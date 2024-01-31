@@ -32,13 +32,13 @@
 
 	const columns = table.createColumns([
 		table.column({
+			accessor: "id",
 			header: (_, { pluginStates }) => {
 				const { allPageRowsSelected } = pluginStates.select;
 				return createRender(DataTableCheckbox, {
 					checked: allPageRowsSelected,
 				});
 			},
-			accessor: ({ id }) => id,
 			cell: ({ row }, { pluginStates }) => {
 				const { getRowState } = pluginStates.select;
 				const { isSelected } = getRowState(row);
@@ -84,9 +84,12 @@
 		}),
 	]);
 
-	const tableViewModel = table.createViewModel(columns);
+	// This
+	const tableViewModel = table.createViewModel(columns, { rowDataId: (row) => row.id });
 
 	const { pluginStates } = tableViewModel;
+	const { selectedDataIds } = pluginStates.select;
+	$: console.log($selectedDataIds);
 	// const { pageCount, pageIndex } = pluginStates.page;
 </script>
 
@@ -96,7 +99,6 @@
 	{tableViewModel}
 	hideHeader={false}
 	noDataMessage="You have nothring left"
-	rowAction={(row) => console.log("action", row)}
 	showSelected={false}
 >
 	<!-- <div slot="header">Test</div> -->
