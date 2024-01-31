@@ -18,7 +18,7 @@
 	export let noDataMessage: string | undefined = "No Data";
 	export let serverItemCount: number | undefined = undefined;
 
-	export let rowAction: (() => void) | undefined = undefined;
+	export let rowAction: ((row: T | undefined) => void) | undefined = undefined;
 
 	const { headerRows, pageRows, tableAttrs, tableBodyAttrs, pluginStates, rows, flatColumns } = tableViewModel;
 
@@ -34,6 +34,11 @@
 	// Select
 	const isSelectEnabled = pluginStates.select != undefined;
 	const selectedDataIds = isSelectEnabled ? pluginStates.select.selectedDataIds : undefined;
+
+	const getOriginalData = (id: any) => {
+		const data = $pageRows[id] as unknown as { original: T };
+		return data.original;
+	};
 </script>
 
 <div class="w-full">
@@ -115,7 +120,7 @@
 								{...rowAttrs}
 								data-state={!isSelectEnabled ? false : $selectedDataIds[row.id] && "selected"}
 								class={rowAction == undefined ? "" : "hover:cursor-pointer"}
-								on:click={rowAction}
+								on:click={() => (rowAction != undefined ? rowAction(getOriginalData(row.id)) : undefined)}
 							>
 								{#each row.cells as cell (cell.id)}
 									<Subscribe attrs={cell.attrs()} let:attrs>
