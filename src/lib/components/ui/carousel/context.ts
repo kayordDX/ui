@@ -4,11 +4,12 @@ import { getContext, hasContext, setContext } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 import type { Writable, Readable } from "svelte/store";
 
-export type CarouselAPI = NonNullable<
-	NonNullable<EmblaCarouselSvelteType["$$_attributes"]>["on:emblaInit"]
-> extends (evt: CustomEvent<infer CarouselAPI>) => void
-	? CarouselAPI
-	: never;
+export type CarouselAPI =
+	NonNullable<NonNullable<EmblaCarouselSvelteType["$$_attributes"]>["on:emblaInit"]> extends (
+		evt: CustomEvent<infer CarouselAPI>
+	) => void
+		? CarouselAPI
+		: never;
 
 type EmblaCarouselConfig = NonNullable<Parameters<typeof emblaCarouselSvelte>[1]>;
 
@@ -34,6 +35,9 @@ type EmblaContext = {
 	canScrollNext: Readable<boolean>;
 	canScrollPrev: Readable<boolean>;
 	handleKeyDown: (e: KeyboardEvent) => void;
+	options: Writable<CarouselOptions>;
+	plugins: Writable<CarouselPlugins>;
+	onInit: (e: CustomEvent<CarouselAPI>) => void;
 };
 
 export function setEmblaContex(config: EmblaContext): EmblaContext {

@@ -12,8 +12,7 @@
 	export let variant: VariantProps<typeof buttonVariants>["variant"] = "outline";
 	export let size: VariantProps<typeof buttonVariants>["size"] = "icon";
 
-	const { orientation, canScrollPrev, scrollPrev, handleKeyDown } =
-		getEmblaContext("<Carousel.Previous/>");
+	const { orientation, canScrollPrev, scrollPrev, handleKeyDown } = getEmblaContext("<Carousel.Previous/>");
 </script>
 
 <Button
@@ -21,9 +20,7 @@
 	{size}
 	class={cn(
 		"absolute h-8 w-8 rounded-full touch-manipulation",
-		$orientation === "horizontal"
-			? "-left-12 top-1/2 -translate-y-1/2"
-			: "-top-12 left-1/2 -translate-x-1/2 rotate-90",
+		$orientation === "horizontal" ? "-left-12 top-1/2 -translate-y-1/2" : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
 		className
 	)}
 	disabled={!$canScrollPrev}

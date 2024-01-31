@@ -11,8 +11,7 @@
 	export { className as class };
 	export let variant: VariantProps<typeof buttonVariants>["variant"] = "outline";
 	export let size: VariantProps<typeof buttonVariants>["size"] = "icon";
-	const { orientation, canScrollNext, scrollNext, handleKeyDown } =
-		getEmblaContext("<Carousel.Next/>");
+	const { orientation, canScrollNext, scrollNext, handleKeyDown } = getEmblaContext("<Carousel.Next/>");
 </script>
 
 <Button
