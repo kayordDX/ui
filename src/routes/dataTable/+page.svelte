@@ -15,13 +15,13 @@
 	import DataTableActions from "$lib/components/custom/data-table/DataTableActions.svelte";
 	import DataTableCheckbox from "$lib/components/custom/data-table/DataTableCheckbox.svelte";
 
-	const serverCount = readable(20);
+	const serverCount = readable(10);
 
 	const table = createTable(readable(data), {
 		// sort: addSortBy({ serverSide: true }),
 		// sort: addSortBy({ disableMultiSort: true }),
 		// page: addPagination({ serverSide: true, serverItemCount: serverCount }),
-		page: addPagination({ serverSide: true, serverItemCount: serverCount, initialPageSize: 10 }),
+		page: addPagination({ serverSide: false, initialPageSize: 10 }),
 
 		// filter: addTableFilter({
 		// 	fn: ({ filterValue, value }) => value.includes(filterValue),
@@ -96,8 +96,8 @@
 	{tableViewModel}
 	hideHeader={false}
 	noDataMessage="You have nothring left"
-	serverItemCount={$serverCount}
 	rowAction={(row) => console.log("action", row)}
+	showSelected={false}
 >
 	<!-- <div slot="header">Test</div> -->
 </DataTable>

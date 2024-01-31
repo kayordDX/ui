@@ -20,6 +20,8 @@
 
 	export let rowAction: ((row: T | undefined) => void) | undefined = undefined;
 
+	export let showSelected: boolean = true;
+
 	const { headerRows, pageRows, tableAttrs, tableBodyAttrs, pluginStates, rows, flatColumns } = tableViewModel;
 
 	// Sorting
@@ -141,10 +143,10 @@
 			</span>
 		{/if}
 	</div>
-	{#if isSelectEnabled}
+	{#if isSelectEnabled && showSelected}
 		<div class="flex-1 text-sm text-muted-foreground ml-4">
 			{Object.keys($selectedDataIds).length} of{" "}
-			{$rows.length} row(s) selected.
+			{serverItemCount ?? $rows.length} row(s) selected.
 		</div>
 	{/if}
 	{#if isPagingEnabled}
