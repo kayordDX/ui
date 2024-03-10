@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { MoreHorizontal } from "lucide-svelte";
+	import MoreHorizontal from "lucide-svelte/icons/ellipsis";
 	import { cn } from "$lib/utils.js";
 	import type { HTMLAttributes } from "svelte/elements";
 
