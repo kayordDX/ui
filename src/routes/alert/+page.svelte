@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Card, Alert } from "$lib";
-	import { AlertCircle } from "lucide-svelte";
+	import AlertCircle from "lucide-svelte/icons/circle-alert";
 </script>
 
 <Card.Root class="m-5">

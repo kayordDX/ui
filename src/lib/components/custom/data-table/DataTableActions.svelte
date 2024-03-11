@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
 	import { Button } from "$lib/components/ui/button";
-	import { MoreHorizontal } from "lucide-svelte";
+	import MoreHorizontalIcon from "lucide-svelte/icons/ellipsis";
 	export let id: string;
 </script>
 
@@ -9,7 +9,7 @@
 	<DropdownMenu.Trigger asChild let:builder>
 		<Button variant="ghost" builders={[builder]} size="icon" class="relative w-8 h-8 p-0">
 			<span class="sr-only">Open menu</span>
-			<MoreHorizontal class="w-4 h-4" />
+			<MoreHorizontalIcon class="w-4 h-4" />
 		</Button>
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content>

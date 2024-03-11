@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { ArrowDown, ArrowUp } from "lucide-svelte";
+	import ArrowDown from "lucide-svelte/icons/arrow-down";
+	import ArrowUp from "lucide-svelte/icons/arrow-up";
 	import { fade } from "svelte/transition";
 
 	import { Button, ProgressLoading, Skeleton } from "$lib";

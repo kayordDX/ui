@@ -1,7 +1,7 @@
 {
 	"name": "@kayord/ui",
 	"private": false,
-	"version": "0.7.2",
+	"version": "0.7.3",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -44,12 +44,12 @@
 	},
 	"dependencies": {
 		"@internationalized/date": "^3.5.2",
-		"bits-ui": "^0.19.5",
+		"bits-ui": "^0.19.6",
 		"clsx": "^2.1.0",
 		"cmdk-sv": "^0.0.15",
 		"embla-carousel-svelte": "8.0.0",
 		"formsnap": "^0.5.1",
-		"lucide-svelte": "^0.354.0",
+		"lucide-svelte": "^0.356.0",
 		"mode-watcher": "^0.2.2",
 		"paneforge": "^0.0.2",
 		"svelte-headless-table": "^0.18.2",
