@@ -5,6 +5,7 @@ export { AspectRatio } from "./aspect-ratio/index.js";
 export * as Avatar from "./avatar/index.js";
 export { Badge, type Variant as BadgeVariant, badgeVariants } from "./badge/index.js";
 export { Button, type ButtonEvents, type ButtonProps, buttonVariants } from "./button/index.js";
+export * as Breadcrumb from "./breadcrumb/index.js";
 export * as Calendar from "./calendar/index.js";
 export * as Card from "./card/index.js";
 export * as Carousel from "./carousel/index.js";
