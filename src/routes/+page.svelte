@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Accordion, Button, Card } from "$lib";
+	import { Accordion, Button, Card, Table } from "$lib";
 	import Mail from "lucide-svelte/icons/mail";
 	import ChevronRight from "lucide-svelte/icons/chevron-right";
 	import { ModeWatcher } from "mode-watcher";
@@ -67,6 +67,30 @@
 	</Card.Content>
 </Card.Root>
 
-What
-<ModeWatcher />
-After
+<Card.Root class="m-5">
+	<Card.Header>
+		<Card.Title>Table</Card.Title>
+	</Card.Header>
+	<Card.Content>
+		<Table.Root class="mb-2">
+			<Table.Body>
+				<Table.Row>
+					<Table.Cell>User Total</Table.Cell>
+					<Table.Cell class="float-right">Test</Table.Cell>
+				</Table.Row>
+				<Table.Row>
+					<Table.Cell>User Payment Total</Table.Cell>
+					<Table.Cell class="float-right">Test</Table.Cell>
+				</Table.Row>
+				<Table.Row>
+					<Table.Cell>User Balance</Table.Cell>
+					<Table.Cell class="float-right">Test</Table.Cell>
+				</Table.Row>
+				<Table.Row>
+					<Table.Cell>User Tips</Table.Cell>
+					<Table.Cell class="float-right">Test</Table.Cell>
+				</Table.Row>
+			</Table.Body>
+		</Table.Root>
+	</Card.Content>
+</Card.Root>
