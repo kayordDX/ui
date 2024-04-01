@@ -22,10 +22,10 @@ dependencies:
     version: 8.0.0(svelte@4.2.12)
   formsnap:
     specifier: ^1.0.0
-    version: 1.0.0(svelte@4.2.12)(sveltekit-superforms@2.12.0)
+    version: 1.0.0(svelte@4.2.12)(sveltekit-superforms@2.12.2)
   lucide-svelte:
-    specifier: ^0.363.0
-    version: 0.363.0(svelte@4.2.12)
+    specifier: ^0.364.0
+    version: 0.364.0(svelte@4.2.12)
   mode-watcher:
     specifier: ^0.3.0
     version: 0.3.0(svelte@4.2.12)
@@ -36,11 +36,11 @@ dependencies:
     specifier: ^0.18.2
     version: 0.18.2(svelte@4.2.12)
   svelte-sonner:
-    specifier: ^0.3.19
-    version: 0.3.19(svelte@4.2.12)
+    specifier: ^0.3.21
+    version: 0.3.21(svelte@4.2.12)
   sveltekit-superforms:
-    specifier: ^2.12.0
-    version: 2.12.0(@sveltejs/kit@2.5.5)(@types/json-schema@7.0.15)(esbuild-runner@2.2.2)(esbuild@0.20.2)(svelte@4.2.12)
+    specifier: ^2.12.2
+    version: 2.12.2(@sveltejs/kit@2.5.5)(@types/json-schema@7.0.15)(esbuild-runner@2.2.2)(esbuild@0.20.2)(svelte@4.2.12)
   tailwind-merge:
     specifier: ^2.2.2
     version: 2.2.2
@@ -2022,7 +2022,7 @@ packages:
       cross-spawn: 7.0.3
       signal-exit: 4.1.0
 
-  /formsnap@1.0.0(svelte@4.2.12)(sveltekit-superforms@2.12.0):
+  /formsnap@1.0.0(svelte@4.2.12)(sveltekit-superforms@2.12.2):
     resolution: {integrity: sha512-NQEbkCS1tKGnn6gBojIuNutxImmq/9bUk9JQ5kW8WOY37QNFtJxYr/SbX8ONWuiVLaczSvGSWXIv3hNu19arqQ==}
     peerDependencies:
       svelte: ^4.0.0
@@ -2030,7 +2030,7 @@ packages:
     dependencies:
       nanoid: 5.0.6
       svelte: 4.2.12
-      sveltekit-superforms: 2.12.0(@sveltejs/kit@2.5.5)(@types/json-schema@7.0.15)(esbuild-runner@2.2.2)(esbuild@0.20.2)(svelte@4.2.12)
+      sveltekit-superforms: 2.12.2(@sveltejs/kit@2.5.5)(@types/json-schema@7.0.15)(esbuild-runner@2.2.2)(esbuild@0.20.2)(svelte@4.2.12)
     dev: false
 
   /fraction.js@4.3.7:
@@ -2569,8 +2569,8 @@ packages:
       yallist: 4.0.0
     dev: true
 
-  /lucide-svelte@0.363.0(svelte@4.2.12):
-    resolution: {integrity: sha512-zpUBFtMEEOOjILgiDX48ijibUww3JUCLrMo5YDGX/De/m6I+vn+oWIGvdyZtuc8nz/P8xHW9vWLKzIWeMrRYbA==}
+  /lucide-svelte@0.364.0(svelte@4.2.12):
+    resolution: {integrity: sha512-Zz0WDI5NeyLd6s8KHJ5uww3Js7JJEaYt/RNxKCIqy3cZKdKj7f3RnSQuhFOJfpWyoZFYvcXDC9zPKykSed6dyA==}
     peerDependencies:
       svelte: ^3 || ^4 || ^5.0.0-next.42
     dependencies:
@@ -3615,8 +3615,8 @@ packages:
       svelte-subscribe: 2.0.1(svelte@4.2.12)
     dev: false
 
-  /svelte-sonner@0.3.19(svelte@4.2.12):
-    resolution: {integrity: sha512-jpPOgLtHwRaB6Vqo2dUQMv15/yUV/BQWTjKpEqQ11uqRSHKjAYUKZyGrHB2cQsGmyjR0JUzBD58btpgNqINQ/Q==}
+  /svelte-sonner@0.3.21(svelte@4.2.12):
+    resolution: {integrity: sha512-OodylZ4ZwX4XNnpujEGzUiX66aIwve4QulI7qNmKIw49LIfAxV1LTQaJ6Xj5KsNqWz72NsO1txxV3im3021vEg==}
     peerDependencies:
       svelte: '>=3 <5'
     dependencies:
@@ -3662,8 +3662,8 @@ packages:
       magic-string: 0.30.7
       periscopic: 3.1.0
 
-  /sveltekit-superforms@2.12.0(@sveltejs/kit@2.5.5)(@types/json-schema@7.0.15)(esbuild-runner@2.2.2)(esbuild@0.20.2)(svelte@4.2.12):
-    resolution: {integrity: sha512-gAZbJbkij0crd5vRT09rYI/XvBq0etAv2j5U95bb3hioYo2TATv8jGCvsPHrCRJQwuJJrIp/xQRJpgSAPuUq2Q==}
+  /sveltekit-superforms@2.12.2(@sveltejs/kit@2.5.5)(@types/json-schema@7.0.15)(esbuild-runner@2.2.2)(esbuild@0.20.2)(svelte@4.2.12):
+    resolution: {integrity: sha512-fFOXaluP1os/Tamx7gzwhT3tXPAfqZ8KYRC0UfXdXeUtlUIUfiGrIifDJ26/9uePmF8Zhqy2M0XjG8W9kQnJpg==}
     requiresBuild: true
     peerDependencies:
       '@sveltejs/kit': 1.x || 2.x
