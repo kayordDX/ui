@@ -5,7 +5,7 @@
 	import LoaderCircleIcon from "lucide-svelte/icons/loader-circle";
 	import { fade } from "svelte/transition";
 
-	interface LoaderIconProps extends ComponentProps<Icon> {
+	interface LoaderIconProps extends Omit<ComponentProps<Icon>, "iconNode"> {
 		isLoading?: boolean;
 	}
 
