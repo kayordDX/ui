@@ -1,7 +1,7 @@
 {
 	"name": "@kayord/ui",
 	"private": false,
-	"version": "0.8.11",
+	"version": "0.8.12",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -42,22 +42,22 @@
 		"svelte": "^4.0.0"
 	},
 	"dependencies": {
-		"@internationalized/date": "^3.5.2",
-		"bits-ui": "^0.21.6",
+		"@internationalized/date": "^3.5.3",
+		"bits-ui": "^0.21.7",
 		"clsx": "^2.1.1",
 		"cmdk-sv": "^0.0.17",
-		"embla-carousel-svelte": "8.0.2",
+		"embla-carousel-svelte": "8.0.4",
 		"formsnap": "^1.0.0",
-		"lucide-svelte": "^0.376.1",
+		"lucide-svelte": "^0.378.0",
 		"mode-watcher": "^0.3.0",
 		"paneforge": "^0.0.4",
 		"svelte-headless-table": "^0.18.2",
-		"svelte-sonner": "^0.3.22",
-		"sveltekit-superforms": "^2.12.6",
+		"svelte-sonner": "^0.3.23",
+		"sveltekit-superforms": "^2.13.0",
 		"tailwind-merge": "^2.3.0",
 		"tailwind-variants": "^0.2.1",
 		"vaul-svelte": "^0.3.0",
-		"zod": "^3.23.5"
+		"zod": "^3.23.6"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.2.0",
