@@ -4,11 +4,14 @@
 	import Sun from "lucide-svelte/icons/sun";
 	import { cn } from "$lib/utils";
 
-	let className: string | undefined | null = undefined;
-	export { className as class };
+	interface Props {
+		class?: string | undefined | null;
+	}
+
+	let { class: className = undefined }: Props = $props();
 </script>
 
-<button on:click={toggleMode} class={cn("text-primary", className)}>
+<button onclick={toggleMode} class={cn("text-primary", className)}>
 	{#if $mode == "dark"}
 		<Moon />
 	{:else}
