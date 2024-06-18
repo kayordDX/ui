@@ -18,6 +18,8 @@ Pnpm command to install ui library.
 # create a new project in the current directory
 pnpm add -D @kayord/ui
 pnpm add -D @kayord/tw-plugin
+# install peer dependencies
+pnpm add -D lucide-svelte zod sveltekit-superforms
 ```
 
 ### Manual Setup New Project
