@@ -6,7 +6,7 @@
 	import { Button, ProgressLoading, Skeleton } from "$lib";
 	import { Subscribe, Render, type TableViewModel } from "svelte-headless-table";
 	import * as Table from "$lib/components/ui/table";
-	import * as Pagination from "$lib/components/ui/pagination";
+	import DataTablePagination from "./DataTablePagination.svelte";
 
 	type RowData = Record<string, any>;
 	type T = $$Generic<RowData>;
@@ -22,6 +22,7 @@
 	export let rowAction: ((row: T | undefined) => void) | undefined = undefined;
 
 	export let showSelected: boolean = true;
+	export let showRowsPerPage: boolean = false;
 
 	const { headerRows, pageRows, tableAttrs, tableBodyAttrs, pluginStates, rows, flatColumns } = tableViewModel;
 
@@ -151,33 +152,7 @@
 		</div>
 	{/if}
 	{#if isPagingEnabled}
-		<Pagination.Root count={serverItemCount ?? $rows.length} perPage={$pageSize} let:pages let:currentPage>
-			<Pagination.Content>
-				<Pagination.Item>
-					<Pagination.PrevButton on:click={() => ($pageIndex = $pageIndex - 1)} />
-				</Pagination.Item>
-				{#each pages as page (page.key)}
-					{#if page.type === "ellipsis"}
-						<Pagination.Item>
-							<Pagination.Ellipsis />
-						</Pagination.Item>
-					{:else}
-						<Pagination.Item>
-							<Pagination.Link
-								{page}
-								isActive={currentPage == page.value}
-								on:click={() => ($pageIndex = page.value - 1)}
-							>
-								{page.value}
-							</Pagination.Link>
-						</Pagination.Item>
-					{/if}
-				{/each}
-				<Pagination.Item>
-					<Pagination.NextButton on:click={() => ($pageIndex = $pageIndex + 1)} />
-				</Pagination.Item>
-			</Pagination.Content>
-		</Pagination.Root>
+		<DataTablePagination tableModel={tableViewModel} {showRowsPerPage} />
 	{/if}
 
 	{#if $$slots.footer}
