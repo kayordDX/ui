@@ -146,11 +146,11 @@
 		{/if}
 	</div>
 	<div class="flex items-center">
-		{#if isSelectEnabled && showSelected}
-			<div class="flex-1 text-sm text-muted-foreground px-2">
+		<div class="flex-1 text-sm text-muted-foreground px-2">
+			{#if isSelectEnabled && showSelected}
 				{Object.keys($selectedDataIds).length} of {serverItemCount ?? $rows.length} row(s) selected.
-			</div>
-		{/if}
+			{/if}
+		</div>
 		{#if isPagingEnabled}
 			<DataTablePagination tableModel={tableViewModel} {showRowsPerPage} />
 		{/if}
