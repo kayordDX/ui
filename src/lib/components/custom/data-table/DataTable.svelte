@@ -145,15 +145,16 @@
 			</span>
 		{/if}
 	</div>
-	{#if isSelectEnabled && showSelected}
-		<div class="flex-1 text-sm text-muted-foreground ml-4">
-			{Object.keys($selectedDataIds).length} of{" "}
-			{serverItemCount ?? $rows.length} row(s) selected.
-		</div>
-	{/if}
-	{#if isPagingEnabled}
-		<DataTablePagination tableModel={tableViewModel} {showRowsPerPage} />
-	{/if}
+	<div class="flex items-center">
+		{#if isSelectEnabled && showSelected}
+			<div class="flex-1 text-sm text-muted-foreground px-2">
+				{Object.keys($selectedDataIds).length} of {serverItemCount ?? $rows.length} row(s) selected.
+			</div>
+		{/if}
+		{#if isPagingEnabled}
+			<DataTablePagination tableModel={tableViewModel} {showRowsPerPage} />
+		{/if}
+	</div>
 
 	{#if $$slots.footer}
 		<div class="rounded-b-md overflow-hidden">

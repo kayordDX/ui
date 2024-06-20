@@ -99,7 +99,7 @@
 	{tableViewModel}
 	hideHeader={false}
 	noDataMessage="You have nothring left"
-	showSelected={false}
+	showSelected={true}
 >
 	<!-- <div slot="header">Test</div> -->
 </DataTable>
