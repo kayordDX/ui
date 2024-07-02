@@ -17,7 +17,7 @@
 		iconProps?: LoaderIconProps;
 	}
 
-	let { class: className = undefined, isLoading, iconProps }: Props = $props();
+	let { class: className = undefined, isLoading = true, iconProps }: Props = $props();
 </script>
 
 {#if isLoading}
