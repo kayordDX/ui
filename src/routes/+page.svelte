@@ -2,7 +2,6 @@
 	import { Accordion, Button, Card, Table } from "$lib";
 	import Mail from "lucide-svelte/icons/mail";
 	import ChevronRight from "lucide-svelte/icons/chevron-right";
-	import { ModeWatcher } from "mode-watcher";
 </script>
 
 <Card.Root class="m-5">
