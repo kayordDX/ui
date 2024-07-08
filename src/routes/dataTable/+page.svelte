@@ -1,23 +1,25 @@
 <script lang="ts">
 	import { Badge } from "$lib";
 	import { cn } from "$lib/utils";
-	import { data } from "$lib/components/custom/data-table/data";
-	import { createRender, createTable, Render } from "svelte-headless-table";
-	import {
-		addHiddenColumns,
-		addPagination,
-		addSelectedRows,
-		addSortBy,
-		addTableFilter,
-	} from "svelte-headless-table/plugins";
-	import { readable, writable } from "svelte/store";
+	import { data, type Payment } from "$lib/components/custom/data-table/data";
+	import { createRender, createTable } from "svelte-headless-table";
+	import { addPagination, addSelectedRows } from "svelte-headless-table/plugins";
+	import { readable, writable, type Writable } from "svelte/store";
 	import { DataTable } from "$lib/index";
 	import DataTableActions from "$lib/components/custom/data-table/DataTableActions.svelte";
 	import DataTableCheckbox from "$lib/components/custom/data-table/DataTableCheckbox.svelte";
 
-	const serverCount = readable(10);
+	let lazyData: Writable<Payment[]> = writable([]);
 
-	const table = createTable(readable(data), {
+	$effect(() => {
+		const timeout = setTimeout(() => {
+			// lazyData = writable(data);
+			lazyData.set(data);
+		}, 500);
+		return () => clearTimeout(timeout);
+	});
+
+	const table = createTable(lazyData, {
 		// sort: addSortBy({ serverSide: true }),
 		// sort: addSortBy({ disableMultiSort: true }),
 		// page: addPagination({ serverSide: true, serverItemCount: serverCount }),
@@ -89,8 +91,6 @@
 
 	const { pluginStates } = tableViewModel;
 	const { selectedDataIds } = pluginStates.select;
-	$: console.log($selectedDataIds);
-	// const { pageCount, pageIndex } = pluginStates.page;
 </script>
 
 <DataTable
