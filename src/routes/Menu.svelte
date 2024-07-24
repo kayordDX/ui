@@ -10,6 +10,7 @@
 	<MenuItem path="/avatar" text="Avatar" />
 	<MenuItem path="/badge" text="Badge" />
 	<MenuItem path="/button" text="Button" />
+	<MenuItem path="/calendar" text="Calendar" />
 	<MenuItem path="/custom" text="Custom" />
 	<MenuItem path="/dataTable" text="DataTable" />
 	<MenuItem path="/sonner" text="Sonner" />
