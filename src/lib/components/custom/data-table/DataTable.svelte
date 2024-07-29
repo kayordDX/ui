@@ -46,7 +46,7 @@
 </script>
 
 <div class="w-full">
-	<div class="rounded-md border m-2">
+	<div class="m-2 rounded-md border">
 		{#if isLoading}
 			<span in:fade={{ duration: 300 }}>
 				<ProgressLoading class="h-1" />
@@ -55,11 +55,11 @@
 			<div class="h-1"></div>
 		{/if}
 		{#if $$slots.header || title.length > 0}
-			<div class="rounded-t-md overflow-hidden">
+			<div class="overflow-hidden rounded-t-md">
 				{#if $$slots.header}
 					<slot name="header" />
 				{:else}
-					<h1 class="text-lg text-center p-2">
+					<h1 class="p-2 text-center text-lg">
 						{title}
 					</h1>
 				{/if}
@@ -146,7 +146,7 @@
 		{/if}
 	</div>
 	<div class="flex items-center">
-		<div class="flex-1 text-sm text-muted-foreground px-2">
+		<div class="flex-1 px-2 text-sm text-muted-foreground">
 			{#if isSelectEnabled && showSelected}
 				{Object.keys($selectedDataIds).length} of {serverItemCount ?? $rows.length} row(s) selected.
 			{/if}
@@ -157,7 +157,7 @@
 	</div>
 
 	{#if $$slots.footer}
-		<div class="rounded-b-md overflow-hidden">
+		<div class="overflow-hidden rounded-b-md">
 			<slot name="footer" />
 		</div>
 	{/if}

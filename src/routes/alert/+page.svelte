@@ -15,7 +15,7 @@
 			</Alert.Root>
 
 			<Alert.Root variant="destructive">
-				<Alert.Title><div class="flex"><AlertCircle class="h-4 w-4 mr-2" />Error</div></Alert.Title>
+				<Alert.Title><div class="flex"><AlertCircle class="mr-2 h-4 w-4" />Error</div></Alert.Title>
 				<Alert.Description>Destructive</Alert.Description>
 			</Alert.Root>
 		</div>

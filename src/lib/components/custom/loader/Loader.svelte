@@ -22,6 +22,6 @@
 
 {#if isLoading}
 	<div class="flex justify-center" in:scale={{ duration: 350 }} out:scale={{ duration: 200 }}>
-		<LoaderCircleIcon class={cn("h-8 w-8 animate-spin m-2", className)} {...iconProps} />
+		<LoaderCircleIcon class={cn("m-2 h-8 w-8 animate-spin", className)} {...iconProps} />
 	</div>
 {/if}

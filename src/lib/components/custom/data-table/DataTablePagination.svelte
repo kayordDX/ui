@@ -12,7 +12,7 @@
 	const { hasNextPage, hasPreviousPage, pageIndex, pageCount, pageSize } = pluginStates.page;
 </script>
 
-<div class="flex items-center space-x-6 lg:space-x-8 justify-end px-2">
+<div class="flex items-center justify-end space-x-6 px-2 lg:space-x-8">
 	{#if showRowsPerPage}
 		<div class="flex items-center space-x-2">
 			<p class="text-sm font-medium">Rows per page</p>

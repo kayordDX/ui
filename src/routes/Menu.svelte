@@ -2,7 +2,7 @@
 	import MenuItem from "./MenuItem.svelte";
 </script>
 
-<div class="space-y-4 py-4 p-2 w-1/6">
+<div class="w-1/6 space-y-4 p-2 py-4">
 	<MenuItem path="/" text="Home" />
 	<MenuItem path="/accordion" text="Accordion" />
 	<MenuItem path="/alert" text="Alert" />

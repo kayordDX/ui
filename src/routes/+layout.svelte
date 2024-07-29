@@ -8,7 +8,7 @@
 
 <ModeWatcher />
 <Toaster />
-<div class="border-b-2 p-2 flex justify-between">
+<div class="flex justify-between border-b-2 p-2">
 	<img src="/logo.svg" alt="logo" class="h-10" />
 	<ThemeSwitch />
 </div>
