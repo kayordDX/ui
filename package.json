@@ -40,7 +40,7 @@
 		"!dist/**/*.spec.*"
 	],
 	"peerDependencies": {
-		"lucide-svelte": "^0.395.0",
+		"lucide-svelte": "^0.401.0",
 		"svelte": "^4.0.0 || ^5.0.0-next.1",
 		"sveltekit-superforms": "^2.15.1",
 		"zod": "^3.23.8"
