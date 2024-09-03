@@ -1,7 +1,7 @@
 {
 	"name": "@kayord/ui",
 	"private": false,
-	"version": "0.9.17",
+	"version": "0.9.18",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -40,7 +40,7 @@
 		"!dist/**/*.spec.*"
 	],
 	"peerDependencies": {
-		"lucide-svelte": "^0.401.0",
+		"lucide-svelte": "~0.401.0",
 		"svelte": "^4.0.0 || ^5.0.0-next.1",
 		"sveltekit-superforms": "^2.15.1",
 		"zod": "^3.23.8"
