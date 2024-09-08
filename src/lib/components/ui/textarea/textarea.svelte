@@ -13,7 +13,6 @@
 	// Workaround for https://github.com/sveltejs/svelte/issues/9305
 	// Fixed in Svelte 5, but not backported to 4.x.
 	export let readonly: $$Props["readonly"] = undefined;
-	export let tabindex: $$Props["tabindex"] = undefined;
 </script>
 
 <textarea
@@ -23,7 +22,6 @@
 	)}
 	bind:value
 	{readonly}
-	{tabindex}
 	on:blur
 	on:change
 	on:click
