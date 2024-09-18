@@ -1,105 +1,79 @@
 <script lang="ts">
-	import { Badge } from "$lib";
-	import { cn } from "$lib/utils";
-	import { data, type Payment } from "$lib/components/custom/data-table/data";
-	import { createRender, createTable } from "svelte-headless-table";
-	import { addPagination, addSelectedRows } from "svelte-headless-table/plugins";
-	import { readable, writable, type Writable } from "svelte/store";
-	import { DataTable } from "$lib/index";
-	import DataTableActions from "$lib/components/custom/data-table/DataTableActions.svelte";
-	import DataTableCheckbox from "$lib/components/custom/data-table/DataTableCheckbox.svelte";
+	interface DataType {
+		id: number;
+		name: string;
+	}
 
-	let lazyData: Writable<Payment[]> = writable([]);
+	import {
+		type ColumnDef,
+		createTable,
+		getCoreRowModel,
+		type VisibilityState,
+		type Updater,
+		type PaginationState,
+		type RowSelectionState,
+		getPaginationRowModel,
+	} from "@tanstack/svelte-table";
+	import { getData } from "../dataTable/data";
+	import { DataTable } from "$lib";
 
-	$effect(() => {
-		const timeout = setTimeout(() => {
-			// lazyData = writable(data);
-			lazyData.set(data);
-		}, 500);
-		return () => clearTimeout(timeout);
+	const columns: ColumnDef<DataType>[] = [
+		{
+			accessorKey: "id",
+			cell: (info) => info.getValue(),
+		},
+		{
+			accessorKey: "name",
+			cell: (info) => info.getValue(),
+		},
+	];
+
+	let columnVisibility: VisibilityState = $state({});
+	const setVisibility = (updater: Updater<VisibilityState>) => {
+		if (updater instanceof Function) {
+			columnVisibility = updater(columnVisibility);
+		} else columnVisibility = updater;
+	};
+
+	let rowSelection: RowSelectionState = $state({});
+	const setRowSelection = (updater: Updater<RowSelectionState>) => {
+		if (updater instanceof Function) {
+			rowSelection = updater(rowSelection);
+		} else rowSelection = updater;
+	};
+
+	let pagination: PaginationState = $state({ pageIndex: 0, pageSize: 10 });
+	const setPagination = (updater: Updater<PaginationState>) => {
+		if (updater instanceof Function) {
+			pagination = updater(pagination);
+		} else pagination = updater;
+	};
+
+	const data = getData();
+
+	const table = createTable({
+		columns,
+		data,
+		getCoreRowModel: getCoreRowModel(),
+		getPaginationRowModel: getPaginationRowModel(),
+		state: {
+			get pagination() {
+				return pagination;
+			},
+			get rowSelection() {
+				return rowSelection;
+			},
+			get columnVisibility() {
+				return columnVisibility;
+			},
+		},
+		onColumnVisibilityChange: setVisibility,
+		onRowSelectionChange: setRowSelection,
+		onPaginationChange: setPagination,
+		enableRowSelection: false,
 	});
-
-	const table = createTable(lazyData, {
-		// sort: addSortBy({ serverSide: true }),
-		// sort: addSortBy({ disableMultiSort: true }),
-		// page: addPagination({ serverSide: true, serverItemCount: serverCount }),
-		page: addPagination({ serverSide: false, initialPageSize: 10 }),
-
-		// filter: addTableFilter({
-		// 	fn: ({ filterValue, value }) => value.includes(filterValue),
-		// }),
-		select: addSelectedRows(),
-		// hide: addHiddenColumns(),
-	});
-
-	const columns = table.createColumns([
-		table.column({
-			accessor: "id",
-			header: (_, { pluginStates }) => {
-				const { allPageRowsSelected } = pluginStates.select;
-				return createRender(DataTableCheckbox, {
-					checked: allPageRowsSelected,
-				});
-			},
-			cell: ({ row }, { pluginStates }) => {
-				const { getRowState } = pluginStates.select;
-				const { isSelected } = getRowState(row);
-				return createRender(DataTableCheckbox, { checked: isSelected });
-			},
-		}),
-		table.column({
-			header: "",
-			accessor: ({ id }) => id,
-			cell: (item) => {
-				return createRender(DataTableActions, { id: item.value });
-			},
-			// plugins: {
-			// 	sort: {
-			// 		disable: true,
-			// 	},
-			// },
-		}),
-
-		table.column({
-			header: "Status",
-			accessor: "status",
-			cell: ({ value }) => {
-				let color: string | undefined = undefined;
-				if (value == "failed") {
-					color = "border-red-500";
-				}
-				if (value == "success") {
-					color = "border-green-500";
-				}
-				return createRender(Badge, { variant: "outline", class: cn(color, "p-2") }).slot(value);
-			},
-			// plugins: { sort: { disable: true }, filter: { exclude: true } },
-		}),
-		// table.column({
-		// 	header: "Email",
-		// 	accessor: "email",
-		// 	cell: ({ value }) => value.toLowerCase(),
-		// }),
-		table.column({
-			header: "Amount",
-			accessor: "amount",
-		}),
-	]);
-
-	// This
-	const tableViewModel = table.createViewModel(columns, { rowDataId: (row) => row.id });
-
-	const { pluginStates } = tableViewModel;
-	const { selectedDataIds } = pluginStates.select;
 </script>
 
-<DataTable
-	title="The world is endings"
-	isLoading={true}
-	{tableViewModel}
-	hideHeader={false}
-	noDataMessage="You have nothring left"
-	showSelected={true}
->
-	<!-- <div slot="header">Test</div> -->
-</DataTable>
+<div class="m-4">
+	<DataTable {table} {columns} enableVisibility enableFullscreen />
+</div>
