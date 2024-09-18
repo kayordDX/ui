@@ -11,53 +11,44 @@
 		type VisibilityState,
 		type Updater,
 		type PaginationState,
+		type RowSelectionState,
 		getPaginationRowModel,
-		renderComponent,
-		FlexRender,
 	} from "@tanstack/svelte-table";
 	import { getData } from "./data";
-	import DataTable from "$lib/components/custom/new-data-table/DataTable.svelte";
-	import { Badge } from "$lib";
+	import DataTable from "$lib/components/custom/data-table-new/DataTable.svelte";
 
 	const columns: ColumnDef<DataType>[] = [
 		{
 			accessorKey: "id",
 			cell: (info) => info.getValue(),
-			enableHiding: false,
 		},
 		{
 			accessorKey: "name",
-			// cell: (info) => info.getValue(),
-			cell: ({ getValue }) => {
-				let color: string | undefined = undefined;
-				return renderComponent(Badge, { variant: "outline", value: "test" });
-				// return renderComponent(Badge, { data: getValue(), $$slots: { default: () => "Test", value: "test" } });
-				// return createRawSnippet("<div>Test</div>", {	});
-			},
+			cell: (info) => info.getValue(),
 		},
 	];
 
 	let columnVisibility: VisibilityState = $state({});
-
-	const visibilityChange = (state: Updater<VisibilityState>) => {
-		console.log("change", state);
-	};
-
 	const setVisibility = (updater: Updater<VisibilityState>) => {
 		if (updater instanceof Function) {
 			columnVisibility = updater(columnVisibility);
 		} else columnVisibility = updater;
 	};
 
-	let pagination: PaginationState = $state({ pageIndex: 0, pageSize: 10 });
+	let rowSelection: RowSelectionState = $state({});
+	const setRowSelection = (updater: Updater<RowSelectionState>) => {
+		if (updater instanceof Function) {
+			rowSelection = updater(rowSelection);
+		} else rowSelection = updater;
+	};
 
+	let pagination: PaginationState = $state({ pageIndex: 0, pageSize: 10 });
 	const setPagination = (updater: Updater<PaginationState>) => {
 		if (updater instanceof Function) {
 			pagination = updater(pagination);
 		} else pagination = updater;
 	};
 
-	// const data = getData();
 	const data = getData();
 
 	const table = createTable({
@@ -69,23 +60,20 @@
 			get pagination() {
 				return pagination;
 			},
-			// get columnVisibility() {
-			// 	return columnVisibility;
-			// },
+			get rowSelection() {
+				return rowSelection;
+			},
+			get columnVisibility() {
+				return columnVisibility;
+			},
 		},
-		// onColumnVisibilityChange: setVisibility,
+		onColumnVisibilityChange: setVisibility,
+		onRowSelectionChange: setRowSelection,
 		onPaginationChange: setPagination,
+		enableRowSelection: true,
 	});
 </script>
 
-{#snippet MyThing()}
-	<Badge>Test</Badge>
-{/snippet}
-
-{#snippet header()}
-	<div class="text-center">🚀</div>
-{/snippet}
-
 <div class="m-4">
-	<DataTable {table} {columns} title="Test" />
+	<DataTable {table} {columns} enableVisibility enableFullscreen />
 </div>

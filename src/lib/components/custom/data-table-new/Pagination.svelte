@@ -9,39 +9,44 @@
 
 	interface Props<T> {
 		table: Table<T>;
+		canChangePageSize?: boolean;
 	}
 
-	let { table }: Props<T> = $props();
+	let { table, canChangePageSize = false }: Props<T> = $props();
 </script>
 
-<div class="flex items-center justify-between px-2">
+<div class="flex items-center justify-between p-2">
 	<div class="flex-1 text-sm text-muted-foreground">
-		{table.getFilteredSelectedRowModel().rows.length} of
-		{table.getFilteredRowModel().rows.length} row(s) selected.
+		{#if table.options.enableRowSelection}
+			{table.getFilteredSelectedRowModel().rows.length} of
+			{table.getFilteredRowModel().rows.length} row(s) selected.
+		{/if}
 	</div>
 	<div class="flex items-center space-x-6 lg:space-x-8">
 		<div class="flex items-center space-x-2">
-			<p class="text-sm font-medium">Rows per page</p>
-			<Select.Root
-				selected={{
-					value: table.getState().pagination.pageSize,
-					label: `${table.getState().pagination.pageSize}`,
-				}}
-				onSelectedChange={(selected) => {
-					table.setPageSize(Number(selected?.value));
-				}}
-			>
-				<Select.Trigger class="h-8 w-[70px]">
-					<Select.Value placeholder="Select page size" />
-				</Select.Trigger>
-				<Select.Content side="top">
-					{#each [10, 20, 30, 40, 50] as pageSize}
-						<Select.Item value={pageSize}>
-							{pageSize}
-						</Select.Item>
-					{/each}
-				</Select.Content>
-			</Select.Root>
+			{#if canChangePageSize}
+				<p class="text-sm font-medium">Rows per page</p>
+				<Select.Root
+					selected={{
+						value: table.getState().pagination.pageSize,
+						label: `${table.getState().pagination.pageSize}`,
+					}}
+					onSelectedChange={(selected) => {
+						table.setPageSize(Number(selected?.value));
+					}}
+				>
+					<Select.Trigger class="h-8 w-[70px]">
+						<Select.Value placeholder="Select page size" />
+					</Select.Trigger>
+					<Select.Content side="top">
+						{#each [10, 20, 30, 40, 50] as pageSize}
+							<Select.Item value={pageSize}>
+								{pageSize}
+							</Select.Item>
+						{/each}
+					</Select.Content>
+				</Select.Root>
+			{/if}
 		</div>
 		<div class="flex w-[100px] items-center justify-center text-sm font-medium">
 			Page {table.getState().pagination.pageIndex + 1} of
