@@ -1,7 +1,7 @@
 {
 	"name": "@kayord/ui",
 	"private": false,
-	"version": "0.9.21",
+	"version": "0.9.22",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
