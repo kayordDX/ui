@@ -1,24 +1,18 @@
 <script lang="ts">
-	import { Progress as ProgressPrimitive } from "bits-ui";
+	import { type ProgressRootProps, Progress } from "bits-ui";
 	import { cn } from "$lib/utils";
 
-	type $$Props = ProgressPrimitive.Props;
-
 	interface Props {
-		class?: $$Props["class"];
-		[key: string]: any
+		class?: ProgressRootProps["class"];
+		[key: string]: any;
 	}
 
 	let { class: className = undefined, ...rest }: Props = $props();
-	
 </script>
 
-<ProgressPrimitive.Root
-	class={cn("relative h-4 w-full overflow-hidden rounded-full bg-secondary", className)}
-	{...rest}
->
+<Progress.Root class={cn("relative h-4 w-full overflow-hidden rounded-full bg-secondary", className)} {...rest}>
 	<div class="progressbar-infinite h-full w-full flex-1 bg-primary transition-all"></div>
-</ProgressPrimitive.Root>
+</Progress.Root>
 
 <style>
 	.progressbar-infinite {
