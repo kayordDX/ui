@@ -14,7 +14,7 @@
 		<div class="w-10">
 			<Loader {isLoading} />
 		</div>
-		<Button on:click={() => (isLoading = !isLoading)}>Toggle Loading</Button>
+		<Button onclick={() => (isLoading = !isLoading)}>Toggle Loading</Button>
 	</Card.Content>
 </Card.Root>
 

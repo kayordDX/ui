@@ -1,5 +1,6 @@
 <script lang="ts" generics="T">
-	import { FlexRender, type ColumnDef, type Table as TypeType, renderComponent } from "@tanstack/svelte-table";
+	import { type ColumnDef, type Table as TypeType } from "@tanstack/table-core";
+	import { FlexRender, renderComponent } from "$lib/components/ui/data-table";
 	import { Skeleton, Table } from "$lib/components/ui";
 	import Pagination from "./Pagination.svelte";
 	import type { Snippet } from "svelte";

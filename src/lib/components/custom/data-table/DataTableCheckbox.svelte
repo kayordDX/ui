@@ -3,7 +3,7 @@
 	import { cn } from "$lib/utils";
 	import type { ComponentProps } from "svelte";
 
-	interface Props extends Omit<ComponentProps<Checkbox>, "checked"> {
+	interface Props extends ComponentProps<typeof Checkbox> {
 		checked?: boolean | "indeterminate";
 		class?: string;
 	}

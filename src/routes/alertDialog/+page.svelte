@@ -8,8 +8,8 @@
 	</Card.Header>
 	<Card.Content>
 		<AlertDialog.Root>
-			<AlertDialog.Trigger asChild let:builder>
-				<Button builders={[builder]} variant="outline">Show Dialog</Button>
+			<AlertDialog.Trigger>
+				<Button variant="outline">Show Dialog</Button>
 			</AlertDialog.Trigger>
 			<AlertDialog.Content>
 				<AlertDialog.Header>
