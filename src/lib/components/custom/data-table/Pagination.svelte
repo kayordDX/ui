@@ -1,11 +1,10 @@
 <script lang="ts" generics="T">
-	import type { Table } from "@tanstack/svelte-table";
+	import type { Table } from "@tanstack/table-core";
 	import ChevronLeft from "lucide-svelte/icons/chevron-left";
 	import ChevronRight from "lucide-svelte/icons/chevron-right";
 	import DoubleArrowLeft from "lucide-svelte/icons/arrow-left";
 	import DoubleArrowRight from "lucide-svelte/icons/arrow-right";
-	import * as Select from "$lib/components/ui/select/index.js";
-	import { Button } from "$lib/components/ui/button/index.js";
+	import { Select, Button } from "$lib";
 
 	interface Props<T> {
 		table: Table<T>;
@@ -13,6 +12,8 @@
 	}
 
 	let { table, canChangePageSize = false }: Props<T> = $props();
+
+	let value = $state(table.getState().pagination.pageSize.toString());
 </script>
 
 <div class="flex items-center justify-between p-2">
@@ -27,20 +28,16 @@
 			{#if canChangePageSize}
 				<p class="text-sm font-medium">Rows per page</p>
 				<Select.Root
-					selected={{
-						value: table.getState().pagination.pageSize,
-						label: `${table.getState().pagination.pageSize}`,
-					}}
-					onSelectedChange={(selected) => {
-						table.setPageSize(Number(selected?.value));
+					type="single"
+					bind:value
+					onValueChange={(value) => {
+						table.setPageSize(Number(value));
 					}}
 				>
-					<Select.Trigger class="h-8 w-[70px]">
-						<Select.Value placeholder="Select page size" />
-					</Select.Trigger>
+					<Select.Trigger class="h-8 w-[70px]">Select page size</Select.Trigger>
 					<Select.Content side="top">
 						{#each [10, 20, 30, 40, 50] as pageSize}
-							<Select.Item value={pageSize}>
+							<Select.Item value={pageSize.toString()}>
 								{pageSize}
 							</Select.Item>
 						{/each}
@@ -56,7 +53,7 @@
 			<Button
 				variant="outline"
 				class="hidden size-8 p-0 lg:flex"
-				on:click={() => table.setPageIndex(0)}
+				onclick={() => table.setPageIndex(0)}
 				disabled={!table.getCanPreviousPage()}
 			>
 				<span class="sr-only">Go to first page</span>
@@ -65,20 +62,20 @@
 			<Button
 				variant="outline"
 				class="size-8 p-0"
-				on:click={() => table.previousPage()}
+				onclick={() => table.previousPage()}
 				disabled={!table.getCanPreviousPage()}
 			>
 				<span class="sr-only">Go to previous page</span>
 				<ChevronLeft class="size-4" />
 			</Button>
-			<Button variant="outline" class="size-8 p-0" on:click={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+			<Button variant="outline" class="size-8 p-0" onclick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
 				<span class="sr-only">Go to next page</span>
 				<ChevronRight class="size-4" />
 			</Button>
 			<Button
 				variant="outline"
 				class="hidden size-8 p-0 lg:flex"
-				on:click={() => table.setPageIndex(table.getPageCount() - 1)}
+				onclick={() => table.setPageIndex(table.getPageCount() - 1)}
 				disabled={!table.getCanNextPage()}
 			>
 				<span class="sr-only">Go to last page</span>

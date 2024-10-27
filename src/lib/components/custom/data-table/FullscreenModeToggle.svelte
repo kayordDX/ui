@@ -8,7 +8,7 @@
 	class="grow"
 	variant="outline"
 	size="sm"
-	on:click={() => {
+	onclick={() => {
 		tableStore.isFullscreen = !tableStore.isFullscreen;
 		// if ($target == "body") {
 		// 	$target = "#tableContent";

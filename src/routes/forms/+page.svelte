@@ -9,7 +9,11 @@
 		username: z.string().min(2).max(50),
 	});
 
-	export let data: SuperValidated<Infer<FormSchema>>;
+	interface Props {
+		data: SuperValidated<Infer<FormSchema>>;
+	}
+
+	let { data }: Props = $props();
 	const form = superForm(data, {
 		validators: zodClient(formSchema),
 	});
@@ -27,11 +31,13 @@
 		<div class="flex space-x-2">
 			<form method="POST" use:enhance>
 				<Form.Field {form} name="username">
-					<Form.Control let:attrs>
-						<Form.Label>Username</Form.Label>
-						<Input {...attrs} bind:value={$formData.username} />
-						<Form.Description>This is your public display name.</Form.Description>
-						<Form.FieldErrors />
+					<Form.Control>
+						{#snippet children({ props })}
+							<Form.Label>Username</Form.Label>
+							<Input {...props} bind:value={$formData.username} />
+							<Form.Description>This is your public display name.</Form.Description>
+							<Form.FieldErrors />
+						{/snippet}
 					</Form.Control>
 				</Form.Field>
 				<Form.Button>Submit</Form.Button>

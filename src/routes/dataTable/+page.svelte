@@ -6,14 +6,16 @@
 
 	import {
 		type ColumnDef,
-		createTable,
+		// createTable,
 		getCoreRowModel,
 		type VisibilityState,
 		type Updater,
 		type PaginationState,
 		type RowSelectionState,
 		getPaginationRowModel,
-	} from "@tanstack/svelte-table";
+	} from "@tanstack/table-core";
+
+	import { createSvelteTable as createTable } from "$lib/components/ui/data-table";
 	import { getData } from "../dataTable/data";
 	import { DataTable } from "$lib";
 

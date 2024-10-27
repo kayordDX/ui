@@ -7,7 +7,7 @@
 		<Card.Title>Accordion</Card.Title>
 	</Card.Header>
 	<Card.Content>
-		<Accordion.Root>
+		<Accordion.Root type="single">
 			<Accordion.Item value="item-1">
 				<Accordion.Trigger>Item 1</Accordion.Trigger>
 				<Accordion.Content>Item Content</Accordion.Content>
