@@ -1,7 +1,7 @@
 {
 	"name": "@kayord/ui",
 	"private": false,
-	"version": "0.11.1",
+	"version": "0.11.2",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -14,7 +14,7 @@
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write .",
 		"test:unit": "vitest",
-		"lib": "npx shadcn-svelte@latest update -a -y && pnpm format && pnpm version --no-git-tag-version patch"
+		"lib": "pnpm dlx shadcn-svelte@next add -a -y -o && pnpm format && pnpm version --no-git-tag-version patch"
 	},
 	"exports": {
 		".": {

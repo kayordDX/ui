@@ -5,7 +5,7 @@
 	import { Toaster } from "$lib/components/ui/sonner";
 	import Menu from "./Menu.svelte";
 	interface Props {
-		children?: import('svelte').Snippet;
+		children?: import("svelte").Snippet;
 	}
 
 	let { children }: Props = $props();
