@@ -13,6 +13,13 @@ export { Checkbox } from "./checkbox/index.js";
 export * as Collapsible from "./collapsible/index.js";
 export * as Command from "./command/index.js";
 export * as ContextMenu from "./context-menu/index.js";
+export {
+	FlexRender,
+	renderComponent,
+	renderSnippet,
+	createSvelteTable,
+	createSvelteTable as createTable,
+} from "./data-table/index.js";
 export * as Dialog from "./dialog/index.js";
 export * as Drawer from "./drawer/index.js";
 export * as DropdownMenu from "./dropdown-menu/index.js";
