@@ -2,7 +2,7 @@
 	import { Calendar, Card } from "$lib";
 	import { getLocalTimeZone, today } from "@internationalized/date";
 
-	let value = today(getLocalTimeZone());
+	let value = $state(today(getLocalTimeZone()));
 </script>
 
 <Card.Root class="m-5">

@@ -2,7 +2,11 @@
 	import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
 	import { Button } from "$lib/components/ui/button";
 	import MoreHorizontalIcon from "lucide-svelte/icons/ellipsis";
-	export let id: string;
+	interface Props {
+		id: string;
+	}
+
+	let { id }: Props = $props();
 </script>
 
 <DropdownMenu.Root>

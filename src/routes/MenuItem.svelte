@@ -1,8 +1,12 @@
 <script lang="ts">
 	import { Button } from "$lib";
 	import { page } from "$app/stores";
-	export let path: string;
-	export let text: string;
+	interface Props {
+		path: string;
+		text: string;
+	}
+
+	let { path, text }: Props = $props();
 	let isActive = $page.url.pathname == path;
 </script>
 

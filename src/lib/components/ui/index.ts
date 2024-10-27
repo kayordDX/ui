@@ -28,6 +28,7 @@ export * as RadioGroup from "./radio-group/index.js";
 export * as RangeCalendar from "./range-calendar/index.js";
 export * as Resizable from "./resizable/index.js";
 export * as Select from "./select/index.js";
+export * as Sidebar from "./sidebar/index.js";
 export { Separator } from "./separator/index.js";
 export * as Sheet from "./sheet/index.js";
 export { Skeleton } from "./skeleton/index.js";

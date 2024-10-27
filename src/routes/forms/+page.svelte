@@ -9,7 +9,11 @@
 		username: z.string().min(2).max(50),
 	});
 
-	export let data: SuperValidated<Infer<FormSchema>>;
+	interface Props {
+		data: SuperValidated<Infer<FormSchema>>;
+	}
+
+	let { data }: Props = $props();
 	const form = superForm(data, {
 		validators: zodClient(formSchema),
 	});

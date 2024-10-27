@@ -4,13 +4,18 @@
 
 	type $$Props = ProgressPrimitive.Props;
 
-	let className: $$Props["class"] = undefined;
-	export { className as class };
+	interface Props {
+		class?: $$Props["class"];
+		[key: string]: any
+	}
+
+	let { class: className = undefined, ...rest }: Props = $props();
+	
 </script>
 
 <ProgressPrimitive.Root
 	class={cn("relative h-4 w-full overflow-hidden rounded-full bg-secondary", className)}
-	{...$$restProps}
+	{...rest}
 >
 	<div class="progressbar-infinite h-full w-full flex-1 bg-primary transition-all"></div>
 </ProgressPrimitive.Root>

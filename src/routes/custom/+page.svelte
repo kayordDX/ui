@@ -3,7 +3,7 @@
 	import ProgressLoading from "$lib/components/custom/progress-loading/ProgressLoading.svelte";
 	import { Button, Card } from "$lib/components/ui";
 
-	let isLoading = true;
+	let isLoading = $state(true);
 </script>
 
 <Card.Root class="m-5">
