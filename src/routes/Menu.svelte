@@ -16,4 +16,5 @@
 	<MenuItem path="/dataTable" text="DataTable" />
 	<MenuItem path="/sonner" text="Sonner" />
 	<MenuItem path="/forms" text="Forms" />
+	<MenuItem path="/test" text="Test" />
 </div>
