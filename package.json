@@ -1,7 +1,7 @@
 {
 	"name": "@kayord/ui",
 	"private": false,
-	"version": "0.12.6",
+	"version": "0.12.7",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -48,7 +48,7 @@
 	},
 	"dependencies": {
 		"@internationalized/date": "^3.5.6",
-		"bits-ui": "1.0.0-next.30",
+		"bits-ui": "1.0.0-next.32",
 		"clsx": "^2.1.1",
 		"embla-carousel-svelte": "8.3.1",
 		"formsnap": "2.0.0-next.0",
