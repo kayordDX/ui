@@ -6,13 +6,16 @@
 
 	import {
 		type ColumnDef,
-		// createTable,
 		getCoreRowModel,
 		type VisibilityState,
 		type Updater,
 		type PaginationState,
+		type SortingState,
 		type RowSelectionState,
+		type ColumnFiltersState,
 		getPaginationRowModel,
+		getSortedRowModel,
+		getFilteredRowModel,
 	} from "@tanstack/table-core";
 
 	import { createSvelteTable as createTable } from "$lib/components/ui/data-table";
@@ -45,11 +48,8 @@
 	};
 
 	let pagination: PaginationState = $state({ pageIndex: 0, pageSize: 10 });
-	const setPagination = (updater: Updater<PaginationState>) => {
-		if (updater instanceof Function) {
-			pagination = updater(pagination);
-		} else pagination = updater;
-	};
+	let sorting = $state<SortingState>([]);
+	let columnFilters = $state<ColumnFiltersState>([]);
 
 	const data = getData();
 
@@ -58,9 +58,35 @@
 		data,
 		getCoreRowModel: getCoreRowModel(),
 		getPaginationRowModel: getPaginationRowModel(),
+		onPaginationChange: (updater) => {
+			if (typeof updater === "function") {
+				pagination = updater(pagination);
+			} else {
+				pagination = updater;
+			}
+		},
+		getSortedRowModel: getSortedRowModel(),
+		onSortingChange: (updater) => {
+			if (typeof updater === "function") {
+				sorting = updater(sorting);
+			} else {
+				sorting = updater;
+			}
+		},
+		getFilteredRowModel: getFilteredRowModel(),
+		onColumnFiltersChange: (updater) => {
+			if (typeof updater === "function") {
+				columnFilters = updater(columnFilters);
+			} else {
+				columnFilters = updater;
+			}
+		},
 		state: {
 			get pagination() {
 				return pagination;
+			},
+			get sorting() {
+				return sorting;
 			},
 			get rowSelection() {
 				return rowSelection;
@@ -68,10 +94,12 @@
 			get columnVisibility() {
 				return columnVisibility;
 			},
+			get columnFilters() {
+				return columnFilters;
+			},
 		},
 		onColumnVisibilityChange: setVisibility,
 		onRowSelectionChange: setRowSelection,
-		onPaginationChange: setPagination,
 		enableRowSelection: false,
 	});
 </script>

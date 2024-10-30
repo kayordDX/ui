@@ -11,6 +11,10 @@
 	import FullscreenModeToggle from "./FullscreenModeToggle.svelte";
 	import { cn } from "$lib/utils";
 	import { tableStore } from "./table.svelte";
+	import Input from "$lib/components/ui/input/input.svelte";
+	import Button from "$lib/components/ui/button/button.svelte";
+	import { ArrowUpDown } from "lucide-svelte";
+	import DataTableHeader from "./DataTableHeader.svelte";
 
 	interface Props<T> {
 		table: TypeType<T>;
@@ -118,16 +122,13 @@
 					{#each table.getHeaderGroups() as headerGroup}
 						<Table.Row>
 							{#each headerGroup.headers as header}
-								<Table.Head colspan={header.colSpan}>
-									{#if !header.isPlaceholder}
-										<FlexRender content={header.column.columnDef.header} context={header.getContext()} />
-									{/if}
-								</Table.Head>
+								<DataTableHeader {header} {table} />
 							{/each}
 						</Table.Row>
 					{/each}
 				</Table.Header>
 			{/if}
+
 			<Table.Body>
 				{#if isLoading && table.getRowModel().rows.length == 0}
 					{#each { length: 5 } as _, i}

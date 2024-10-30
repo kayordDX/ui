@@ -1,7 +1,7 @@
 {
 	"name": "@kayord/ui",
 	"private": false,
-	"version": "0.12.7",
+	"version": "0.12.8",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -66,8 +66,8 @@
 		"@sveltejs/vite-plugin-svelte": "^4.0.0",
 		"@testing-library/jest-dom": "^6.6.2",
 		"@testing-library/svelte": "^5.2.4",
-		"@typescript-eslint/eslint-plugin": "^8.12.1",
-		"@typescript-eslint/parser": "^8.12.1",
+		"@typescript-eslint/eslint-plugin": "^8.12.2",
+		"@typescript-eslint/parser": "^8.12.2",
 		"autoprefixer": "^10.4.20",
 		"eslint": "^9.13.0",
 		"eslint-config-prettier": "^9.1.0",
