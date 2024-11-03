@@ -1,5 +1,5 @@
 <script lang="ts" generics="T">
-	import { type ColumnDef, type Table as TypeType } from "@tanstack/table-core";
+	import { type ColumnDef, type Table as TableType } from "@tanstack/table-core";
 	import { FlexRender, renderComponent } from "$lib/components/ui/data-table";
 	import { Skeleton, Table } from "$lib/components/ui";
 	import Pagination from "./Pagination.svelte";
@@ -17,7 +17,7 @@
 	import DataTableHeader from "./DataTableHeader.svelte";
 
 	interface Props<T> {
-		table: TypeType<T>;
+		table: TableType<T>;
 		columns: ColumnDef<T>[];
 		isLoading?: boolean;
 		header?: Snippet;
