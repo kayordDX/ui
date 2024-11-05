@@ -1,7 +1,7 @@
 {
 	"name": "@kayord/ui",
 	"private": false,
-	"version": "0.12.14",
+	"version": "0.12.15",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -48,7 +48,7 @@
 	},
 	"dependencies": {
 		"@internationalized/date": "^3.5.6",
-		"bits-ui": "1.0.0-next.41",
+		"bits-ui": "1.0.0-next.44",
 		"clsx": "^2.1.1",
 		"embla-carousel-svelte": "8.3.1",
 		"formsnap": "2.0.0-next.1",
@@ -61,7 +61,7 @@
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.3.1",
-		"@sveltejs/kit": "^2.7.4",
+		"@sveltejs/kit": "^2.7.5",
 		"@sveltejs/package": "^2.3.7",
 		"@sveltejs/vite-plugin-svelte": "^4.0.0",
 		"@testing-library/jest-dom": "^6.6.3",
@@ -72,7 +72,7 @@
 		"eslint": "^9.14.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-svelte": "^2.46.0",
-		"happy-dom": "^15.8.3",
+		"happy-dom": "^15.9.0",
 		"lucide-svelte": "^0.454.0",
 		"postcss": "^8.4.47",
 		"prettier": "^3.3.3",
