@@ -1,5 +1,5 @@
 <script lang="ts">
-	import "../app.postcss";
+	import "../app.pcss";
 	import { ThemeSwitch } from "$lib";
 	import { ModeWatcher } from "mode-watcher";
 	import { Toaster } from "$lib/components/ui/sonner";
