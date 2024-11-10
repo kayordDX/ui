@@ -4,7 +4,8 @@
 	import type { ComponentProps } from "svelte";
 
 	interface Props extends ComponentProps<typeof Checkbox> {
-		checked?: boolean | "indeterminate";
+		checked?: boolean;
+		indeterminate?: boolean;
 		class?: string;
 	}
 
