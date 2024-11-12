@@ -1,5 +1,5 @@
 <script lang="ts" generics="T">
-	import { Button, FlexRender, Input, Popover, Table } from "$lib";
+	import { FlexRender, Table } from "$lib";
 	import { type Header, type Table as TypeType } from "@tanstack/table-core";
 	import { ArrowUpDownIcon, ArrowDownIcon, ArrowUpIcon, XIcon, FilterIcon } from "lucide-svelte";
 
@@ -13,7 +13,10 @@
 	const isSortingEnabled = $derived(table.options.getSortedRowModel !== undefined);
 </script>
 
-<Table.Head colspan={header.colSpan}>
+<Table.Head
+	colspan={header.colSpan}
+	style={`width: ${header.getSize()}px; min-width:${header.column.columnDef.minSize}px; max-width:${header.column.columnDef.maxSize}px`}
+>
 	{#if !header.isPlaceholder}
 		<div class="flex items-center gap-1">
 			<FlexRender content={header.column.columnDef.header} context={header.getContext()} />

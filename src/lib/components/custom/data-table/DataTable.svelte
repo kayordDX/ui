@@ -11,9 +11,6 @@
 	import FullscreenModeToggle from "./FullscreenModeToggle.svelte";
 	import { cn } from "$lib/utils";
 	import { tableStore } from "./table.svelte";
-	import Input from "$lib/components/ui/input/input.svelte";
-	import Button from "$lib/components/ui/button/button.svelte";
-	import { ArrowUpDown } from "lucide-svelte";
 	import DataTableHeader from "./DataTableHeader.svelte";
 
 	interface Props<T> {
@@ -151,7 +148,7 @@
 					{#each table.getRowModel().rows as row}
 						<Table.Row data-state={row.getIsSelected() && "selected"}>
 							{#each row.getVisibleCells() as cell}
-								<Table.Cell style={`width: ${cell.getContext().column.getSize()}px;`}>
+								<Table.Cell>
 									<FlexRender content={cell.column.columnDef.cell} context={cell.getContext()} />
 								</Table.Cell>
 							{/each}

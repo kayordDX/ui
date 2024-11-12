@@ -16,6 +16,7 @@
 		getPaginationRowModel,
 		getSortedRowModel,
 		getFilteredRowModel,
+		type ColumnSizingState,
 	} from "@tanstack/table-core";
 
 	import { createSvelteTable as createTable } from "$lib/components/ui/data-table";
@@ -26,10 +27,18 @@
 		{
 			accessorKey: "id",
 			cell: (info) => info.getValue(),
+			maxSize: 10,
 		},
 		{
 			accessorKey: "name",
 			cell: (info) => info.getValue(),
+			size: 100000,
+		},
+		{
+			header: "Day",
+			accessorKey: "day",
+			size: 100,
+			minSize: 150,
 		},
 	];
 

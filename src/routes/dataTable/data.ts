@@ -1,6 +1,7 @@
 interface DataType {
 	id: number;
 	name: string;
+	day: string;
 }
 
 export const getData = () => {
@@ -12,6 +13,7 @@ export const getData = () => {
 				.fill("")
 				.map(() => String.fromCharCode(Math.floor(Math.random() * 26) + 97))
 				.join(""),
+			day: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"][Math.floor(Math.random() * 7)],
 		});
 	}
 	return data;
