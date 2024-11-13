@@ -21,7 +21,7 @@
 	{#if !header.isPlaceholder}
 		<div class="flex items-center gap-1">
 			<FlexRender content={header.column.columnDef.header} context={header.getContext()} />
-			{#if isSortingEnabled}
+			{#if isSortingEnabled && header.column.getCanSort()}
 				<button onclick={header.column.getToggleSortingHandler()}>
 					{#if header.column.getIsSorted() == "asc"}
 						<ArrowDownIcon class="size-4" />

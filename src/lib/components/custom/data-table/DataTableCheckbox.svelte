@@ -12,4 +12,4 @@
 	let { checked, class: className, ...rest }: Props = $props();
 </script>
 
-<Checkbox bind:checked class={cn(className)} {...rest} />
+<Checkbox bind:checked class={cn("rounded-[5px]", className)} {...rest} />

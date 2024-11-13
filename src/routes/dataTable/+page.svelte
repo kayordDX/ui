@@ -109,7 +109,7 @@
 		},
 		onColumnVisibilityChange: setVisibility,
 		onRowSelectionChange: setRowSelection,
-		enableRowSelection: false,
+		enableRowSelection: true,
 	});
 </script>
 
@@ -118,5 +118,5 @@
 {/snippet}
 
 <div class="m-4">
-	<DataTable {table} {columns} enableVisibility enableFullscreen />
+	<DataTable {table} {columns} enableVisibility enableFullscreen headerClass="mt-2" />
 </div>

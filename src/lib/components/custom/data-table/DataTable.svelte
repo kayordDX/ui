@@ -27,6 +27,7 @@
 		enableVisibility?: boolean;
 		enableFullscreen?: boolean;
 		class?: string;
+		headerClass?: string;
 		disableUISorting?: boolean;
 	}
 
@@ -44,6 +45,7 @@
 		enableVisibility = false,
 		enableFullscreen = false,
 		class: className,
+		headerClass,
 		disableUISorting = false,
 	}: Props<T> = $props();
 
@@ -65,6 +67,7 @@
 					onCheckedChange: () => r.row.toggleSelected(),
 				}),
 			enableResizing: false,
+			enableSorting: false,
 		};
 		columns.unshift(rowSelectionColumn);
 	}
@@ -73,10 +76,11 @@
 <div
 	class={cn(
 		"w-full",
-		tableStore.isFullscreen ? "absolute left-0 top-0 z-10 h-screen bg-background transition-all" : "w-full"
+		tableStore.isFullscreen ? "absolute left-0 top-0 z-10 h-screen bg-background transition-all" : "w-full",
+		className
 	)}
 >
-	<div class={cn(className)}>
+	<div class={cn(headerClass)}>
 		{#if header}
 			{@render header()}
 		{:else}
