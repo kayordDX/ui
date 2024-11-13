@@ -6,11 +6,12 @@
 	interface Props<T> {
 		header: Header<T, unknown>;
 		table: TypeType<T>;
+		disableUISorting?: boolean;
 	}
 
-	let { header, table }: Props<T> = $props();
+	let { header, table, disableUISorting = false }: Props<T> = $props();
 
-	const isSortingEnabled = $derived(table.options.getSortedRowModel !== undefined);
+	const isSortingEnabled = $derived(table.options.getSortedRowModel !== undefined && disableUISorting !== true);
 </script>
 
 <Table.Head

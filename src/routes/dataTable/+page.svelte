@@ -26,7 +26,7 @@
 	const columns: ColumnDef<DataType>[] = [
 		{
 			accessorKey: "id",
-			cell: (info) => info.getValue(),
+			header: "ID",
 			maxSize: 10,
 		},
 		{
@@ -112,6 +112,10 @@
 		enableRowSelection: false,
 	});
 </script>
+
+{#snippet test()}
+	<div class="h-8 w-8 bg-primary"></div>
+{/snippet}
 
 <div class="m-4">
 	<DataTable {table} {columns} enableVisibility enableFullscreen />

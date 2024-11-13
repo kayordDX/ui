@@ -26,6 +26,8 @@
 		hideHeader?: boolean;
 		enableVisibility?: boolean;
 		enableFullscreen?: boolean;
+		class?: string;
+		disableUISorting?: boolean;
 	}
 
 	let {
@@ -41,6 +43,8 @@
 		hideHeader = false,
 		enableVisibility = false,
 		enableFullscreen = false,
+		class: className,
+		disableUISorting = false,
 	}: Props<T> = $props();
 
 	const isPaginationEnabled = table.options.getPaginationRowModel !== undefined;
@@ -72,11 +76,11 @@
 		tableStore.isFullscreen ? "absolute left-0 top-0 z-10 h-screen bg-background transition-all" : "w-full"
 	)}
 >
-	<div class="py-2">
+	<div class={cn(className)}>
 		{#if header}
 			{@render header()}
 		{:else}
-			<div class="flex items-center justify-between gap-2">
+			<div class="flex items-center justify-between gap-2 pb-2">
 				<div>
 					{#if leftToolbar}
 						{@render leftToolbar()}
@@ -119,7 +123,7 @@
 					{#each table.getHeaderGroups() as headerGroup}
 						<Table.Row>
 							{#each headerGroup.headers as header}
-								<DataTableHeader {header} {table} />
+								<DataTableHeader {header} {table} {disableUISorting} />
 							{/each}
 						</Table.Row>
 					{/each}
@@ -148,7 +152,9 @@
 					{#each table.getRowModel().rows as row}
 						<Table.Row data-state={row.getIsSelected() && "selected"}>
 							{#each row.getVisibleCells() as cell}
-								<Table.Cell>
+								<Table.Cell
+									style={`width: ${cell.column.getSize()}px; min-width:${cell.column.columnDef.minSize}px; max-width:${cell.column.columnDef.maxSize}px`}
+								>
 									<FlexRender content={cell.column.columnDef.cell} context={cell.getContext()} />
 								</Table.Cell>
 							{/each}

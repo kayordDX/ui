@@ -16,7 +16,7 @@
 	let value = $state(table.getState().pagination.pageSize.toString());
 </script>
 
-<div class="flex items-center justify-between p-2">
+<div class="flex items-center justify-between py-2">
 	<div class="flex-1 text-sm text-muted-foreground">
 		{#if table.options.enableRowSelection}
 			{table.getFilteredSelectedRowModel().rows.length} of
