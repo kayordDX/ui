@@ -3,10 +3,18 @@
 	import DrawerOverlay from "./drawer-overlay.svelte";
 	import { cn } from "$lib/utils.js";
 
-	let { ref = $bindable(null), class: className, children, ...restProps }: DrawerPrimitive.ContentProps = $props();
+	let {
+		ref = $bindable(null),
+		class: className,
+		portalProps,
+		children,
+		...restProps
+	}: DrawerPrimitive.ContentProps & {
+		portalProps?: DrawerPrimitive.PortalProps;
+	} = $props();
 </script>
 
-<DrawerPrimitive.Portal>
+<DrawerPrimitive.Portal {...portalProps}>
 	<DrawerOverlay />
 	<DrawerPrimitive.Content
 		bind:ref
