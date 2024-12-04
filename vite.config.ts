@@ -1,6 +1,7 @@
 import { sveltekit } from "@sveltejs/kit/vite";
-import { defineConfig } from "vitest/config";
+import { defineConfig } from "vite";
 
+/** @type {import('vite').UserConfig} */
 export default defineConfig(({ mode }) => ({
 	plugins: [sveltekit()],
 	test: {
@@ -9,7 +10,8 @@ export default defineConfig(({ mode }) => ({
 		globals: true,
 		setupFiles: ["src/setupTest.js"],
 	},
+
 	resolve: {
-		conditions: mode === "test" ? ["browser"] : [],
+		conditions: ["browser"],
 	},
 }));
