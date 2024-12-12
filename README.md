@@ -16,10 +16,9 @@ Pnpm command to install ui library.
 
 ```bash
 # create a new project in the current directory
-pnpm add -D @kayord/ui
-pnpm add -D @kayord/tw-plugin
+pnpm add -D @kayord/ui @kayord/tw-plugin
 # install peer dependencies
-pnpm add -D lucide-svelte zod sveltekit-superforms
+pnpm add -D lucide-svelte zod sveltekit-superforms tailwindcssAnimate
 ```
 
 ### Manual Setup New Project
@@ -48,8 +47,9 @@ module.exports = {
 // tailwind.config.ts
 
 import type { Config } from "tailwindcss";
-import { fontFamily } from "tailwindcss/defaultTheme";
 import { kayordPlugin } from "@kayord/tw-plugin";
+import { fontFamily } from "tailwindcss/defaultTheme";
+import tailwindcssAnimate from "tailwindcss-animate";
 
 export default {
 	darkMode: ["class"],
@@ -61,6 +61,6 @@ export default {
 			},
 		},
 	},
-	plugins: [kayordPlugin],
+	plugins: [kayordPlugin, tailwindcssAnimate],
 } satisfies Config;
 ```
