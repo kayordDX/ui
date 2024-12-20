@@ -12,8 +12,7 @@ GREEN=$'\e[0;32m'
 RED=$'\e[0;31m'
 NC=$'\e[0m'
 
-for Item in bits-ui formsnap paneforge vaul-svelte;
-  do
+for Item in bits-ui paneforge vaul-svelte; do
     echo "${GREEN}${NC} "$Item
 
     packageVersion=$(getPackageVersion $Item)
@@ -24,7 +23,8 @@ for Item in bits-ui formsnap paneforge vaul-svelte;
         echo $packageVersion vs $myVersion
         exit 1
     fi
-  done
+done
 
 echo "${GREEN} all good! ${NC}"
 exit 0
+
