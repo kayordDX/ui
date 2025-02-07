@@ -6,10 +6,10 @@
 	import Loader from "../loader/Loader.svelte";
 
 	interface Props {
-		value?: string;
+		value?: string | number;
 		name: string;
 		items: Array<{
-			value: string;
+			value: string | number;
 			label: string;
 		}>;
 		open?: boolean;
@@ -72,7 +72,7 @@
 		<ChevronsUpDown class="opacity-50" />
 	</Popover.Trigger>
 
-	<input hidden {value} {name} />
+	<input hidden bind:value {name} />
 
 	<Popover.Content class="w-[--bits-floating-anchor-width] p-0" align="start">
 		<Command.Root {shouldFilter}>
