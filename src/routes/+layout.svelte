@@ -12,14 +12,16 @@
 	let { children }: Props = $props();
 </script>
 
-<ModeWatcher />
-<Toaster />
-<div class="flex justify-between border-b-2 p-2">
-	<img src="/logo.svg" alt="logo" class="h-10" />
-	<ThemeSwitch />
-</div>
+<div class="flex h-screen flex-col">
+	<ModeWatcher />
+	<Toaster />
+	<div class="flex justify-between border-b-2 p-2">
+		<img src="/logo.svg" alt="logo" class="h-10" />
+		<ThemeSwitch />
+	</div>
 
-<div class="flex">
-	<Menu />
-	<div class="w-full">{@render children?.()}</div>
+	<div class="flex flex-grow">
+		<Menu />
+		<div class="w-full">{@render children?.()}</div>
+	</div>
 </div>
