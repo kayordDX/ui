@@ -9,6 +9,14 @@
 	import { data } from "./data.svelte";
 	import { Button, createShadTable, createSvelteTable, DataTable } from "$lib";
 
+	const what = $derived(data.value);
+
+	$effect(() => {
+		console.log(what);
+	});
+
+	let monkey = $state(["test"]);
+
 	const columns: ColumnDef<DataType>[] = [
 		{
 			accessorKey: "id",
@@ -37,11 +45,15 @@
 		enableRowSelection: false,
 	});
 	const addRecord = () => {
-		data.value.push({ day: "1", id: 99, name: "1" });
+		// data.value = [...data.value, { day: "1", id: 99, name: "1" }];
+		// data.value.push({ day: "1", id: 99, name: "1" });
+		// monkey = [...monkey, "another"];
+		monkey.push("another");
+		monkey = monkey;
 	};
 
 	$effect(() => {
-		console.log(data.value, "what");
+		console.log(monkey);
 	});
 
 	$inspect(data.value);
@@ -49,6 +61,7 @@
 	const realData = $derived(data.value);
 
 	$inspect(realData);
+	$inspect(monkey);
 </script>
 
 <DataTable {table} {columns} headerClass="mt-2" enableVisibility />
@@ -57,3 +70,4 @@
 {/each}
 
 <Button onclick={addRecord}>Add Record</Button>
+{monkey}
