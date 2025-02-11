@@ -13,6 +13,7 @@ import { State } from "./state.svelte";
 interface ShadTableOptions<TData extends RowData> extends Omit<TableOptions<TData>, "getCoreRowModel"> {
 	getCoreRowModel?: (table: Table<any>) => () => RowModel<any>;
 	enablePaging?: boolean;
+	enableVisibility?: boolean;
 }
 
 export const createShadTable = <TData extends RowData>(options: ShadTableOptions<TData>) => {
@@ -28,9 +29,17 @@ export const createShadTable = <TData extends RowData>(options: ShadTableOptions
 		options.getSortedRowModel = getSortedRowModel();
 		options.onSortingChange = (updater) => {
 			if (typeof updater === "function") {
-				if (state.value.sorting) state.value.sorting = updater(state.value.sorting);
+				if (options.state?.sorting) {
+					options.state.sorting = updater(options.state.sorting);
+				} else if (state.value.sorting) {
+					state.value.sorting = updater(state.value.sorting);
+				}
 			} else {
-				state.value.sorting = updater;
+				if (options.state?.sorting) {
+					options.state.sorting = updater;
+				} else {
+					state.value.sorting = updater;
+				}
 			}
 		};
 	}
@@ -40,9 +49,17 @@ export const createShadTable = <TData extends RowData>(options: ShadTableOptions
 		options.getPaginationRowModel = getPaginationRowModel();
 		options.onPaginationChange = (updater) => {
 			if (typeof updater === "function") {
-				if (state.value.pagination) state.value.pagination = updater(state.value.pagination);
+				if (options.state?.pagination) {
+					options.state.pagination = updater(options.state.pagination);
+				} else if (state.value.pagination) {
+					state.value.pagination = updater(state.value.pagination);
+				}
 			} else {
-				state.value.pagination = updater;
+				if (options.state?.pagination) {
+					options.state.pagination = updater;
+				} else {
+					state.value.pagination = updater;
+				}
 			}
 		};
 	}
@@ -51,20 +68,36 @@ export const createShadTable = <TData extends RowData>(options: ShadTableOptions
 	if ((options.enableRowSelection ?? true) && !options.onRowSelectionChange) {
 		options.onRowSelectionChange = (updater) => {
 			if (typeof updater === "function") {
-				if (state.value.rowSelection) state.value.rowSelection = updater(state.value.rowSelection);
+				if (options.state?.rowSelection) {
+					options.state.rowSelection = updater(options.state.rowSelection);
+				} else if (state.value.rowSelection) {
+					state.value.rowSelection = updater(state.value.rowSelection);
+				}
 			} else {
-				state.value.rowSelection = updater;
+				if (options.state?.rowSelection) {
+					options.state.rowSelection = updater;
+				} else {
+					state.value.rowSelection = updater;
+				}
 			}
 		};
 	}
 
 	// Column Visibility
-	if (!options.onColumnVisibilityChange) {
+	if ((options.enableVisibility ?? false) && !options.onColumnVisibilityChange) {
 		options.onColumnVisibilityChange = (updater) => {
 			if (typeof updater === "function") {
-				if (state.value.columnVisibility) state.value.columnVisibility = updater(state.value.columnVisibility);
+				if (options.state?.columnVisibility) {
+					options.state.columnVisibility = updater(options.state.columnVisibility);
+				} else if (state.value.columnVisibility) {
+					state.value.columnVisibility = updater(state.value.columnVisibility);
+				}
 			} else {
-				state.value.columnVisibility = updater;
+				if (options.state?.columnVisibility) {
+					options.state.columnVisibility = updater;
+				} else {
+					state.value.columnVisibility = updater;
+				}
 			}
 		};
 	}

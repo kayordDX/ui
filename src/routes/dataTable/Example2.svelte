@@ -33,9 +33,18 @@
 	const table = createShadTable({
 		columns,
 		data,
-		enableSorting: true,
+		enableSorting: false,
 		enablePaging: false,
+		enableVisibility: true,
+		// state: {
+		// 	get sorting() {
+		// 		return sorting;
+		// 	},
+		// 	set sorting(val) {
+		// 		sorting = val;
+		// 	},
+		// },
 	});
 </script>
 
-<DataTable {table} {columns} headerClass="mt-2" />
+<DataTable {table} {columns} headerClass="mt-2" enableVisibility />
