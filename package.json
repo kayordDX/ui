@@ -1,7 +1,7 @@
 {
 	"name": "@kayord/ui",
 	"private": false,
-	"version": "0.13.17",
+	"version": "0.13.18",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -49,7 +49,7 @@
 	},
 	"dependencies": {
 		"@internationalized/date": "^3.7.0",
-		"bits-ui": "1.0.0-next.92",
+		"bits-ui": "1.0.0-next.94",
 		"clsx": "^2.1.1",
 		"embla-carousel-svelte": "8.5.2",
 		"formsnap": "2.0.0",
@@ -76,7 +76,7 @@
 		"eslint-plugin-svelte": "^2.46.1",
 		"happy-dom": "^17.0.3",
 		"lucide-svelte": "^0.475.0",
-		"postcss": "^8.5.1",
+		"postcss": "^8.5.2",
 		"prettier": "^3.5.0",
 		"prettier-plugin-svelte": "^3.3.3",
 		"prettier-plugin-tailwindcss": "^0.6.11",
