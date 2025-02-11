@@ -4,10 +4,10 @@
 		name: string;
 	}
 
-	import { getCoreRowModel, type ColumnDef } from "@tanstack/table-core";
+	import { type ColumnDef, type SortingState } from "@tanstack/table-core";
 
 	import { data } from "./data.svelte";
-	import { Button, createShadTable, createSvelteTable, DataTable } from "$lib";
+	import { Button, createShadTable, DataTable } from "$lib";
 
 	const columns: ColumnDef<DataType>[] = [
 		{
@@ -28,17 +28,17 @@
 		},
 	];
 
-	const table = createSvelteTable({
+	const table = createShadTable({
 		columns,
 		get data() {
 			return data.value;
 		},
-		getCoreRowModel: getCoreRowModel(),
+		enableSorting: true,
 		enableRowSelection: false,
-		// enablePaging: false,
+		enablePaging: true,
 	});
 	const addRecord = () => {
-		data.value.push({ day: "1", id: 99, name: "1" });
+		// data.value.push({ day: "1", id: 99, name: "1" });
 		data.value = [...data.value, { day: "1", id: 99, name: "1" }];
 	};
 </script>

@@ -105,7 +105,5 @@ export const createShadTable = <TData extends RowData>(options: ShadTableOptions
 	options.state = state.value;
 
 	const tableOptions = options as unknown as TableOptions<TData>;
-	return createSvelteTable({
-		...tableOptions,
-	});
+	return createSvelteTable(tableOptions);
 };
