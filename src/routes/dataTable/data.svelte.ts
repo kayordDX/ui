@@ -4,7 +4,15 @@ interface DataType {
 	day: string;
 }
 
-export const getData = () => {
+class Data {
+	value: DataType[] = $state([]);
+
+	constructor() {
+		this.value = getData();
+	}
+}
+
+const getData = () => {
 	const data: DataType[] = [];
 	for (let i = 0; i < 50; i++) {
 		data.push({
@@ -18,3 +26,5 @@ export const getData = () => {
 	}
 	return data;
 };
+
+export const data = new Data();

@@ -4,10 +4,10 @@
 		name: string;
 	}
 
-	import { type ColumnDef } from "@tanstack/table-core";
+	import { getCoreRowModel, type ColumnDef } from "@tanstack/table-core";
 
-	import { getData } from "./data";
-	import { createShadTable, DataTable } from "$lib";
+	import { data } from "./data.svelte";
+	import { Button, createShadTable, createSvelteTable, DataTable } from "$lib";
 
 	const columns: ColumnDef<DataType>[] = [
 		{
@@ -28,23 +28,32 @@
 		},
 	];
 
-	const data = getData();
-
-	const table = createShadTable({
+	const table = createSvelteTable({
 		columns,
-		data,
-		enableSorting: false,
-		enablePaging: false,
-		enableVisibility: true,
-		// state: {
-		// 	get sorting() {
-		// 		return sorting;
-		// 	},
-		// 	set sorting(val) {
-		// 		sorting = val;
-		// 	},
-		// },
+		get data() {
+			return data.value;
+		},
+		getCoreRowModel: getCoreRowModel(),
+		enableRowSelection: false,
 	});
+	const addRecord = () => {
+		data.value.push({ day: "1", id: 99, name: "1" });
+	};
+
+	$effect(() => {
+		console.log(data.value, "what");
+	});
+
+	$inspect(data.value);
+
+	const realData = $derived(data.value);
+
+	$inspect(realData);
 </script>
 
 <DataTable {table} {columns} headerClass="mt-2" enableVisibility />
+{#each data.value as value}
+	<span>{value.id}</span>
+{/each}
+
+<Button onclick={addRecord}>Add Record</Button>

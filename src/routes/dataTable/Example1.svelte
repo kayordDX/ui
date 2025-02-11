@@ -20,7 +20,7 @@
 	} from "@tanstack/table-core";
 
 	import { createSvelteTable as createTable } from "$lib/components/ui/data-table";
-	import { getData } from "../dataTable/data";
+	import { data } from "./data.svelte";
 	import { DataTable } from "$lib";
 
 	const columns: ColumnDef<DataType>[] = [
@@ -60,11 +60,9 @@
 	let sorting = $state<SortingState>([]);
 	let columnFilters = $state<ColumnFiltersState>([]);
 
-	const data = getData();
-
 	const table = createTable({
 		columns,
-		data,
+		data: data.value,
 		getCoreRowModel: getCoreRowModel(),
 		getPaginationRowModel: getPaginationRowModel(),
 		onPaginationChange: (updater) => {
