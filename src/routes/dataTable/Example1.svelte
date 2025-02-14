@@ -16,7 +16,6 @@
 		getPaginationRowModel,
 		getSortedRowModel,
 		getFilteredRowModel,
-		type ColumnSizingState,
 	} from "@tanstack/table-core";
 
 	import { createSvelteTable as createTable } from "$lib/components/ui/data-table";

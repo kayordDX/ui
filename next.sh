@@ -12,7 +12,7 @@ GREEN=$'\e[0;32m'
 RED=$'\e[0;31m'
 NC=$'\e[0m'
 
-for Item in bits-ui paneforge vaul-svelte; do
+for Item in paneforge vaul-svelte; do
     echo "${GREEN}${NC} "$Item
 
     packageVersion=$(getPackageVersion $Item)
@@ -27,4 +27,3 @@ done
 
 echo "${GREEN} all good! ${NC}"
 exit 0
-
