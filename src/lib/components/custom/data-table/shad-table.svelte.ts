@@ -1,5 +1,6 @@
 import { createSvelteTable } from "$lib/components/ui";
 import {
+	createTable,
 	getCoreRowModel,
 	getPaginationRowModel,
 	getSortedRowModel,
@@ -7,6 +8,7 @@ import {
 	type RowModel,
 	type Table,
 	type TableOptions,
+	type TableOptionsResolved,
 } from "@tanstack/table-core";
 import { State } from "./state.svelte";
 
@@ -22,7 +24,38 @@ export const createShadTable = <TData extends RowData>(options: ShadTableOptions
 		options.getCoreRowModel = getCoreRowModel();
 	}
 
+	const plainOptions = options as TableOptions<TData>;
+
+	const resolvedOptions: TableOptionsResolved<TData> = mergeObjects(
+		{
+			state: {},
+			onStateChange() {},
+			renderFallbackValue: null,
+			mergeOptions: (defaultOptions: TableOptions<TData>, options: Partial<TableOptions<TData>>) => {
+				return mergeObjects(defaultOptions, options);
+			},
+		},
+		plainOptions
+	);
+
+	const table = createTable(resolvedOptions);
 	const state = new State(options.state ?? {});
+
+	function updateOptions() {
+		table.setOptions((prev) => {
+			return mergeObjects(prev, options, {
+				state: mergeObjects(state, options.state || {}),
+
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				onStateChange: (updater: any) => {
+					if (updater instanceof Function) state.value = updater(state);
+					else state.value = mergeObjects(state, updater);
+
+					options.onStateChange?.(updater);
+				},
+			});
+		});
+	}
 
 	// Sorting
 	if ((options.enableSorting ?? true) && !options.getSortedRowModel) {
@@ -104,6 +137,43 @@ export const createShadTable = <TData extends RowData>(options: ShadTableOptions
 
 	options.state = state.value;
 
+	updateOptions();
+
+	$effect.pre(() => {
+		updateOptions();
+	});
+
 	const tableOptions = options as unknown as TableOptions<TData>;
 	return createSvelteTable(tableOptions);
 };
+
+function mergeObjects<T>(source: T): T;
+function mergeObjects<T, U>(source: T, source1: U): T & U;
+function mergeObjects<T, U, V>(source: T, source1: U, source2: V): T & U & V;
+function mergeObjects<T, U, V, W>(source: T, source1: U, source2: V, source3: W): T & U & V & W;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function mergeObjects(...sources: any): any {
+	const target = {};
+	for (let i = 0; i < sources.length; i++) {
+		let source = sources[i];
+		if (typeof source === "function") source = source();
+		if (source) {
+			const descriptors = Object.getOwnPropertyDescriptors(source);
+			for (const key in descriptors) {
+				if (key in target) continue;
+				Object.defineProperty(target, key, {
+					enumerable: true,
+					get() {
+						for (let i = sources.length - 1; i >= 0; i--) {
+							let s = sources[i];
+							if (typeof s === "function") s = s();
+							const v = (s || {})[key];
+							if (v !== undefined) return v;
+						}
+					},
+				});
+			}
+		}
+	}
+	return target;
+}
