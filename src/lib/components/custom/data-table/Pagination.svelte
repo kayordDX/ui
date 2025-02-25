@@ -17,7 +17,7 @@
 </script>
 
 <div class="flex items-center justify-between py-2">
-	<div class="flex-1 text-sm text-muted-foreground">
+	<div class="text-muted-foreground flex-1 text-sm">
 		{#if table.options.enableRowSelection}
 			{table.getFilteredSelectedRowModel().rows.length} of
 			{table.getFilteredRowModel().rows.length} row(s) selected.

@@ -74,7 +74,7 @@
 
 	<input hidden bind:value {name} />
 
-	<Popover.Content class="w-[--bits-floating-anchor-width] p-0" align="start">
+	<Popover.Content class="w-(--bits-floating-anchor-width) p-0" align="start">
 		<Command.Root {shouldFilter}>
 			<Command.Input autofocus placeholder={`Search ${name}...`} class="h-9" bind:value={search} />
 			<Command.List>

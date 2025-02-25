@@ -111,7 +111,7 @@
 </script>
 
 {#snippet test()}
-	<div class="h-8 w-8 bg-primary"></div>
+	<div class="bg-primary h-8 w-8"></div>
 {/snippet}
 
 <DataTable {table} {columns} enableVisibility enableFullscreen headerClass="mt-2" />
