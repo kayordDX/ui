@@ -10,8 +10,8 @@
 	let { class: className = undefined, ...rest }: Props = $props();
 </script>
 
-<Progress.Root class={cn("relative h-4 w-full overflow-hidden rounded-full bg-secondary", className)} {...rest}>
-	<div class="progressbar-infinite h-full w-full flex-1 bg-primary transition-all"></div>
+<Progress.Root class={cn("bg-secondary relative h-4 w-full overflow-hidden rounded-full", className)} {...rest}>
+	<div class="progressbar-infinite bg-primary h-full w-full flex-1 transition-all"></div>
 </Progress.Root>
 
 <style>

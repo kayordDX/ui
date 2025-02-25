@@ -28,7 +28,7 @@
 					{:else if header.column.getIsSorted() == "desc"}
 						<ArrowUpIcon class="size-4" />
 					{:else}
-						<ArrowUpDownIcon class="size-4 text-muted" />
+						<ArrowUpDownIcon class="text-muted size-4" />
 					{/if}
 				</button>
 			{/if}
