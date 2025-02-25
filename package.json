@@ -14,7 +14,7 @@
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write .",
 		"test:unit": "vitest",
-		"lib": "pnpm dlx shadcn-svelte@next add -a -y -o --no-deps && pnpm format && pnpm version --no-git-tag-version patch",
+		"lib": "pnpm dlx shadcn-svelte@next add -a -y -o --no-deps && pnpm format && pnpm version --no-git-tag-version patch && ./tw.sh",
 		"next": "./next.sh"
 	},
 	"exports": {
