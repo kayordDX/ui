@@ -196,5 +196,4 @@ pnpm i
 		@apply bg-background text-foreground;
 	}
 }
-
 ```
