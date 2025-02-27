@@ -68,11 +68,11 @@
 }
 
 /*
-   * Tailwind's default `duration` utility sets the `--tw-duration` variable, so
-   * can set `animation-duration` directly in the animation definition in the
-   * `@theme` section above. Same goes for the `animation-timing-function`, set
-   * with `--tw-ease`.
-   */
+ * Tailwind's default `duration` utility sets the `--tw-duration` variable, so
+ * can set `animation-duration` directly in the animation definition in the
+ * `@theme` section above. Same goes for the `animation-timing-function`, set
+ * with `--tw-ease`.
+ */
 
 @utility delay-* {
 	animation-delay: --value([duration]);
