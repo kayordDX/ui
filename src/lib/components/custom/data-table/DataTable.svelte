@@ -76,7 +76,7 @@
 <div
 	class={cn(
 		"w-full",
-		tableStore.isFullscreen ? "bg-background absolute top-0 left-0 z-10 h-screen transition-all" : "w-full",
+		tableStore.isFullscreen ? "bg-background absolute left-0 top-0 z-10 h-screen transition-all" : "w-full",
 		className
 	)}
 >
