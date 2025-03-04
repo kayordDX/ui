@@ -14,6 +14,7 @@
 		}>;
 		open?: boolean;
 		class?: string;
+		commandListClass?: string;
 		isLoading?: boolean;
 		shouldFilter?: boolean;
 		search?: string;
@@ -24,6 +25,7 @@
 		name,
 		open = $bindable(false),
 		class: className,
+		commandListClass,
 		items,
 		isLoading = false,
 		shouldFilter = true,
@@ -77,7 +79,7 @@
 	<Popover.Content class="w-(--bits-floating-anchor-width) p-0" align="start">
 		<Command.Root {shouldFilter}>
 			<Command.Input autofocus placeholder={`Search ${name}...`} class="h-9" bind:value={search} />
-			<Command.List>
+			<Command.List class={cn(commandListClass)}>
 				<Command.Empty>No Results.</Command.Empty>
 				<Command.Group>
 					{#each items as item (item.value)}
