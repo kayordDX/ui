@@ -32,7 +32,7 @@
 	}
 
 	let {
-		table = $bindable(),
+		table,
 		columns,
 		isLoading = false,
 		header,

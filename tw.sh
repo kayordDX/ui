@@ -13,7 +13,7 @@ process_directory() {
   fi
 
   find "$dir" -name "*.svelte" -print0 | while IFS= read -r -d $'\0' item; do
-    sed -i -E 's/\[--([^]]*)\]/\(--\1\)/g; s/outline-none/outline-hidden/g' $item
+    sed -i -E 's/\[--([^]]*)\]/\(--\1\)/g; s/outline-none/outline-hidden/g; s/\[var\(([^)]*)\)\]/(\1)/g;' $item
     echo "${GREEN}${NC} "$item
   done
 
