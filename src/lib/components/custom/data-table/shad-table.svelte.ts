@@ -1,4 +1,3 @@
-import { createSvelteTable } from "$lib/components/ui";
 import {
 	createTable,
 	getCoreRowModel,
@@ -9,8 +8,8 @@ import {
 	type Table,
 	type TableOptions,
 	type TableOptionsResolved,
+	type TableState,
 } from "@tanstack/table-core";
-import { State } from "./state.svelte";
 
 interface ShadTableOptions<TData extends RowData> extends Omit<TableOptions<TData>, "getCoreRowModel"> {
 	getCoreRowModel?: (table: Table<any>) => () => RowModel<any>;
@@ -39,7 +38,7 @@ export const createShadTable = <TData extends RowData>(options: ShadTableOptions
 	);
 
 	const table = createTable(resolvedOptions);
-	const state = new State(options.state ?? {});
+	let state = $state<Partial<TableState>>(table.initialState);
 
 	function updateOptions() {
 		table.setOptions((prev) => {
@@ -48,8 +47,8 @@ export const createShadTable = <TData extends RowData>(options: ShadTableOptions
 
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				onStateChange: (updater: any) => {
-					if (updater instanceof Function) state.value = updater(state);
-					else state.value = mergeObjects(state, updater);
+					if (updater instanceof Function) state = updater(state);
+					else state = mergeObjects(state, updater);
 
 					options.onStateChange?.(updater);
 				},
@@ -64,14 +63,14 @@ export const createShadTable = <TData extends RowData>(options: ShadTableOptions
 			if (typeof updater === "function") {
 				if (options.state?.sorting) {
 					options.state.sorting = updater(options.state.sorting);
-				} else if (state.value.sorting) {
-					state.value.sorting = updater(state.value.sorting);
+				} else if (state.sorting) {
+					state.sorting = updater(state.sorting);
 				}
 			} else {
 				if (options.state?.sorting) {
 					options.state.sorting = updater;
 				} else {
-					state.value.sorting = updater;
+					state.sorting = updater;
 				}
 			}
 		};
@@ -84,14 +83,14 @@ export const createShadTable = <TData extends RowData>(options: ShadTableOptions
 			if (typeof updater === "function") {
 				if (options.state?.pagination) {
 					options.state.pagination = updater(options.state.pagination);
-				} else if (state.value.pagination) {
-					state.value.pagination = updater(state.value.pagination);
+				} else if (state.pagination) {
+					state.pagination = updater(state.pagination);
 				}
 			} else {
 				if (options.state?.pagination) {
 					options.state.pagination = updater;
 				} else {
-					state.value.pagination = updater;
+					state.pagination = updater;
 				}
 			}
 		};
@@ -103,14 +102,14 @@ export const createShadTable = <TData extends RowData>(options: ShadTableOptions
 			if (typeof updater === "function") {
 				if (options.state?.rowSelection) {
 					options.state.rowSelection = updater(options.state.rowSelection);
-				} else if (state.value.rowSelection) {
-					state.value.rowSelection = updater(state.value.rowSelection);
+				} else if (state.rowSelection) {
+					state.rowSelection = updater(state.rowSelection);
 				}
 			} else {
 				if (options.state?.rowSelection) {
 					options.state.rowSelection = updater;
 				} else {
-					state.value.rowSelection = updater;
+					state.rowSelection = updater;
 				}
 			}
 		};
@@ -122,20 +121,18 @@ export const createShadTable = <TData extends RowData>(options: ShadTableOptions
 			if (typeof updater === "function") {
 				if (options.state?.columnVisibility) {
 					options.state.columnVisibility = updater(options.state.columnVisibility);
-				} else if (state.value.columnVisibility) {
-					state.value.columnVisibility = updater(state.value.columnVisibility);
+				} else if (state.columnVisibility) {
+					state.columnVisibility = updater(state.columnVisibility);
 				}
 			} else {
 				if (options.state?.columnVisibility) {
 					options.state.columnVisibility = updater;
 				} else {
-					state.value.columnVisibility = updater;
+					state.columnVisibility = updater;
 				}
 			}
 		};
 	}
-
-	options.state = state.value;
 
 	updateOptions();
 
@@ -143,8 +140,7 @@ export const createShadTable = <TData extends RowData>(options: ShadTableOptions
 		updateOptions();
 	});
 
-	const tableOptions = options as unknown as TableOptions<TData>;
-	return createSvelteTable(tableOptions);
+	return table;
 };
 
 function mergeObjects<T>(source: T): T;
