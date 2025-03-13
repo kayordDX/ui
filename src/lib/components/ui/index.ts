@@ -46,7 +46,7 @@ export { ScrollArea } from "./scroll-area/index.js";
 export { Switch } from "./switch/index.js";
 export * as Table from "./table/index.js";
 export * as Tabs from "./tabs/index.js";
-export { Textarea, type TextareaEvents } from "./textarea/index.js";
+export { Textarea } from "./textarea/index.js";
 export { Toggle } from "./toggle/index.js";
 export * as ToggleGroup from "./toggle-group/index.js";
 export * as Tooltip from "./tooltip/index.js";
