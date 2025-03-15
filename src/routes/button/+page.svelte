@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Card, Button } from "$lib";
-	import Mail from "lucide-svelte/icons/mail";
-	import ChevronRight from "lucide-svelte/icons/chevron-right";
+	import Mail from "@lucide/svelte/icons/mail";
+	import ChevronRight from "@lucide/svelte/icons/chevron-right";
 </script>
 
 <Card.Root class="m-5">

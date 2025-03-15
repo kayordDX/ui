@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
 	import { Button } from "$lib/components/ui/button";
-	import MoreHorizontalIcon from "lucide-svelte/icons/ellipsis";
+	import MoreHorizontalIcon from "@lucide/svelte/icons/ellipsis";
 	interface Props {
 		id: string;
 	}

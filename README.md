@@ -18,7 +18,7 @@ Pnpm command to install ui library.
 # create a new project in the current directory
 pnpm add -D @kayord/ui
 # install peer dependencies
-pnpm add -D lucide-svelte zod sveltekit-superforms tailwindcss-animate
+pnpm add -D @lucide-svelte zod sveltekit-superforms tailwindcss-animate
 ```
 
 ### Manual Setup New Project

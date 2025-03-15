@@ -1,7 +1,7 @@
 {
 	"name": "@kayord/ui",
 	"private": false,
-	"version": "0.14.16",
+	"version": "0.15.0",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -42,10 +42,10 @@
 	],
 	"peerDependencies": {
 		"@tanstack/table-core": "^8.20.5",
-		"lucide-svelte": ">= 0.400.0 < 1.0.0",
 		"svelte": "^5.0.0",
 		"sveltekit-superforms": "^2.20.0",
-		"zod": "^3.23.8"
+		"zod": "^3.23.8",
+		"@lucide-svelte": ">= 0.482.0 < 1.0.0"
 	},
 	"dependencies": {
 		"@internationalized/date": "^3.7.0",
@@ -75,7 +75,6 @@
 		"eslint-config-prettier": "^10.1.1",
 		"eslint-plugin-svelte": "^3.1.0",
 		"happy-dom": "^17.4.4",
-		"lucide-svelte": "^0.482.0",
 		"prettier": "^3.5.3",
 		"prettier-plugin-svelte": "^3.3.3",
 		"prettier-plugin-tailwindcss": "^0.6.11",

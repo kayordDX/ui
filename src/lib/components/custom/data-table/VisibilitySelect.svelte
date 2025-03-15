@@ -1,7 +1,7 @@
 <script lang="ts" generics="T">
 	import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
 	import { Button } from "$lib/components/ui/button";
-	import { Settings2Icon } from "lucide-svelte";
+	import { Settings2Icon } from "@lucide/svelte";
 	import type { Table } from "@tanstack/table-core";
 
 	interface Props<T> {

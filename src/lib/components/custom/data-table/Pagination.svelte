@@ -1,9 +1,9 @@
 <script lang="ts" generics="T">
 	import type { Table } from "@tanstack/table-core";
-	import ChevronLeft from "lucide-svelte/icons/chevron-left";
-	import ChevronRight from "lucide-svelte/icons/chevron-right";
-	import DoubleArrowLeft from "lucide-svelte/icons/arrow-left";
-	import DoubleArrowRight from "lucide-svelte/icons/arrow-right";
+	import ChevronLeft from "@lucide/svelte/icons/chevron-left";
+	import ChevronRight from "@lucide/svelte/icons/chevron-right";
+	import DoubleArrowLeft from "@lucide/svelte/icons/arrow-left";
+	import DoubleArrowRight from "@lucide/svelte/icons/arrow-right";
 	import { Select, Button } from "$lib";
 
 	interface Props<T> {

@@ -90,9 +90,6 @@ importers:
       happy-dom:
         specifier: ^17.4.4
         version: 17.4.4
-      lucide-svelte:
-        specifier: ^0.482.0
-        version: 0.482.0(svelte@5.23.0)
       prettier:
         specifier: ^3.5.3
         version: 3.5.3
@@ -1517,11 +1514,6 @@ packages:
 
   lru-cache@10.4.3:
     resolution: {integrity: sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ==}
-
-  lucide-svelte@0.482.0:
-    resolution: {integrity: sha512-C8JbaG0ZW6ap65xyUGlbp/1iOxVlSHhmLHp1lqP7AZu2gX/OoB7FjBroSOR8MTL3HjG4PrL+o0I50Yj6Tqh0iA==}
-    peerDependencies:
-      svelte: ^3 || ^4 || ^5.0.0-next.42
 
   lz-string@1.5.0:
     resolution: {integrity: sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==}
@@ -3607,10 +3599,6 @@ snapshots:
 
   lru-cache@10.4.3:
     optional: true
-
-  lucide-svelte@0.482.0(svelte@5.23.0):
-    dependencies:
-      svelte: 5.23.0
 
   lz-string@1.5.0: {}
 

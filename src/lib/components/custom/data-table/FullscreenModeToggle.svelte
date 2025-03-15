@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Button from "$lib/components/ui/button/button.svelte";
-	import { Maximize, Minimize } from "lucide-svelte";
+	import { Maximize, Minimize } from "@lucide/svelte";
 	import { tableStore } from "./table.svelte";
 </script>
 

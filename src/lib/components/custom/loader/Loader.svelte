@@ -1,11 +1,11 @@
 <script lang="ts">
 	import type { ComponentProps } from "svelte";
 	import { cn } from "$lib/utils";
-	import { type Icon } from "lucide-svelte";
-	import LoaderCircleIcon from "lucide-svelte/icons/loader-circle";
+	import { type Icon } from "@lucide/svelte";
+	import LoaderCircleIcon from "@lucide/svelte/icons/loader-circle";
 	import { scale } from "svelte/transition";
 
-	interface LoaderIconProps extends Omit<ComponentProps<Icon>, "iconNode"> {
+	interface LoaderIconProps extends Omit<ComponentProps<typeof Icon>, "iconNode"> {
 		isLoading?: boolean;
 	}
 
