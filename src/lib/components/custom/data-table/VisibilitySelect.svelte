@@ -8,7 +8,7 @@
 		table: Table<T>;
 	}
 
-	let { table }: Props<T> = $props();
+	let { table = $bindable() }: Props<T> = $props();
 </script>
 
 <DropdownMenu.Root>

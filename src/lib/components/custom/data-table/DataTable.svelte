@@ -32,7 +32,7 @@
 	}
 
 	let {
-		table,
+		table = $bindable(),
 		columns,
 		isLoading = false,
 		header,
@@ -97,7 +97,7 @@
 					{/if}
 					{#if enableVisibility}
 						<div>
-							<VisibilitySelect {table} />
+							<VisibilitySelect bind:table />
 						</div>
 					{/if}
 					{#if enableFullscreen}
@@ -124,10 +124,10 @@
 		<Table.Root class="table-auto">
 			{#if !hideHeader}
 				<Table.Header>
-					{#each table.getHeaderGroups() as headerGroup}
+					{#each table.getHeaderGroups() as headerGroup, headerGroupIndex}
 						<Table.Row>
-							{#each headerGroup.headers as header}
-								<DataTableHeader {header} {table} {disableUISorting} />
+							{#each headerGroup.headers as header, headerIndex}
+								<DataTableHeader {headerGroupIndex} {headerIndex} bind:table {disableUISorting} />
 							{/each}
 						</Table.Row>
 					{/each}
@@ -174,7 +174,7 @@
 		{/if}
 	</div>
 	{#if isPaginationEnabled}
-		<Pagination {table} />
+		<Pagination bind:table />
 	{/if}
 
 	{#if footer}

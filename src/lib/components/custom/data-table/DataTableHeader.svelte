@@ -1,17 +1,20 @@
 <script lang="ts" generics="T">
 	import { FlexRender, Table } from "$lib";
 	import { type Header, type Table as TypeType } from "@tanstack/table-core";
-	import { ArrowUpDownIcon, ArrowDownIcon, ArrowUpIcon, XIcon, FilterIcon } from "@lucide/svelte";
+	import { ArrowUpDownIcon, ArrowDownIcon, ArrowUpIcon } from "@lucide/svelte";
 
 	interface Props<T> {
-		header: Header<T, unknown>;
+		headerGroupIndex: number;
+		headerIndex: number;
 		table: TypeType<T>;
 		disableUISorting?: boolean;
 	}
 
-	let { header, table, disableUISorting = false }: Props<T> = $props();
+	let { headerGroupIndex, headerIndex, table = $bindable(), disableUISorting = false }: Props<T> = $props();
 
 	const isSortingEnabled = $derived(table.options.getSortedRowModel !== undefined && disableUISorting !== true);
+
+	const header = table.getHeaderGroups()[headerGroupIndex].headers[headerIndex];
 </script>
 
 <Table.Head

@@ -11,7 +11,7 @@
 		canChangePageSize?: boolean;
 	}
 
-	let { table, canChangePageSize = false }: Props<T> = $props();
+	let { table = $bindable(), canChangePageSize = false }: Props<T> = $props();
 
 	let value = $state(table.getState().pagination.pageSize.toString());
 </script>

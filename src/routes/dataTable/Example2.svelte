@@ -28,7 +28,7 @@
 		},
 	];
 
-	const table = createShadTable({
+	let table = createShadTable({
 		columns,
 		get data() {
 			return data.value;
@@ -36,6 +36,7 @@
 		enableSorting: true,
 		enableRowSelection: false,
 		enablePaging: true,
+		enableVisibility: true,
 	});
 	const addRecord = () => {
 		// data.value.push({ day: "1", id: 99, name: "1" });
@@ -43,6 +44,6 @@
 	};
 </script>
 
-<DataTable {table} {columns} headerClass="mt-2" enableVisibility />
+<DataTable bind:table {columns} headerClass="mt-2" enableVisibility />
 
 <Button onclick={addRecord}>Add Record</Button>
