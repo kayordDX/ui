@@ -18,9 +18,8 @@
 		getFilteredRowModel,
 	} from "@tanstack/table-core";
 
-	import { createSvelteTable as createTable } from "$lib/components/ui/data-table";
 	import { data } from "./data.svelte";
-	import { DataTable } from "$lib";
+	import { DataTable, ShadTable } from "$lib";
 
 	const columns: ColumnDef<DataType>[] = [
 		{
@@ -59,59 +58,61 @@
 	let sorting = $state<SortingState>([]);
 	let columnFilters = $state<ColumnFiltersState>([]);
 
-	const table = createTable({
-		columns,
-		data: data.value,
-		getCoreRowModel: getCoreRowModel(),
-		getPaginationRowModel: getPaginationRowModel(),
-		onPaginationChange: (updater) => {
-			if (typeof updater === "function") {
-				pagination = updater(pagination);
-			} else {
-				pagination = updater;
-			}
-		},
-		getSortedRowModel: getSortedRowModel(),
-		onSortingChange: (updater) => {
-			if (typeof updater === "function") {
-				sorting = updater(sorting);
-			} else {
-				sorting = updater;
-			}
-		},
-		getFilteredRowModel: getFilteredRowModel(),
-		onColumnFiltersChange: (updater) => {
-			if (typeof updater === "function") {
-				columnFilters = updater(columnFilters);
-			} else {
-				columnFilters = updater;
-			}
-		},
-		state: {
-			get pagination() {
-				return pagination;
+	let tableState = $state(
+		new ShadTable({
+			columns,
+			data: data.value,
+			getCoreRowModel: getCoreRowModel(),
+			getPaginationRowModel: getPaginationRowModel(),
+			onPaginationChange: (updater) => {
+				if (typeof updater === "function") {
+					pagination = updater(pagination);
+				} else {
+					pagination = updater;
+				}
 			},
-			get sorting() {
-				return sorting;
+			getSortedRowModel: getSortedRowModel(),
+			onSortingChange: (updater) => {
+				if (typeof updater === "function") {
+					sorting = updater(sorting);
+				} else {
+					sorting = updater;
+				}
 			},
-			get rowSelection() {
-				return rowSelection;
+			getFilteredRowModel: getFilteredRowModel(),
+			onColumnFiltersChange: (updater) => {
+				if (typeof updater === "function") {
+					columnFilters = updater(columnFilters);
+				} else {
+					columnFilters = updater;
+				}
 			},
-			get columnVisibility() {
-				return columnVisibility;
+			state: {
+				get pagination() {
+					return pagination;
+				},
+				get sorting() {
+					return sorting;
+				},
+				get rowSelection() {
+					return rowSelection;
+				},
+				get columnVisibility() {
+					return columnVisibility;
+				},
+				get columnFilters() {
+					return columnFilters;
+				},
 			},
-			get columnFilters() {
-				return columnFilters;
-			},
-		},
-		onColumnVisibilityChange: setVisibility,
-		onRowSelectionChange: setRowSelection,
-		enableRowSelection: true,
-	});
+			onColumnVisibilityChange: setVisibility,
+			onRowSelectionChange: setRowSelection,
+			enableRowSelection: true,
+		})
+	);
 </script>
 
 {#snippet test()}
 	<div class="bg-primary h-8 w-8"></div>
 {/snippet}
 
-<DataTable {table} {columns} enableVisibility enableFullscreen headerClass="mt-2" />
+<DataTable bind:tableState enableVisibility enableFullscreen headerClass="mt-2" />

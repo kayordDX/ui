@@ -4,10 +4,10 @@
 		name: string;
 	}
 
-	import { type ColumnDef, type SortingState } from "@tanstack/table-core";
+	import { type ColumnDef } from "@tanstack/table-core";
 
 	import { data } from "./data.svelte";
-	import { Button, createShadTable, DataTable } from "$lib";
+	import { Button, DataTable } from "$lib";
 	import { ShadTable } from "$lib/components/custom/data-table/shad-table.svelte";
 
 	const columns: ColumnDef<DataType>[] = [
@@ -29,7 +29,7 @@
 		},
 	];
 
-	let table = createShadTable({
+	let table = new ShadTable({
 		columns,
 		get data() {
 			return data.value;
@@ -40,16 +40,18 @@
 		enableVisibility: true,
 	});
 
-	let test = new ShadTable({
-		columns,
-		get data() {
-			return data.value;
-		},
-		enableSorting: true,
-		enableRowSelection: false,
-		enablePaging: true,
-		enableVisibility: true,
-	});
+	let tableState = $state(
+		new ShadTable({
+			columns,
+			get data() {
+				return data.value;
+			},
+			enableSorting: true,
+			enableRowSelection: false,
+			enablePaging: true,
+			enableVisibility: true,
+		})
+	);
 
 	const addRecord = () => {
 		// data.value.push({ day: "1", id: 99, name: "1" });
@@ -57,6 +59,6 @@
 	};
 </script>
 
-<DataTable bind:tableState={test} headerClass="mt-2" enableVisibility />
+<DataTable bind:tableState headerClass="mt-2" enableVisibility />
 
 <Button onclick={addRecord}>Add Record</Button>
