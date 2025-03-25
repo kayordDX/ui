@@ -12,10 +12,10 @@
 	import { cn } from "$lib/utils";
 	import { tableStore } from "./table.svelte";
 	import DataTableHeader from "./DataTableHeader.svelte";
-	import type { ShadTable } from "./shad-table.svelte";
 
 	interface Props<T> {
-		tableState: ShadTable<T>;
+		table: TableType<T>;
+		columns: ColumnDef<T>[];
 		isLoading?: boolean;
 		header?: Snippet;
 		subHeader?: Snippet;
@@ -32,7 +32,8 @@
 	}
 
 	let {
-		tableState = $bindable(),
+		table = $bindable(),
+		columns,
 		isLoading = false,
 		header,
 		subHeader,
@@ -48,8 +49,8 @@
 		disableUISorting = false,
 	}: Props<T> = $props();
 
-	const isPaginationEnabled = tableState.table.options.getPaginationRowModel !== undefined;
-	const enableRowSelection = tableState.table.options.enableRowSelection;
+	const isPaginationEnabled = table.options.getPaginationRowModel !== undefined;
+	const enableRowSelection = table.options.enableRowSelection;
 
 	if (enableRowSelection) {
 		const rowSelectionColumn: ColumnDef<T> = {
@@ -57,8 +58,8 @@
 			// cell: (info) => "[]",
 			header: () =>
 				renderComponent(DataTableCheckbox, {
-					checked: tableState.table.getIsAllPageRowsSelected(),
-					onCheckedChange: () => tableState.table.toggleAllPageRowsSelected(),
+					checked: table.getIsAllPageRowsSelected(),
+					onCheckedChange: () => table.toggleAllPageRowsSelected(),
 				}),
 			cell: (r) =>
 				renderComponent(DataTableCheckbox, {
@@ -68,7 +69,7 @@
 			enableResizing: false,
 			enableSorting: false,
 		};
-		tableState.columns.unshift(rowSelectionColumn);
+		columns.unshift(rowSelectionColumn);
 	}
 </script>
 
@@ -96,7 +97,7 @@
 					{/if}
 					{#if enableVisibility}
 						<div>
-							<VisibilitySelect bind:tableState />
+							<VisibilitySelect bind:table />
 						</div>
 					{/if}
 					{#if enableFullscreen}
@@ -123,10 +124,10 @@
 		<Table.Root class="table-auto">
 			{#if !hideHeader}
 				<Table.Header>
-					{#each tableState.table.getHeaderGroups() as headerGroup, headerGroupIndex}
+					{#each table.getHeaderGroups() as headerGroup, headerGroupIndex}
 						<Table.Row>
 							{#each headerGroup.headers as header, headerIndex}
-								<DataTableHeader {headerGroupIndex} {headerIndex} bind:tableState {disableUISorting} />
+								<DataTableHeader {headerGroupIndex} {headerIndex} bind:table {disableUISorting} />
 							{/each}
 						</Table.Row>
 					{/each}
@@ -134,10 +135,10 @@
 			{/if}
 
 			<Table.Body>
-				{#if isLoading && tableState.table.getRowModel().rows.length == 0}
+				{#if isLoading && table.getRowModel().rows.length == 0}
 					{#each { length: 5 } as _, i}
 						<Table.Row>
-							{#each tableState.columns as _cell}
+							{#each columns as _cell}
 								<Table.Cell>
 									<Skeleton class="h-4" />
 								</Table.Cell>
@@ -145,14 +146,14 @@
 						</Table.Row>
 					{/each}
 				{:else}
-					{#if tableState.table.getRowModel().rows.length == 0}
+					{#if table.getRowModel().rows.length == 0}
 						<Table.Row>
-							<Table.Cell colspan={tableState.table.getAllColumns().length}>
+							<Table.Cell colspan={table.getAllColumns().length}>
 								<div class="text-center">{noDataMessage}</div>
 							</Table.Cell>
 						</Table.Row>
 					{/if}
-					{#each tableState.table.getRowModel().rows as row}
+					{#each table.getRowModel().rows as row}
 						<Table.Row data-state={row.getIsSelected() && "selected"}>
 							{#each row.getVisibleCells() as cell}
 								<Table.Cell
@@ -173,7 +174,7 @@
 		{/if}
 	</div>
 	{#if isPaginationEnabled}
-		<Pagination bind:tableState />
+		<Pagination bind:table />
 	{/if}
 
 	{#if footer}

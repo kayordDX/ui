@@ -2,13 +2,13 @@
 	import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
 	import { Button } from "$lib/components/ui/button";
 	import { Settings2Icon } from "@lucide/svelte";
-	import type { ShadTable } from "./shad-table.svelte";
+	import type { Table } from "@tanstack/table-core";
 
 	interface Props<T> {
-		tableState: ShadTable<T>;
+		table: Table<T>;
 	}
 
-	let { tableState = $bindable() }: Props<T> = $props();
+	let { table = $bindable() }: Props<T> = $props();
 </script>
 
 <DropdownMenu.Root>
@@ -20,7 +20,7 @@
 	<DropdownMenu.Content>
 		<DropdownMenu.Label>Toggle columns</DropdownMenu.Label>
 		<DropdownMenu.Separator />
-		{#each tableState.table.getAllLeafColumns() as column}
+		{#each table.getAllLeafColumns() as column}
 			<DropdownMenu.CheckboxItem checked={column.getIsVisible()} onCheckedChange={() => column.toggleVisibility()}>
 				{column.id}
 			</DropdownMenu.CheckboxItem>
