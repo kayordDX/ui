@@ -1,2 +1,2 @@
 export { default as DataTable } from "./DataTable.svelte";
-export { createShadTable } from "./shad-table.svelte";
+export { createShadTable, ShadTable } from "./shad-table.svelte";
