@@ -29,17 +29,6 @@
 		},
 	];
 
-	let table = new ShadTable({
-		columns,
-		get data() {
-			return data.value;
-		},
-		enableSorting: true,
-		enableRowSelection: false,
-		enablePaging: true,
-		enableVisibility: true,
-	});
-
 	let tableState = $state(
 		new ShadTable({
 			columns,
@@ -48,7 +37,7 @@
 			},
 			enableSorting: true,
 			enableRowSelection: false,
-			enablePaging: true,
+			enablePaging: false,
 			enableVisibility: true,
 		})
 	);

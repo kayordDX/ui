@@ -31,6 +31,10 @@ export class ShadTable<TData extends RowData> {
 			this.options.getCoreRowModel = getCoreRowModel();
 		}
 
+		if ((this.options.enablePaging ?? true) == false) {
+			this.options.manualPagination = true;
+		}
+
 		const plainOptions = this.options as TableOptions<TData>;
 
 		const resolvedOptions: TableOptionsResolved<TData> = mergeObjects(
