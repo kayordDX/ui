@@ -7,7 +7,7 @@
 	import { type ColumnDef, type SortingState } from "@tanstack/table-core";
 
 	import { data } from "./data.svelte";
-	import { Button, DataTable } from "$lib";
+	import { Button, createShadTable, DataTable } from "$lib";
 	import { ShadTable } from "$lib/components/custom/data-table/shad-table.svelte";
 
 	const columns: ColumnDef<DataType>[] = [
@@ -29,7 +29,18 @@
 		},
 	];
 
-	let tableState = new ShadTable({
+	let table = createShadTable({
+		columns,
+		get data() {
+			return data.value;
+		},
+		enableSorting: true,
+		enableRowSelection: false,
+		enablePaging: true,
+		enableVisibility: true,
+	});
+
+	let test = new ShadTable({
 		columns,
 		get data() {
 			return data.value;
@@ -46,6 +57,6 @@
 	};
 </script>
 
-<DataTable bind:table={tableState.table} columns={tableState.columns} headerClass="mt-2" enableVisibility />
+<DataTable bind:tableState={test} headerClass="mt-2" enableVisibility />
 
 <Button onclick={addRecord}>Add Record</Button>
