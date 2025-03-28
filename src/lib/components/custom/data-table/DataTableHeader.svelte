@@ -11,7 +11,7 @@
 		disableUISorting?: boolean;
 	}
 
-	let { headerGroupIndex, headerIndex, tableState = $bindable(), disableUISorting = false }: Props<T> = $props();
+	let { headerGroupIndex, headerIndex, tableState, disableUISorting = false }: Props<T> = $props();
 
 	const isSortingEnabled = $derived(
 		tableState.table.options.getSortedRowModel !== undefined && disableUISorting !== true

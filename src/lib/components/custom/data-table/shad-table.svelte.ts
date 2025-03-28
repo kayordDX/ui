@@ -21,10 +21,19 @@ interface ShadTableOptions<TData extends RowData> extends Omit<TableOptions<TDat
 export class ShadTable<TData extends RowData> {
 	columns: ColumnDef<TData>[];
 	table: Table<TData>;
-	state: Partial<TableState> = $state<Partial<TableState>>({});
+	#state: Partial<TableState> = $state({});
+	#stateUpdate: (state: Partial<TableState>) => void;
 	options: ShadTableOptions<TData>;
 
-	constructor(initOptions: ShadTableOptions<TData>) {
+	constructor(initOptions: ShadTableOptions<TData>, stateUpdate?: (state: Partial<TableState>) => void) {
+		if (stateUpdate) {
+			this.#stateUpdate = stateUpdate;
+		} else {
+			this.#stateUpdate = (state: Partial<TableState>) => {
+				console.log("state updated boii");
+				this.#state = state;
+			};
+		}
 		this.options = initOptions;
 
 		if (!this.options.getCoreRowModel) {
@@ -50,7 +59,7 @@ export class ShadTable<TData extends RowData> {
 		);
 
 		this.table = createTable(resolvedOptions);
-		this.state = this.table.initialState;
+		this.#state = this.table.initialState;
 		this.columns = this.options.columns;
 
 		this.features();
@@ -60,17 +69,21 @@ export class ShadTable<TData extends RowData> {
 		$effect.pre(() => {
 			this.updateOptions();
 		});
+
+		$effect(() => {
+			this.#stateUpdate(this.#state);
+		});
 	}
 
 	updateOptions() {
 		this.table.setOptions((prev) => {
 			return mergeObjects(prev, this.options, {
-				state: mergeObjects(this.state, this.options.state || {}),
+				state: mergeObjects(this.#state, this.options.state || {}),
 
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				onStateChange: (updater: any) => {
-					if (updater instanceof Function) this.state = updater(this.state);
-					else this.state = mergeObjects(this.state, updater);
+					if (updater instanceof Function) this.#state = updater(this.#state);
+					else this.#state = mergeObjects(this.#state, updater);
 
 					this.options.onStateChange?.(updater);
 				},
@@ -86,14 +99,14 @@ export class ShadTable<TData extends RowData> {
 				if (typeof updater === "function") {
 					if (this.options.state?.sorting) {
 						this.options.state.sorting = updater(this.options.state.sorting);
-					} else if (this.state.sorting) {
-						this.state.sorting = updater(this.state.sorting);
+					} else if (this.#state.sorting) {
+						this.#state.sorting = updater(this.#state.sorting);
 					}
 				} else {
 					if (this.options.state?.sorting) {
 						this.options.state.sorting = updater;
 					} else {
-						this.state.sorting = updater;
+						this.#state.sorting = updater;
 					}
 				}
 			};
@@ -106,14 +119,14 @@ export class ShadTable<TData extends RowData> {
 				if (typeof updater === "function") {
 					if (this.options.state?.pagination) {
 						this.options.state.pagination = updater(this.options.state.pagination);
-					} else if (this.state.pagination) {
-						this.state.pagination = updater(this.state.pagination);
+					} else if (this.#state.pagination) {
+						this.#state.pagination = updater(this.#state.pagination);
 					}
 				} else {
 					if (this.options.state?.pagination) {
 						this.options.state.pagination = updater;
 					} else {
-						this.state.pagination = updater;
+						this.#state.pagination = updater;
 					}
 				}
 			};
@@ -125,14 +138,14 @@ export class ShadTable<TData extends RowData> {
 				if (typeof updater === "function") {
 					if (this.options.state?.rowSelection) {
 						this.options.state.rowSelection = updater(this.options.state.rowSelection);
-					} else if (this.state.rowSelection) {
-						this.state.rowSelection = updater(this.state.rowSelection);
+					} else if (this.#state.rowSelection) {
+						this.#state.rowSelection = updater(this.#state.rowSelection);
 					}
 				} else {
 					if (this.options.state?.rowSelection) {
 						this.options.state.rowSelection = updater;
 					} else {
-						this.state.rowSelection = updater;
+						this.#state.rowSelection = updater;
 					}
 				}
 			};
@@ -144,14 +157,14 @@ export class ShadTable<TData extends RowData> {
 				if (typeof updater === "function") {
 					if (this.options.state?.columnVisibility) {
 						this.options.state.columnVisibility = updater(this.options.state.columnVisibility);
-					} else if (this.state.columnVisibility) {
-						this.state.columnVisibility = updater(this.state.columnVisibility);
+					} else if (this.#state.columnVisibility) {
+						this.#state.columnVisibility = updater(this.#state.columnVisibility);
 					}
 				} else {
 					if (this.options.state?.columnVisibility) {
 						this.options.state.columnVisibility = updater;
 					} else {
-						this.state.columnVisibility = updater;
+						this.#state.columnVisibility = updater;
 					}
 				}
 			};

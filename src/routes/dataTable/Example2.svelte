@@ -4,7 +4,7 @@
 		name: string;
 	}
 
-	import { type ColumnDef } from "@tanstack/table-core";
+	import { type ColumnDef, type TableState } from "@tanstack/table-core";
 
 	import { data } from "./data.svelte";
 	import { Button, DataTable } from "$lib";
@@ -29,17 +29,24 @@
 		},
 	];
 
-	let tableState = $state(
-		new ShadTable({
-			columns,
-			get data() {
-				return data.value;
+	let sss = $state<Partial<TableState>>({});
+
+	const tableState = $state(
+		new ShadTable(
+			{
+				columns,
+				get data() {
+					return data.value;
+				},
+				enableSorting: true,
+				enableRowSelection: false,
+				enablePaging: false,
+				enableVisibility: true,
 			},
-			enableSorting: true,
-			enableRowSelection: false,
-			enablePaging: false,
-			enableVisibility: true,
-		})
+			(state) => {
+				sss = state;
+			}
+		)
 	);
 
 	const addRecord = () => {
@@ -48,6 +55,6 @@
 	};
 </script>
 
-<DataTable bind:tableState headerClass="mt-2" enableVisibility />
+<DataTable {tableState} headerClass="mt-2" enableVisibility />
 
 <Button onclick={addRecord}>Add Record</Button>

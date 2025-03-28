@@ -32,7 +32,7 @@
 	}
 
 	let {
-		tableState = $bindable(),
+		tableState,
 		isLoading = false,
 		header,
 		subHeader,
@@ -126,7 +126,7 @@
 					{#each tableState.table.getHeaderGroups() as headerGroup, headerGroupIndex}
 						<Table.Row>
 							{#each headerGroup.headers as header, headerIndex}
-								<DataTableHeader {headerGroupIndex} {headerIndex} bind:tableState {disableUISorting} />
+								<DataTableHeader {headerGroupIndex} {headerIndex} {tableState} {disableUISorting} />
 							{/each}
 						</Table.Row>
 					{/each}
@@ -173,7 +173,7 @@
 		{/if}
 	</div>
 	{#if isPaginationEnabled}
-		<Pagination bind:tableState />
+		<Pagination {tableState} />
 	{/if}
 
 	{#if footer}
