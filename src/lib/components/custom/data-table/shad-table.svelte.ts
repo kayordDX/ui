@@ -78,7 +78,7 @@ export class ShadTable<TData extends RowData> {
 		});
 	}
 
-	features() {
+	private features() {
 		// Sorting
 		if ((this.options.enableSorting ?? true) && !this.options.getSortedRowModel) {
 			this.options.getSortedRowModel = getSortedRowModel();
