@@ -8,16 +8,17 @@
 
 	import { data } from "./data.svelte";
 	import { Button, DataTable } from "$lib";
-	import { ShadTable } from "$lib/components/custom/data-table/shad-table.svelte";
+	import { createShadSvelteTable } from "$lib/components/custom/data-table/shad-table.svelte";
 
 	const columns: ColumnDef<DataType>[] = [
 		{
 			accessorKey: "id",
-			header: "ID",
+			header: "Id",
 			maxSize: 10,
 		},
 		{
 			accessorKey: "name",
+			header: "Name",
 			cell: (info) => info.getValue(),
 			size: 100000,
 		},
@@ -31,22 +32,16 @@
 
 	let sss = $state<Partial<TableState>>({});
 
-	const tableState = $state(
-		new ShadTable(
-			{
-				columns,
-				get data() {
-					return data.value;
-				},
-				enableSorting: true,
-				enableRowSelection: false,
-				enablePaging: false,
-				enableVisibility: true,
+	const table = createShadSvelteTable(
+		{
+			columns,
+			get data() {
+				return data.value;
 			},
-			(state) => {
-				sss = state;
-			}
-		)
+			enableRowSelection: false,
+			enableVisibility: true,
+		},
+		(state) => (sss = state)
 	);
 
 	const addRecord = () => {
@@ -55,6 +50,6 @@
 	};
 </script>
 
-<DataTable {tableState} headerClass="mt-2" enableVisibility />
+<DataTable {table} headerClass="mt-2" enableVisibility />
 
 <Button onclick={addRecord}>Add Record</Button>

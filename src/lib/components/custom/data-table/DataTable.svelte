@@ -1,21 +1,19 @@
 <script lang="ts" generics="T">
-	import { type ColumnDef, type Table as TableType } from "@tanstack/table-core";
-	import { FlexRender, renderComponent } from "$lib/components/ui/data-table";
+	import { type Table as TableType } from "@tanstack/table-core";
+	import { FlexRender } from "$lib/components/ui/data-table";
 	import { Skeleton, Table } from "$lib/components/ui";
 	import Pagination from "./Pagination.svelte";
 	import type { Snippet } from "svelte";
 	import { fade } from "svelte/transition";
 	import { ProgressLoading } from "../progress-loading";
-	import DataTableCheckbox from "./DataTableCheckbox.svelte";
-	import VisibilitySelect from "./VisibilitySelect.svelte";
 	import FullscreenModeToggle from "./FullscreenModeToggle.svelte";
 	import { cn } from "$lib/utils";
 	import { tableStore } from "./table.svelte";
 	import DataTableHeader from "./DataTableHeader.svelte";
-	import type { ShadTable } from "./shad-table.svelte";
+	import VisibilitySelect from "./VisibilitySelect.svelte";
 
 	interface Props<T> {
-		tableState: ShadTable<T>;
+		table: TableType<T>;
 		isLoading?: boolean;
 		header?: Snippet;
 		subHeader?: Snippet;
@@ -32,7 +30,7 @@
 	}
 
 	let {
-		tableState,
+		table,
 		isLoading = false,
 		header,
 		subHeader,
@@ -48,28 +46,7 @@
 		disableUISorting = false,
 	}: Props<T> = $props();
 
-	const isPaginationEnabled = tableState.table.options.getPaginationRowModel !== undefined;
-	const enableRowSelection = tableState.table.options.enableRowSelection;
-
-	if (enableRowSelection) {
-		const rowSelectionColumn: ColumnDef<T> = {
-			id: "select",
-			// cell: (info) => "[]",
-			header: () =>
-				renderComponent(DataTableCheckbox, {
-					checked: tableState.table.getIsAllPageRowsSelected(),
-					onCheckedChange: () => tableState.table.toggleAllPageRowsSelected(),
-				}),
-			cell: (r) =>
-				renderComponent(DataTableCheckbox, {
-					checked: r.row.getIsSelected(),
-					onCheckedChange: () => r.row.toggleSelected(),
-				}),
-			enableResizing: false,
-			enableSorting: false,
-		};
-		tableState.columns.unshift(rowSelectionColumn);
-	}
+	const isPaginationEnabled = table.options.getPaginationRowModel !== undefined;
 </script>
 
 <div
@@ -96,7 +73,7 @@
 					{/if}
 					{#if enableVisibility}
 						<div>
-							<VisibilitySelect bind:tableState />
+							<VisibilitySelect {table} />
 						</div>
 					{/if}
 					{#if enableFullscreen}
@@ -123,10 +100,10 @@
 		<Table.Root class="table-auto">
 			{#if !hideHeader}
 				<Table.Header>
-					{#each tableState.table.getHeaderGroups() as headerGroup, headerGroupIndex}
+					{#each table.getHeaderGroups() as headerGroup}
 						<Table.Row>
-							{#each headerGroup.headers as header, headerIndex}
-								<DataTableHeader {headerGroupIndex} {headerIndex} {tableState} {disableUISorting} />
+							{#each headerGroup.headers as header}
+								<DataTableHeader {header} {table} {disableUISorting} />
 							{/each}
 						</Table.Row>
 					{/each}
@@ -134,10 +111,10 @@
 			{/if}
 
 			<Table.Body>
-				{#if isLoading && tableState.table.getRowModel().rows.length == 0}
+				{#if isLoading && table.getRowModel().rows.length == 0}
 					{#each { length: 5 } as _, i}
 						<Table.Row>
-							{#each tableState.columns as _cell}
+							{#each table.getAllColumns() as _cell}
 								<Table.Cell>
 									<Skeleton class="h-4" />
 								</Table.Cell>
@@ -145,14 +122,14 @@
 						</Table.Row>
 					{/each}
 				{:else}
-					{#if tableState.table.getRowModel().rows.length == 0}
+					{#if table.getRowModel().rows.length == 0}
 						<Table.Row>
-							<Table.Cell colspan={tableState.table.getAllColumns().length}>
+							<Table.Cell colspan={table.getAllColumns().length}>
 								<div class="text-center">{noDataMessage}</div>
 							</Table.Cell>
 						</Table.Row>
 					{/if}
-					{#each tableState.table.getRowModel().rows as row}
+					{#each table.getRowModel().rows as row}
 						<Table.Row data-state={row.getIsSelected() && "selected"}>
 							{#each row.getVisibleCells() as cell}
 								<Table.Cell
@@ -173,7 +150,7 @@
 		{/if}
 	</div>
 	{#if isPaginationEnabled}
-		<Pagination {tableState} />
+		<Pagination {table} />
 	{/if}
 
 	{#if footer}

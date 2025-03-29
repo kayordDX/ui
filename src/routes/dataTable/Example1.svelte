@@ -115,4 +115,4 @@
 	<div class="bg-primary h-8 w-8"></div>
 {/snippet}
 
-<DataTable bind:tableState enableVisibility enableFullscreen headerClass="mt-2" />
+<DataTable table={tableState.table} enableVisibility enableFullscreen headerClass="mt-2" />

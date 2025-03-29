@@ -8,20 +8,20 @@
 	import type { ShadTable } from "./shad-table.svelte";
 
 	interface Props<T> {
-		tableState: ShadTable<T>;
+		table: Table<T>;
 		canChangePageSize?: boolean;
 	}
 
-	let { tableState, canChangePageSize = false }: Props<T> = $props();
+	let { table, canChangePageSize = false }: Props<T> = $props();
 
-	let value = $state(tableState.table.getState().pagination.pageSize.toString());
+	let value = $state(table.getState().pagination.pageSize.toString());
 </script>
 
 <div class="flex items-center justify-between py-2">
 	<div class="text-muted-foreground flex-1 text-sm">
-		{#if tableState.table.options.enableRowSelection}
-			{tableState.table.getFilteredSelectedRowModel().rows.length} of
-			{tableState.table.getFilteredRowModel().rows.length} row(s) selected.
+		{#if table.options.enableRowSelection}
+			{table.getFilteredSelectedRowModel().rows.length} of
+			{table.getFilteredRowModel().rows.length} row(s) selected.
 		{/if}
 	</div>
 	<div class="flex items-center space-x-6 lg:space-x-8">
@@ -32,7 +32,7 @@
 					type="single"
 					bind:value
 					onValueChange={(value) => {
-						tableState.table.setPageSize(Number(value));
+						table.setPageSize(Number(value));
 					}}
 				>
 					<Select.Trigger class="h-8 w-[70px]">Select page size</Select.Trigger>
@@ -47,15 +47,15 @@
 			{/if}
 		</div>
 		<div class="flex w-[100px] items-center justify-center text-sm font-medium">
-			Page {tableState.table.getState().pagination.pageIndex + 1} of
-			{tableState.table.getPageCount()}
+			Page {table.getState().pagination.pageIndex + 1} of
+			{table.getPageCount()}
 		</div>
 		<div class="flex items-center space-x-2">
 			<Button
 				variant="outline"
 				class="hidden size-8 p-0 lg:flex"
-				onclick={() => tableState.table.setPageIndex(0)}
-				disabled={!tableState.table.getCanPreviousPage()}
+				onclick={() => table.setPageIndex(0)}
+				disabled={!table.getCanPreviousPage()}
 			>
 				<span class="sr-only">Go to first page</span>
 				<DoubleArrowLeft class="size-4" />
@@ -63,26 +63,21 @@
 			<Button
 				variant="outline"
 				class="size-8 p-0"
-				onclick={() => tableState.table.previousPage()}
-				disabled={!tableState.table.getCanPreviousPage()}
+				onclick={() => table.previousPage()}
+				disabled={!table.getCanPreviousPage()}
 			>
 				<span class="sr-only">Go to previous page</span>
 				<ChevronLeft class="size-4" />
 			</Button>
-			<Button
-				variant="outline"
-				class="size-8 p-0"
-				onclick={() => tableState.table.nextPage()}
-				disabled={!tableState.table.getCanNextPage()}
-			>
+			<Button variant="outline" class="size-8 p-0" onclick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
 				<span class="sr-only">Go to next page</span>
 				<ChevronRight class="size-4" />
 			</Button>
 			<Button
 				variant="outline"
 				class="hidden size-8 p-0 lg:flex"
-				onclick={() => tableState.table.setPageIndex(tableState.table.getPageCount() - 1)}
-				disabled={!tableState.table.getCanNextPage()}
+				onclick={() => table.setPageIndex(table.getPageCount() - 1)}
+				disabled={!table.getCanNextPage()}
 			>
 				<span class="sr-only">Go to last page</span>
 				<DoubleArrowRight class="size-4" />

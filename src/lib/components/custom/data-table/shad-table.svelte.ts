@@ -11,11 +11,171 @@ import {
 	type TableOptionsResolved,
 	type TableState,
 } from "@tanstack/table-core";
+import DataTableCheckbox from "./DataTableCheckbox.svelte";
+import { renderComponent } from "$lib/components/ui";
 
 interface ShadTableOptions<TData extends RowData> extends Omit<TableOptions<TData>, "getCoreRowModel"> {
 	getCoreRowModel?: (table: Table<any>) => () => RowModel<any>;
 	enablePaging?: boolean;
 	enableVisibility?: boolean;
+	enableRowSelectionUI?: boolean;
+}
+
+export function createShadSvelteTable<TData extends RowData>(
+	shadOptions: ShadTableOptions<TData>,
+	stateUpdate?: (state: Partial<TableState>) => void
+) {
+	if (!shadOptions.getCoreRowModel) {
+		shadOptions.getCoreRowModel = getCoreRowModel();
+	}
+
+	if ((shadOptions.enablePaging ?? true) == false) {
+		shadOptions.manualPagination = true;
+	}
+
+	const options: TableOptions<TData> = shadOptions as TableOptions<TData>;
+
+	// Features
+	// Sorting
+	if ((options.enableSorting ?? true) && !options.getSortedRowModel) {
+		options.getSortedRowModel = getSortedRowModel();
+		options.onSortingChange = (updater) => {
+			if (typeof updater === "function") {
+				if (options.state?.sorting) {
+					options.state.sorting = updater(options.state.sorting);
+				} else if (state.sorting) {
+					state.sorting = updater(state.sorting);
+				}
+			} else {
+				if (options.state?.sorting) {
+					options.state.sorting = updater;
+				} else {
+					state.sorting = updater;
+				}
+			}
+		};
+	}
+	// Paging
+	if ((shadOptions.enablePaging ?? true) && !options.getPaginationRowModel) {
+		options.getPaginationRowModel = getPaginationRowModel();
+		options.onPaginationChange = (updater) => {
+			if (typeof updater === "function") {
+				if (options.state?.pagination) {
+					options.state.pagination = updater(options.state.pagination);
+				} else if (state.pagination) {
+					state.pagination = updater(state.pagination);
+				}
+			} else {
+				if (options.state?.pagination) {
+					options.state.pagination = updater;
+				} else {
+					state.pagination = updater;
+				}
+			}
+		};
+	}
+
+	// Row Selection
+	if ((options.enableRowSelection ?? true) && !options.onRowSelectionChange) {
+		options.onRowSelectionChange = (updater) => {
+			if (typeof updater === "function") {
+				if (options.state?.rowSelection) {
+					options.state.rowSelection = updater(options.state.rowSelection);
+				} else if (state.rowSelection) {
+					state.rowSelection = updater(state.rowSelection);
+				}
+			} else {
+				if (options.state?.rowSelection) {
+					options.state.rowSelection = updater;
+				} else {
+					state.rowSelection = updater;
+				}
+			}
+		};
+	}
+
+	if (options.enableRowSelection && (shadOptions.enableRowSelectionUI ?? true)) {
+		const rowSelectionColumn: ColumnDef<TData> = {
+			id: "select",
+			header: () =>
+				renderComponent(DataTableCheckbox, {
+					checked: table.getIsAllPageRowsSelected(),
+					onCheckedChange: () => table.toggleAllPageRowsSelected(),
+				}),
+			cell: (r) =>
+				renderComponent(DataTableCheckbox, {
+					checked: r.row.getIsSelected(),
+					onCheckedChange: () => r.row.toggleSelected(),
+				}),
+			enableResizing: false,
+			enableSorting: false,
+		};
+		options.columns.unshift(rowSelectionColumn);
+	}
+
+	// Column Visibility
+	if ((shadOptions.enableVisibility ?? false) && !options.onColumnVisibilityChange) {
+		options.onColumnVisibilityChange = (updater) => {
+			if (typeof updater === "function") {
+				if (options.state?.columnVisibility) {
+					options.state.columnVisibility = updater(options.state.columnVisibility);
+				} else if (state.columnVisibility) {
+					state.columnVisibility = updater(state.columnVisibility);
+				}
+			} else {
+				if (options.state?.columnVisibility) {
+					options.state.columnVisibility = updater;
+				} else {
+					state.columnVisibility = updater;
+				}
+			}
+		};
+	}
+
+	const resolvedOptions: TableOptionsResolved<TData> = mergeObjects(
+		{
+			state: {},
+			onStateChange() {},
+			renderFallbackValue: null,
+			mergeOptions: (defaultOptions: TableOptions<TData>, options: Partial<TableOptions<TData>>) => {
+				return mergeObjects(defaultOptions, options);
+			},
+		},
+		options
+	);
+
+	const table = createTable(resolvedOptions);
+	let state = $state<Partial<TableState>>(table.initialState);
+
+	const updateOptions = (table: Table<TData>, state: Partial<TableState>) => {
+		table.setOptions((prev) => {
+			return mergeObjects(prev, options, {
+				state: mergeObjects(state, options.state || {}),
+
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				onStateChange: (updater: any) => {
+					if (updater instanceof Function) state = updater(state);
+					else state = mergeObjects(state, updater);
+
+					options.onStateChange?.(updater);
+				},
+			});
+		});
+	};
+
+	updateOptions(table, state);
+
+	// $effect.pre(() => {
+	// 	updateOptions(table, state);
+	// });
+
+	if (stateUpdate) {
+		$effect.pre(() => {
+			stateUpdate(state);
+		});
+	}
+
+	return table;
 }
 
 export class ShadTable<TData extends RowData> {
@@ -30,7 +190,6 @@ export class ShadTable<TData extends RowData> {
 			this.#stateUpdate = stateUpdate;
 		} else {
 			this.#stateUpdate = (state: Partial<TableState>) => {
-				console.log("state updated boii");
 				this.#state = state;
 			};
 		}
