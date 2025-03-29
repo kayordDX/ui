@@ -19,7 +19,7 @@
 	} from "@tanstack/table-core";
 
 	import { data } from "./data.svelte";
-	import { DataTable, ShadTable } from "$lib";
+	import { DataTable, createShadTable } from "$lib";
 
 	const columns: ColumnDef<DataType>[] = [
 		{
@@ -58,61 +58,55 @@
 	let sorting = $state<SortingState>([]);
 	let columnFilters = $state<ColumnFiltersState>([]);
 
-	let tableState = $state(
-		new ShadTable({
-			columns,
-			data: data.value,
-			getCoreRowModel: getCoreRowModel(),
-			getPaginationRowModel: getPaginationRowModel(),
-			onPaginationChange: (updater) => {
-				if (typeof updater === "function") {
-					pagination = updater(pagination);
-				} else {
-					pagination = updater;
-				}
+	const table = createShadTable({
+		columns,
+		data: data.value,
+		getCoreRowModel: getCoreRowModel(),
+		getPaginationRowModel: getPaginationRowModel(),
+		onPaginationChange: (updater) => {
+			if (typeof updater === "function") {
+				pagination = updater(pagination);
+			} else {
+				pagination = updater;
+			}
+		},
+		getSortedRowModel: getSortedRowModel(),
+		onSortingChange: (updater) => {
+			if (typeof updater === "function") {
+				sorting = updater(sorting);
+			} else {
+				sorting = updater;
+			}
+		},
+		getFilteredRowModel: getFilteredRowModel(),
+		onColumnFiltersChange: (updater) => {
+			if (typeof updater === "function") {
+				columnFilters = updater(columnFilters);
+			} else {
+				columnFilters = updater;
+			}
+		},
+		state: {
+			get pagination() {
+				return pagination;
 			},
-			getSortedRowModel: getSortedRowModel(),
-			onSortingChange: (updater) => {
-				if (typeof updater === "function") {
-					sorting = updater(sorting);
-				} else {
-					sorting = updater;
-				}
+			get sorting() {
+				return sorting;
 			},
-			getFilteredRowModel: getFilteredRowModel(),
-			onColumnFiltersChange: (updater) => {
-				if (typeof updater === "function") {
-					columnFilters = updater(columnFilters);
-				} else {
-					columnFilters = updater;
-				}
+			get rowSelection() {
+				return rowSelection;
 			},
-			state: {
-				get pagination() {
-					return pagination;
-				},
-				get sorting() {
-					return sorting;
-				},
-				get rowSelection() {
-					return rowSelection;
-				},
-				get columnVisibility() {
-					return columnVisibility;
-				},
-				get columnFilters() {
-					return columnFilters;
-				},
+			get columnVisibility() {
+				return columnVisibility;
 			},
-			onColumnVisibilityChange: setVisibility,
-			onRowSelectionChange: setRowSelection,
-			enableRowSelection: true,
-		})
-	);
+			get columnFilters() {
+				return columnFilters;
+			},
+		},
+		onColumnVisibilityChange: setVisibility,
+		onRowSelectionChange: setRowSelection,
+		enableRowSelection: true,
+	});
 </script>
 
-{#snippet test()}
-	<div class="bg-primary h-8 w-8"></div>
-{/snippet}
-
-<DataTable table={tableState.table} enableVisibility enableFullscreen headerClass="mt-2" />
+<DataTable {table} enableVisibility enableFullscreen headerClass="mt-2" />
