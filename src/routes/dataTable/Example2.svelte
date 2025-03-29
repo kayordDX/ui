@@ -8,7 +8,7 @@
 
 	import { data } from "./data.svelte";
 	import { Button, DataTable } from "$lib";
-	import { createShadSvelteTable } from "$lib/components/custom/data-table/shad-table.svelte";
+	import { createShadTable } from "$lib/components/custom/data-table/shad-table.svelte";
 
 	const columns: ColumnDef<DataType>[] = [
 		{
@@ -32,7 +32,7 @@
 
 	let sss = $state<Partial<TableState>>({});
 
-	const table = createShadSvelteTable(
+	const table = createShadTable(
 		{
 			columns,
 			get data() {

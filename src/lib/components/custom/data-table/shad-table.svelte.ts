@@ -21,7 +21,7 @@ interface ShadTableOptions<TData extends RowData> extends Omit<TableOptions<TDat
 	enableRowSelectionUI?: boolean;
 }
 
-export function createShadSvelteTable<TData extends RowData>(
+export function createShadTable<TData extends RowData>(
 	shadOptions: ShadTableOptions<TData>,
 	stateUpdate?: (state: Partial<TableState>) => void
 ) {
