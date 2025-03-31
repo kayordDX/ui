@@ -1,6 +1,7 @@
 import {
 	createTable,
 	getCoreRowModel,
+	getFilteredRowModel,
 	getPaginationRowModel,
 	getSortedRowModel,
 	type ColumnDef,
@@ -39,40 +40,46 @@ export function createShadTable<TData extends RowData>(
 	// Sorting
 	if ((options.enableSorting ?? true) && !options.getSortedRowModel) {
 		options.getSortedRowModel = getSortedRowModel();
-		options.onSortingChange = (updater) => {
-			if (typeof updater === "function") {
-				if (options.state?.sorting) {
-					options.state.sorting = updater(options.state.sorting);
-				} else if (state.sorting) {
-					state.sorting = updater(state.sorting);
-				}
-			} else {
-				if (options.state?.sorting) {
-					options.state.sorting = updater;
+
+		if (!options.onSortingChange) {
+			options.onSortingChange = (updater) => {
+				if (typeof updater === "function") {
+					if (options.state?.sorting) {
+						options.state.sorting = updater(options.state.sorting);
+					} else if (state.sorting) {
+						state.sorting = updater(state.sorting);
+					}
 				} else {
-					state.sorting = updater;
+					if (options.state?.sorting) {
+						options.state.sorting = updater;
+					} else {
+						state.sorting = updater;
+					}
 				}
-			}
-		};
+			};
+		}
 	}
 	// Paging
 	if ((shadOptions.enablePaging ?? true) && !options.getPaginationRowModel) {
 		options.getPaginationRowModel = getPaginationRowModel();
-		options.onPaginationChange = (updater) => {
-			if (typeof updater === "function") {
-				if (options.state?.pagination) {
-					options.state.pagination = updater(options.state.pagination);
-				} else if (state.pagination) {
-					state.pagination = updater(state.pagination);
-				}
-			} else {
-				if (options.state?.pagination) {
-					options.state.pagination = updater;
+
+		if (!options.onPaginationChange) {
+			options.onPaginationChange = (updater) => {
+				if (typeof updater === "function") {
+					if (options.state?.pagination) {
+						options.state.pagination = updater(options.state.pagination);
+					} else if (state.pagination) {
+						state.pagination = updater(state.pagination);
+					}
 				} else {
-					state.pagination = updater;
+					if (options.state?.pagination) {
+						options.state.pagination = updater;
+					} else {
+						state.pagination = updater;
+					}
 				}
-			}
-		};
+			};
+		}
 	}
 
 	// Row Selection
@@ -130,6 +137,50 @@ export function createShadTable<TData extends RowData>(
 				}
 			}
 		};
+	}
+
+	// Filtering
+	if ((options.enableFilters ?? true) && !options.getFilteredRowModel) {
+		options.getFilteredRowModel = getFilteredRowModel();
+
+		// Global Filtering
+		if (options.enableGlobalFilter ?? false) {
+			if (!options.onGlobalFilterChange) {
+				options.onGlobalFilterChange = (updater) => {
+					if (typeof updater === "function") {
+						if (options.state?.globalFilter) {
+							options.state.globalFilter = updater(options.state.globalFilter);
+						} else if (state.globalFilter) {
+							state.globalFilter = updater(state.globalFilter);
+						}
+					} else {
+						if (options.state?.globalFilter) {
+							options.state.globalFilter = updater;
+						} else {
+							state.globalFilter = updater;
+						}
+					}
+				};
+			}
+		} else {
+			if (!options.onColumnFiltersChange) {
+				options.onColumnFiltersChange = (updater) => {
+					if (typeof updater === "function") {
+						if (options.state?.columnFilters) {
+							options.state.columnFilters = updater(options.state.columnFilters);
+						} else if (state.columnFilters) {
+							state.columnFilters = updater(state.columnFilters);
+						}
+					} else {
+						if (options.state?.columnFilters) {
+							options.state.columnFilters = updater;
+						} else {
+							state.columnFilters = updater;
+						}
+					}
+				};
+			}
+		}
 	}
 
 	const resolvedOptions: TableOptionsResolved<TData> = mergeObjects(
