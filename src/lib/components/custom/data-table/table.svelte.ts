@@ -1,7 +1,3 @@
-interface TableStoreProps {
-	isFullscreen: boolean;
+export class TableStore {
+	isFullscreen: boolean = $state(false);
 }
-
-export let tableStore: TableStoreProps = $state({
-	isFullscreen: false,
-});

@@ -1,7 +1,27 @@
 <script lang="ts">
 	import Button from "$lib/components/ui/button/button.svelte";
 	import { Maximize, Minimize } from "@lucide/svelte";
-	import { tableStore } from "./table.svelte";
+
+	interface Props {
+		isFullscreen: boolean;
+		end?: HTMLElement;
+	}
+
+	let { isFullscreen = $bindable(), end }: Props = $props();
+
+	$effect.pre(() => {
+		if (isFullscreen) {
+			document.body.classList.add("overflow-hidden");
+			document.body.scrollIntoView({ behavior: "smooth", block: "start" });
+		} else {
+			if (!end) {
+				document.body.classList.remove("overflow-hidden");
+				return;
+			}
+			end.scrollIntoView({ behavior: "smooth", block: "start" });
+			document.body.classList.remove("overflow-hidden");
+		}
+	});
 </script>
 
 <Button
@@ -9,15 +29,10 @@
 	variant="outline"
 	size="sm"
 	onclick={() => {
-		tableStore.isFullscreen = !tableStore.isFullscreen;
-		// if ($target == "body") {
-		// 	$target = "#tableContent";
-		// } else {
-		// 	$target = "body";
-		// }
+		isFullscreen = !isFullscreen;
 	}}
 >
-	{#if tableStore.isFullscreen}
+	{#if isFullscreen}
 		<Minimize class="size-5" />
 	{:else}
 		<Maximize class="size-5" />

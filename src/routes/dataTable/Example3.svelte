@@ -40,7 +40,6 @@
 
 	let globalFilter: GlobalFilterTableState = $state({ globalFilter: undefined });
 	const setGlobalFilter = (updater: Updater<GlobalFilterTableState>) => {
-		console.log("global filter updater");
 		if (updater instanceof Function) {
 			globalFilter = updater(globalFilter);
 		} else globalFilter = updater;
@@ -70,7 +69,7 @@
 	const tttt = $derived(table.getState());
 </script>
 
-<DataTable {table} headerClass="mt-2" enableVisibility />
+<DataTable {table} headerClass="mt-2" enableVisibility enableFullscreen />
 <div>"globalFilter": {JSON.stringify(table.getState())}</div>
 <Button onclick={() => table.setColumnFilters([{ id: "name", value: "z" }])}>Filter 1</Button>
 <Button onclick={() => table.resetColumnFilters()}>Reset</Button>

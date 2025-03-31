@@ -8,7 +8,7 @@
 	import { ProgressLoading } from "../progress-loading";
 	import FullscreenModeToggle from "./FullscreenModeToggle.svelte";
 	import { cn } from "$lib/utils";
-	import { tableStore } from "./table.svelte";
+	import { TableStore } from "./table.svelte";
 	import DataTableHeader from "./DataTableHeader.svelte";
 	import VisibilitySelect from "./VisibilitySelect.svelte";
 
@@ -46,13 +46,17 @@
 		disableUISorting = false,
 	}: Props<T> = $props();
 
+	const tableStore = new TableStore();
 	const isPaginationEnabled = table.options.getPaginationRowModel !== undefined;
+	let end: HTMLElement | undefined = $state();
 </script>
 
 <div
 	class={cn(
 		"w-full",
-		tableStore.isFullscreen ? "bg-background absolute top-0 left-0 z-10 h-screen transition-all" : "w-full",
+		tableStore.isFullscreen
+			? "bg-background b-0 absolute inset-0 top-0 left-0 z-20 overflow-auto  p-2 transition-all"
+			: "w-full",
 		className
 	)}
 >
@@ -78,7 +82,7 @@
 					{/if}
 					{#if enableFullscreen}
 						<div>
-							<FullscreenModeToggle />
+							<FullscreenModeToggle bind:isFullscreen={tableStore.isFullscreen} {end} />
 						</div>
 					{/if}
 				</div>
@@ -159,3 +163,5 @@
 		</div>
 	{/if}
 </div>
+
+<div bind:this={end} aria-hidden="true"></div>

@@ -40,6 +40,7 @@
 			},
 			enableRowSelection: false,
 			enableVisibility: true,
+			enablePaging: false,
 		},
 		(state) => (sss = state)
 	);
@@ -50,6 +51,6 @@
 	};
 </script>
 
-<DataTable {table} headerClass="mt-2" enableVisibility />
+<DataTable {table} headerClass="mt-2" enableVisibility enableFullscreen />
 
 <Button onclick={addRecord}>Add Record</Button>
