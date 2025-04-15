@@ -19,13 +19,15 @@
 	} from "@tanstack/table-core";
 
 	import { data } from "./data.svelte";
-	import { DataTable, createShadTable } from "$lib";
+	import { DataTable, createShadTable, renderSnippet } from "$lib";
+	import { max, min, sum, uniqueCount } from "$lib/components/custom/data-table/data-table-utils";
 
 	const columns: ColumnDef<DataType>[] = [
 		{
 			accessorKey: "id",
 			header: "ID",
 			maxSize: 10,
+			footer: () => sum(data.value, "id"),
 		},
 		{
 			accessorKey: "name",
@@ -108,5 +110,9 @@
 		enableRowSelection: true,
 	});
 </script>
+
+{#snippet test(value: string)}
+	<div>Test: {value}</div>
+{/snippet}
 
 <DataTable {table} enableVisibility enableFullscreen headerClass="mt-2" />

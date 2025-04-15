@@ -11,6 +11,7 @@
 	import { TableStore } from "./table.svelte";
 	import DataTableHeader from "./DataTableHeader.svelte";
 	import VisibilitySelect from "./VisibilitySelect.svelte";
+	import DataTableFooter from "./DataTableFooter.svelte";
 
 	interface Props<T> {
 		table: TableType<T>;
@@ -146,6 +147,7 @@
 					{/each}
 				{/if}
 			</Table.Body>
+			<DataTableFooter {table} />
 		</Table.Root>
 		{#if isLoading}
 			<span in:fade={{ duration: 300 }}>
