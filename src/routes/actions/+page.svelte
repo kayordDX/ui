@@ -7,9 +7,24 @@
 
 <Card.Root class="m-5">
 	<Card.Header>
-		<Card.Title>Test</Card.Title>
+		<Card.Title>Actions</Card.Title>
 	</Card.Header>
 	<Card.Content>
+		<Actions
+			actions={[
+				{
+					text: "Test",
+					icon: HomeIcon,
+					action: () => console.log("test"),
+				},
+				{
+					text: "Another",
+					icon: MoreHorizontalIcon,
+					href: "/",
+				},
+			]}
+			variant="outline"
+		/>
 		<Actions
 			actions={[{ label: "test" }, {}, { text: "Test", icon: HomeIcon, action: () => console.log("test") }]}
 			variant="outline"

@@ -18,7 +18,7 @@
 </script>
 
 {#if hasFooterContent}
-	<Table.Footer class="bg-muted/10 border-t-1 font-bold">
+	<Table.Footer class="bg-muted/20 border-t-1 font-bold">
 		{#each table.getFooterGroups() as footerGroup}
 			<Table.Row>
 				{#each footerGroup.headers as header}

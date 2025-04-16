@@ -16,6 +16,7 @@
 
 <Table.Head
 	colspan={header.colSpan}
+	class="bg-muted/20"
 	style={`width: ${header.getSize()}px; min-width:${header.column.columnDef.minSize}px; max-width:${header.column.columnDef.maxSize}px`}
 >
 	{#if !header.isPlaceholder}
