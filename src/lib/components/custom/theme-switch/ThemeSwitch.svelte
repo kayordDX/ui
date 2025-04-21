@@ -12,7 +12,7 @@
 </script>
 
 <button onclick={toggleMode} class={cn("text-primary", className)}>
-	{#if $mode == "dark"}
+	{#if mode.current == "dark"}
 		<Moon />
 	{:else}
 		<Sun />
