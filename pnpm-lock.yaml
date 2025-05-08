@@ -49,8 +49,8 @@ importers:
         version: 1.0.0-next.7(svelte@5.28.2)
     devDependencies:
       '@lucide/svelte':
-        specifier: ^0.507.0
-        version: 0.507.0(svelte@5.28.2)
+        specifier: ^0.508.0
+        version: 0.508.0(svelte@5.28.2)
       '@sveltejs/adapter-auto':
         specifier: ^6.0.0
         version: 6.0.0(@sveltejs/kit@2.20.8(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.28.2)(vite@6.3.5(jiti@2.4.2)(lightningcss@1.29.2)(yaml@2.6.1)))(svelte@5.28.2)(vite@6.3.5(jiti@2.4.2)(lightningcss@1.29.2)(yaml@2.6.1)))
@@ -82,8 +82,8 @@ importers:
         specifier: ^9.26.0
         version: 9.26.0(jiti@2.4.2)
       eslint-config-prettier:
-        specifier: ^10.1.2
-        version: 10.1.2(eslint@9.26.0(jiti@2.4.2))
+        specifier: ^10.1.3
+        version: 10.1.3(eslint@9.26.0(jiti@2.4.2))
       eslint-plugin-svelte:
         specifier: ^3.5.1
         version: 3.5.1(eslint@9.26.0(jiti@2.4.2))(svelte@5.28.2)
@@ -450,8 +450,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
 
-  '@lucide/svelte@0.507.0':
-    resolution: {integrity: sha512-kXIg/2IHEo1bAwZG94fjA9O6+E3Sv5aQrW2yyPf4JvCYIUIF8DGLIQI4vfjoUyNq2dEX4cI33pZarzGOHr0npg==}
+  '@lucide/svelte@0.508.0':
+    resolution: {integrity: sha512-yJZz7QMP4VvtyHlnjSIvM+DGyeCoZJlWMJJDm9K7op4Vf41Q5kguq25uXH8t9I5y0xT2aWpRlxbpvK9L0K1uRA==}
     peerDependencies:
       svelte: ^5
 
@@ -1189,8 +1189,8 @@ packages:
     resolution: {integrity: sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==}
     engines: {node: '>=10'}
 
-  eslint-config-prettier@10.1.2:
-    resolution: {integrity: sha512-Epgp/EofAUeEpIdZkW60MHKvPyru1ruQJxPL+WIycnaPApuseK0Zpkrh/FwL9oIpQvIhJwV7ptOy0DWUjTlCiA==}
+  eslint-config-prettier@10.1.3:
+    resolution: {integrity: sha512-vDo4d9yQE+cS2tdIT4J02H/16veRvkHgiLDRpej+WL67oCfbOb97itZXn8wMPJ/GsiEBVjrjs//AVNw2Cp1EcA==}
     hasBin: true
     peerDependencies:
       eslint: '>=7.0.0'
@@ -2728,7 +2728,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@lucide/svelte@0.507.0(svelte@5.28.2)':
+  '@lucide/svelte@0.508.0(svelte@5.28.2)':
     dependencies:
       svelte: 5.28.2
 
@@ -3481,7 +3481,7 @@ snapshots:
 
   escape-string-regexp@4.0.0: {}
 
-  eslint-config-prettier@10.1.2(eslint@9.26.0(jiti@2.4.2)):
+  eslint-config-prettier@10.1.3(eslint@9.26.0(jiti@2.4.2)):
     dependencies:
       eslint: 9.26.0(jiti@2.4.2)
 
