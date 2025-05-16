@@ -29,5 +29,7 @@
 			actions={[{ label: "test" }, {}, { text: "Test", icon: HomeIcon, action: () => console.log("test") }]}
 			variant="outline"
 		/>
+
+		<Actions actions={[{ text: "Test", action: () => console.log("test") }]} />
 	</Card.Content>
 </Card.Root>

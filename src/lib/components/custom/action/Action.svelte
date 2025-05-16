@@ -11,4 +11,9 @@
 	const clickAction = href ? () => goto(href) : action;
 </script>
 
-<DropdownMenu.Item onclick={clickAction} class={cn(className)}><ActionIcon /> {text}</DropdownMenu.Item>
+<DropdownMenu.Item onclick={clickAction} class={cn(className)}>
+	{#if ActionIcon}
+		<ActionIcon />
+	{/if}
+	{text}
+</DropdownMenu.Item>
