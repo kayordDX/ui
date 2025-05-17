@@ -5,3 +5,4 @@ export { ProgressLoading } from "$lib/components/custom/progress-loading/index.j
 export { Combobox } from "$lib/components/custom/combobox/index.js";
 export * from "$lib/components/custom/action/index.js";
 export { CopyButton } from "$lib/components/custom/copy-button/index.js";
+export * as TreeView from "$lib/components/custom/tree-view/index.js";

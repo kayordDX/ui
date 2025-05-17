@@ -1,8 +1,6 @@
 <script lang="ts">
-	import { Button, Card, DropdownMenu } from "$lib";
-	import Action from "$lib/components/custom/action/Action.svelte";
-	import Actions from "$lib/components/custom/action/Actions.svelte";
-	import { HomeIcon, MoreHorizontalIcon } from "@lucide/svelte";
+	import { Card, TreeView } from "$lib";
+	import { LayoutGridIcon } from "@lucide/svelte";
 </script>
 
 <Card.Root class="m-5">
@@ -10,9 +8,19 @@
 		<Card.Title>Test</Card.Title>
 	</Card.Header>
 	<Card.Content>
-		<Actions
-			actions={[{ label: "test" }, {}, { text: "Test", icon: HomeIcon, action: () => console.log("test") }]}
-			variant="outline"
-		/>
+		<TreeView.Root>
+			<TreeView.Folder name="src">
+				<TreeView.Folder name="routes">
+					<TreeView.File name="+layout.svelte" onclick={() => console.log("layout")} />
+					<TreeView.File name="+page.svelte" />
+				</TreeView.Folder>
+				<TreeView.File name="app.css">
+					{#snippet icon({ name })}
+						<LayoutGridIcon />
+					{/snippet}
+				</TreeView.File>
+				<TreeView.File name="hooks.server.ts" />
+			</TreeView.Folder>
+		</TreeView.Root>
 	</Card.Content>
 </Card.Root>
