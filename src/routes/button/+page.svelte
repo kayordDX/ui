@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Card, Button } from "$lib";
+	import { Card, Button, CopyButton } from "$lib";
 	import Mail from "@lucide/svelte/icons/mail";
 	import ChevronRight from "@lucide/svelte/icons/chevron-right";
 </script>
@@ -22,6 +22,7 @@
 			<Button variant="outline" size="icon">
 				<ChevronRight className="h-4 w-4" />
 			</Button>
+			<CopyButton text="text to copy to clipboard" />
 		</div>
 	</Card.Content>
 </Card.Root>
