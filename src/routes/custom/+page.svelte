@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Loader, ThemeSwitch } from "$lib";
+	import { Loader, LightSwitch } from "$lib";
 	import ProgressLoading from "$lib/components/custom/progress-loading/ProgressLoading.svelte";
 	import { Button, Card } from "$lib/components/ui";
 
@@ -20,11 +20,10 @@
 
 <Card.Root class="m-5">
 	<Card.Header>
-		<Card.Title>ThemeSwitch</Card.Title>
+		<Card.Title>LightSwitch</Card.Title>
 	</Card.Header>
 	<Card.Content>
-		<ThemeSwitch />
-		<ThemeSwitch class="text-orange-400" />
+		<LightSwitch />
 	</Card.Content>
 </Card.Root>
 

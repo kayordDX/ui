@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Card, TreeView } from "$lib";
+	import { Card, TreeView, LightSwitch, ThemeSelector } from "$lib";
 	import { LayoutGridIcon } from "@lucide/svelte";
 </script>
 
@@ -7,6 +7,8 @@
 	<Card.Header>
 		<Card.Title>Test</Card.Title>
 	</Card.Header>
+	<LightSwitch />
+	<ThemeSelector />
 	<Card.Content>
 		<TreeView.Root>
 			<TreeView.Folder name="src">

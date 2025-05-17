@@ -1,6 +1,6 @@
 <script lang="ts">
 	import "../app.css";
-	import { ThemeSwitch } from "$lib";
+	import { LightSwitch } from "$lib";
 	import { ModeWatcher } from "mode-watcher";
 	import { Toaster } from "$lib/components/ui/sonner";
 	import Menu from "./Menu.svelte";
@@ -17,7 +17,7 @@
 	<Toaster />
 	<div class="flex justify-between border-b-2 p-2">
 		<img src="/logo.svg" alt="logo" class="h-10" />
-		<ThemeSwitch />
+		<LightSwitch />
 	</div>
 
 	<div class="flex flex-grow">
