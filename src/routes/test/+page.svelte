@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Card, TreeView, LightSwitch, ThemeSelector } from "$lib";
+	import { Card, TreeView, LightSwitch, ThemeSelector, InputOTP } from "$lib";
 	import { LayoutGridIcon } from "@lucide/svelte";
 </script>
 
@@ -7,6 +7,21 @@
 	<Card.Header>
 		<Card.Title>Test</Card.Title>
 	</Card.Header>
+	<InputOTP.Root maxlength={6}>
+		{#snippet children({ cells })}
+			<InputOTP.Group>
+				{#each cells.slice(0, 3) as cell (cell)}
+					<InputOTP.Slot {cell} />
+				{/each}
+			</InputOTP.Group>
+			<InputOTP.Separator />
+			<InputOTP.Group>
+				{#each cells.slice(3, 6) as cell (cell)}
+					<InputOTP.Slot {cell} />
+				{/each}
+			</InputOTP.Group>
+		{/snippet}
+	</InputOTP.Root>
 	<LightSwitch />
 	<ThemeSelector />
 	<Card.Content>
