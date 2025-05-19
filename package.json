@@ -45,7 +45,8 @@
 		"@tanstack/table-core": "^8.20.5",
 		"svelte": "^5.0.0",
 		"sveltekit-superforms": "^2.20.0",
-		"zod": "^3.23.8"
+		"zod": "^3.23.8",
+		"layerchart": "2.0.0-next.6"
 	},
 	"dependencies": {
 		"@internationalized/date": "^3.8.0",
@@ -57,7 +58,7 @@
 		"paneforge": "1.0.0-next.5",
 		"svelte-sonner": "^1.0.1",
 		"tailwind-merge": "^3.3.0",
-		"tailwind-variants": "^1.0.0",
+		"tailwind-variants": "^0.2.1",
 		"vaul-svelte": "1.0.0-next.7"
 	},
 	"devDependencies": {
