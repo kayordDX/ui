@@ -33,7 +33,7 @@
 					{@render action.child?.()}
 				{:else}
 					<DropdownMenu.Group>
-						<DropdownMenu.Label>Actions</DropdownMenu.Label>
+						<DropdownMenu.Label>{action.label}</DropdownMenu.Label>
 					</DropdownMenu.Group>
 				{/if}
 			{:else}

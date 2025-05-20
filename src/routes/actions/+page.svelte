@@ -13,7 +13,7 @@
 		<Actions
 			actions={[
 				{
-					text: "Test",
+					text: "Title",
 					icon: HomeIcon,
 					action: () => console.log("test"),
 				},
