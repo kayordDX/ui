@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Card, Form, Input } from "$lib";
+	import { Card, Form, Input, InputOTP } from "$lib";
 
 	import { z } from "zod";
 	import { type SuperValidated, superForm, type Infer } from "sveltekit-superforms";
@@ -43,5 +43,28 @@
 				<Form.Button>Submit</Form.Button>
 			</form>
 		</div>
+	</Card.Content>
+</Card.Root>
+
+<Card.Root class="m-5">
+	<Card.Header>
+		<Card.Title>Input OTP</Card.Title>
+	</Card.Header>
+	<Card.Content>
+		<InputOTP.Root maxlength={6}>
+			{#snippet children({ cells })}
+				<InputOTP.Group>
+					{#each cells.slice(0, 3) as cell (cell)}
+						<InputOTP.Slot {cell} />
+					{/each}
+				</InputOTP.Group>
+				<InputOTP.Separator />
+				<InputOTP.Group>
+					{#each cells.slice(3, 6) as cell (cell)}
+						<InputOTP.Slot {cell} />
+					{/each}
+				</InputOTP.Group>
+			{/snippet}
+		</InputOTP.Root>
 	</Card.Content>
 </Card.Root>
