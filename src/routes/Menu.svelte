@@ -19,5 +19,6 @@
 	<MenuItem path="/select" text="Select" />
 	<MenuItem path="/combobox" text="Combobox" />
 	<MenuItem path="/extras" text="Extras" />
+	<MenuItem path="/charts" text="Charts" />
 	<MenuItem path="/test" text="Test" />
 </div>

@@ -19,6 +19,9 @@ Pnpm command to install ui library.
 pnpm add -D @kayord/ui
 # install peer dependencies
 pnpm add -D @lucide/svelte zod sveltekit-superforms tailwindcss-animate
+
+# include charts
+pnpm add -D layerchart@next d3-scale d3-shape @types/d3-scale @types/d3-shape
 ```
 
 ### Manual Setup New Project
