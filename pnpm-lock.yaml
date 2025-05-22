@@ -33,8 +33,8 @@ importers:
         specifier: 1.0.0-next.5
         version: 1.0.0-next.5(svelte@5.30.2)
       svelte-sonner:
-        specifier: ^1.0.1
-        version: 1.0.1(svelte@5.30.2)
+        specifier: ^1.0.2
+        version: 1.0.2(svelte@5.30.2)
       sveltekit-superforms:
         specifier: ^2.20.0
         version: 2.20.0(@sveltejs/kit@2.21.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.30.2)(vite@6.3.5(jiti@2.4.2)(lightningcss@1.30.1)(yaml@2.6.1)))(svelte@5.30.2)(vite@6.3.5(jiti@2.4.2)(lightningcss@1.30.1)(yaml@2.6.1)))(@types/json-schema@7.0.15)(svelte@5.30.2)(typescript@5.8.3)
@@ -85,8 +85,8 @@ importers:
         specifier: ^10.1.5
         version: 10.1.5(eslint@9.27.0(jiti@2.4.2))
       eslint-plugin-svelte:
-        specifier: ^3.8.2
-        version: 3.8.2(eslint@9.27.0(jiti@2.4.2))(svelte@5.30.2)
+        specifier: ^3.9.0
+        version: 3.9.0(eslint@9.27.0(jiti@2.4.2))(svelte@5.30.2)
       happy-dom:
         specifier: ^17.4.7
         version: 17.4.7
@@ -130,8 +130,8 @@ importers:
         specifier: ^3.1.4
         version: 3.1.4(happy-dom@17.4.7)(jiti@2.4.2)(jsdom@26.0.0)(lightningcss@1.30.1)(yaml@2.6.1)
       zod:
-        specifier: ^3.25.7
-        version: 3.25.7
+        specifier: ^3.25.20
+        version: 3.25.20
 
 packages:
 
@@ -1295,8 +1295,8 @@ packages:
     peerDependencies:
       eslint: '>=7.0.0'
 
-  eslint-plugin-svelte@3.8.2:
-    resolution: {integrity: sha512-TtepyI7nqWOPBqDXu/1kAFTeus9VuMByFGj6WIxNiByCknmR7b4w5DBoQ2qhj2RY5dMXyUJGHRp/pm/J2BSRxg==}
+  eslint-plugin-svelte@3.9.0:
+    resolution: {integrity: sha512-nvIUNyyPGbr5922Kd1p/jXe+FfNdVPXsxLyrrXpwfSbZZEFdAYva9O/gm2lObC/wXkQo/AUmQkAihfmNJYeCjA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: ^8.57.1 || ^9.0.0
@@ -2120,8 +2120,8 @@ packages:
       svelte:
         optional: true
 
-  svelte-sonner@1.0.1:
-    resolution: {integrity: sha512-vz0eqcs9GNnJ2CTtTno7v/jSA0P3r+X+3y/hrJg+FPpB2rZCFywIKNKD3wiRI8449i3LXVcgQ+q5R5ocOd6ydA==}
+  svelte-sonner@1.0.2:
+    resolution: {integrity: sha512-hoidgv7hrk3XNZzjXj6/frsvZOiUOtf7Tn2du/hTu1G9PchJGEoy4EpIKyfhVKBiBrxaNFaYPFxN4pHLHCoe/w==}
     peerDependencies:
       svelte: ^5.0.0
 
@@ -2461,8 +2461,8 @@ packages:
     peerDependencies:
       zod: ^3.24.1
 
-  zod@3.25.7:
-    resolution: {integrity: sha512-YGdT1cVRmKkOg6Sq7vY7IkxdphySKnXhaUmFI4r4FcuFVNgpCb9tZfNwXbT6BPjD5oz0nubFsoo9pIqKrDcCvg==}
+  zod@3.25.20:
+    resolution: {integrity: sha512-z03fqpTMDF1G02VLKUMt6vyACE7rNWkh3gpXVHgPTw28NPtDFRGvcpTtPwn2kMKtQ0idtYJUTxchytmnqYswcw==}
 
 snapshots:
 
@@ -2745,7 +2745,7 @@ snapshots:
       date-fns: 4.1.0
       immer: 10.1.1
       lodash-es: 4.17.21
-      zod: 3.25.7
+      zod: 3.25.20
 
   '@layerstack/tailwind@2.0.0-next.4':
     dependencies:
@@ -3584,7 +3584,7 @@ snapshots:
     dependencies:
       eslint: 9.27.0(jiti@2.4.2)
 
-  eslint-plugin-svelte@3.8.2(eslint@9.27.0(jiti@2.4.2))(svelte@5.30.2):
+  eslint-plugin-svelte@3.9.0(eslint@9.27.0(jiti@2.4.2))(svelte@5.30.2):
     dependencies:
       '@eslint-community/eslint-utils': 4.7.0(eslint@9.27.0(jiti@2.4.2))
       '@jridgewell/sourcemap-codec': 1.5.0
@@ -4392,7 +4392,7 @@ snapshots:
     optionalDependencies:
       svelte: 5.30.2
 
-  svelte-sonner@1.0.1(svelte@5.30.2):
+  svelte-sonner@1.0.2(svelte@5.30.2):
     dependencies:
       runed: 0.26.0(svelte@5.30.2)
       svelte: 5.30.2
@@ -4457,8 +4457,8 @@ snapshots:
       superstruct: 2.0.2
       valibot: 0.41.0(typescript@5.8.3)
       yup: 1.4.0
-      zod: 3.25.7
-      zod-to-json-schema: 3.24.5(zod@3.25.7)
+      zod: 3.25.20
+      zod-to-json-schema: 3.24.5(zod@3.25.20)
     transitivePeerDependencies:
       - '@types/json-schema'
       - typescript
@@ -4724,9 +4724,9 @@ snapshots:
 
   zimmerframe@1.1.2: {}
 
-  zod-to-json-schema@3.24.5(zod@3.25.7):
+  zod-to-json-schema@3.24.5(zod@3.25.20):
     dependencies:
-      zod: 3.25.7
+      zod: 3.25.20
     optional: true
 
-  zod@3.25.7: {}
+  zod@3.25.20: {}
