@@ -4,20 +4,20 @@
 	import { Card, Chart } from "$lib";
 
 	const chartData = [
-		{ browser: "chrome", visitors: 275, color: "var(--color-chrome)" },
-		{ browser: "safari", visitors: 200, color: "var(--color-safari)" },
-		{ browser: "firefox", visitors: 187, color: "var(--color-firefox)" },
-		{ browser: "edge", visitors: 173, color: "var(--color-edge)" },
-		{ browser: "other", visitors: 90, color: "var(--color-other)" },
+		{ browser: "chrome", visitors: 275 },
+		{ browser: "safari", visitors: 200 },
+		{ browser: "firefox", visitors: 187 },
+		{ browser: "edge", visitors: 173 },
+		{ browser: "other", visitors: 90 },
 	];
 
 	const chartConfig = {
 		visitors: { label: "Visitors" },
-		chrome: { label: "Chrome", color: "var(--chart-1)" },
-		safari: { label: "Safari", color: "var(--chart-2)" },
-		firefox: { label: "Firefox", color: "var(--chart-3)" },
-		edge: { label: "Edge", color: "var(--chart-4)" },
-		other: { label: "Other", color: "var(--chart-5)" },
+		chrome: { label: "Chrome" },
+		safari: { label: "Safari" },
+		firefox: { label: "Firefox" },
+		edge: { label: "Edge" },
+		other: { label: "Other" },
 	} satisfies Chart.ChartConfig;
 </script>
 
@@ -32,8 +32,6 @@
 				data={chartData}
 				key="browser"
 				value="visitors"
-				cRange={chartData.map((d) => d.color)}
-				c="color"
 				props={{
 					pie: {
 						motion: "tween",

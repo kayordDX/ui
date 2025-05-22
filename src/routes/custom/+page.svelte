@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Loader, LightSwitch, Actions, ThemeSelector } from "$lib";
+	import { Loader, LightSwitch, Actions, ThemeSelector, NumberTicker } from "$lib";
 	import ProgressLoading from "$lib/components/custom/progress-loading/ProgressLoading.svelte";
 	import { Button, Card } from "$lib/components/ui";
 	import { HomeIcon, MoreHorizontalIcon } from "@lucide/svelte";
@@ -64,5 +64,14 @@
 		/>
 
 		<Actions actions={[{ text: "Test", action: () => console.log("test") }]} />
+	</Card.Content>
+</Card.Root>
+
+<Card.Root class="m-5">
+	<Card.Header>
+		<Card.Title>Number Ticker</Card.Title>
+	</Card.Header>
+	<Card.Content>
+		<NumberTicker value={1000} duration={800} class="text-4xl font-bold" />
 	</Card.Content>
 </Card.Root>

@@ -15,7 +15,7 @@
 	];
 
 	const chartConfig = {
-		desktop: { label: "Desktop", color: "var(--chart-1)" },
+		desktop: { label: "Desktop", color: "var(--color-primary)" },
 	} satisfies Chart.ChartConfig;
 
 	let context = $state<ChartContextValue>();
