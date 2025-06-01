@@ -63,14 +63,9 @@
 		},
 		(state) => (sss = state)
 	);
-
-	$inspect(sss);
-
-	const tttt = $derived(table.getState());
 </script>
 
 <DataTable {table} headerClass="mt-2" enableVisibility enableFullscreen />
-<div>"globalFilter": {JSON.stringify(table.getState())}</div>
 <Button onclick={() => table.setColumnFilters([{ id: "name", value: "z" }])}>Filter 1</Button>
 <Button onclick={() => table.resetColumnFilters()}>Reset</Button>
 <Button onclick={() => table.setGlobalFilter("z")}>Global Filter</Button>

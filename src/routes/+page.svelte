@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Accordion, Button, Card, Table } from "$lib";
+	import { Accordion, Alert, Button, Card, Table } from "$lib";
 	import Mail from "@lucide/svelte/icons/mail";
 	import ChevronRight from "@lucide/svelte/icons/chevron-right";
 </script>
@@ -50,18 +50,10 @@
 	</Card.Header>
 	<Card.Content>
 		<div class="flex space-x-2">
-			<Button>Default</Button>
-			<Button variant="ghost">Ghost</Button>
-			<Button variant="outline">Outline</Button>
-			<Button variant="link">Link</Button>
-			<Button variant="secondary">Secondary</Button>
-			<Button>
-				<Mail class="mr-2 h-4 w-4" />
-				Icon Text
-			</Button>
-			<Button variant="outline" size="icon">
-				<ChevronRight className="h-4 w-4" />
-			</Button>
+			<Alert.Root>
+				<Alert.Title>Title</Alert.Title>
+				<Alert.Description>Description</Alert.Description>
+			</Alert.Root>
 		</div>
 	</Card.Content>
 </Card.Root>
