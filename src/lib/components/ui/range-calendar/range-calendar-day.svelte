@@ -4,8 +4,6 @@
 	import { cn } from "$lib/utils.js";
 
 	let { ref = $bindable(null), class: className, ...restProps }: RangeCalendarPrimitive.DayProps = $props();
-
-	export { className as class };
 </script>
 
 <RangeCalendarPrimitive.Day
