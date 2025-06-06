@@ -1,16 +1,16 @@
 <script lang="ts">
-	import { Accordion, Alert, Button, Card, Table } from "$lib";
+	import { Card, Button, CopyButton } from "$lib";
 	import Mail from "@lucide/svelte/icons/mail";
 	import ChevronRight from "@lucide/svelte/icons/chevron-right";
 </script>
 
 <Card.Root class="m-5">
 	<Card.Header>
-		<Card.Title>Buttons</Card.Title>
+		<Card.Title>Button</Card.Title>
 	</Card.Header>
 	<Card.Content>
 		<div class="flex space-x-2">
-			<Button variant="default">Default</Button>
+			<Button>Default</Button>
 			<Button variant="ghost">Ghost</Button>
 			<Button variant="outline">Outline</Button>
 			<Button variant="link">Link</Button>
@@ -22,38 +22,7 @@
 			<Button variant="outline" size="icon">
 				<ChevronRight className="h-4 w-4" />
 			</Button>
-		</div>
-	</Card.Content>
-</Card.Root>
-
-<Card.Root class="m-5">
-	<Card.Header>
-		<Card.Title>Accordion</Card.Title>
-	</Card.Header>
-	<Card.Content>
-		<Accordion.Root type="single">
-			<Accordion.Item value="item-1">
-				<Accordion.Trigger>Item 1</Accordion.Trigger>
-				<Accordion.Content>Item Content</Accordion.Content>
-			</Accordion.Item>
-			<Accordion.Item value="item-2">
-				<Accordion.Trigger>Item 2</Accordion.Trigger>
-				<Accordion.Content>Item Content yeah</Accordion.Content>
-			</Accordion.Item>
-		</Accordion.Root>
-	</Card.Content>
-</Card.Root>
-
-<Card.Root class="m-5">
-	<Card.Header>
-		<Card.Title>Alert</Card.Title>
-	</Card.Header>
-	<Card.Content>
-		<div class="flex space-x-2">
-			<Alert.Root>
-				<Alert.Title>Title</Alert.Title>
-				<Alert.Description>Description</Alert.Description>
-			</Alert.Root>
+			<CopyButton text="text to copy to clipboard" />
 		</div>
 	</Card.Content>
 </Card.Root>

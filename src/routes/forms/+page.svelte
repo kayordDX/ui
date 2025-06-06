@@ -1,5 +1,20 @@
 <script lang="ts">
-	import { Card, Form, Input, InputOTP } from "$lib";
+	import {
+		Card,
+		Checkbox,
+		Combobox,
+		Form,
+		Input,
+		InputOTP,
+		Label,
+		RadioGroup,
+		Select,
+		Slider,
+		Switch,
+		Textarea,
+		Toggle,
+		ToggleGroup,
+	} from "$lib";
 
 	import { z } from "zod";
 	import { type SuperValidated, superForm, type Infer } from "sveltekit-superforms";
@@ -21,6 +36,15 @@
 	type FormSchema = typeof formSchema;
 
 	const { form: formData, enhance } = form;
+
+	const items = [
+		{ value: "light", label: "Light" },
+		{ value: "dark", label: "Dark" },
+		{ value: "system", label: "System" },
+	];
+
+	let selectedValue = $state<string | undefined>(undefined);
+	const triggerContent = $derived(items.find((f) => f.value === selectedValue)?.label ?? "Theme");
 </script>
 
 <Card.Root class="m-5">
@@ -40,6 +64,7 @@
 						{/snippet}
 					</Form.Control>
 				</Form.Field>
+				<Textarea placeholder="Type your message here." />
 				<Form.Button>Submit</Form.Button>
 			</form>
 		</div>
@@ -67,4 +92,81 @@
 			{/snippet}
 		</InputOTP.Root>
 	</Card.Content>
+</Card.Root>
+
+<Card.Root class="m-5">
+	<Card.Header>
+		<Card.Title>Select</Card.Title>
+	</Card.Header>
+	<Card.Content>
+		<Select.Root type="single" bind:value={selectedValue} {items}>
+			<Select.Trigger class="w-[180px]">{triggerContent}</Select.Trigger>
+			<Select.Content>
+				{#each items as item}
+					<Select.Item value={item.value}>{item.label}</Select.Item>
+				{/each}
+			</Select.Content>
+		</Select.Root>
+	</Card.Content>
+</Card.Root>
+
+<Card.Root class="m-5">
+	<Card.Header>
+		<Card.Title>Combobox</Card.Title>
+	</Card.Header>
+	<Card.Content>
+		<Combobox
+			name="test"
+			items={[
+				{ value: 1, label: "test" },
+				{
+					value: 2,
+					label: "what",
+				},
+			]}
+		/>
+	</Card.Content>
+
+	<Card.Root class="m-5">
+		<Card.Header>
+			<Card.Title>Basic</Card.Title>
+		</Card.Header>
+		<Card.Content class="flex flex-col gap-4">
+			<div class="flex items-center space-x-2">
+				<Switch id="switch" />
+				<Label for="switch">Switch</Label>
+			</div>
+			<Toggle aria-label="toggle bold">Toggle</Toggle>
+
+			<ToggleGroup.Root type="single">
+				<ToggleGroup.Item value="a">A</ToggleGroup.Item>
+				<ToggleGroup.Item value="b">B</ToggleGroup.Item>
+				<ToggleGroup.Item value="c">C</ToggleGroup.Item>
+			</ToggleGroup.Root>
+
+			<Slider type="single" max={100} step={1} />
+
+			<RadioGroup.Root value="option-one">
+				<div class="flex items-center space-x-2">
+					<RadioGroup.Item value="option-one" id="option-one" />
+					<Label for="option-one">Option One</Label>
+				</div>
+				<div class="flex items-center space-x-2">
+					<RadioGroup.Item value="option-two" id="option-two" />
+					<Label for="option-two">Option Two</Label>
+				</div>
+			</RadioGroup.Root>
+
+			<div class="flex items-center space-x-2">
+				<Checkbox id="terms" aria-labelledby="terms-label" />
+				<Label
+					id="terms-label"
+					for="terms"
+					class="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+				>
+					Accept terms and conditions
+				</Label>
+			</div>
+		</Card.Content>
+	</Card.Root>
 </Card.Root>
