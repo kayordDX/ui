@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Card, Alert, Avatar, Badge } from "$lib";
+	import { Card, Alert, Avatar, Badge, Progress } from "$lib";
 	import AlertCircle from "@lucide/svelte/icons/circle-alert";
 </script>
 
@@ -53,5 +53,14 @@
 			<Badge variant="outline">Outline</Badge>
 			<Badge variant="secondary">Secondary</Badge>
 		</div>
+	</Card.Content>
+</Card.Root>
+
+<Card.Root class="m-5">
+	<Card.Header>
+		<Card.Title>Progress</Card.Title>
+	</Card.Header>
+	<Card.Content>
+		<Progress value={30} max={100} class="w-[50%]" />
 	</Card.Content>
 </Card.Root>

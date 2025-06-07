@@ -12,6 +12,6 @@ describe("/+page.svelte", () => {
 describe("/+page.svelte", () => {
 	test("should render buttons", () => {
 		render(Page);
-		expect(screen.getByText("Buttons")).toBeInTheDocument();
+		expect(screen.getByText("Button")).toBeInTheDocument();
 	});
 });
