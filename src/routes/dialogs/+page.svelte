@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Card, AlertDialog, Button, Drawer, toast } from "$lib";
+	import { Card, AlertDialog, Button, Drawer, toast, DropdownMenu } from "$lib";
 </script>
 
 <Card.Root class="m-5">
@@ -61,5 +61,28 @@
 		>
 			Show Toast
 		</Button>
+	</Card.Content>
+</Card.Root>
+
+<Card.Root class="m-5">
+	<Card.Header>
+		<Card.Title>DropDown</Card.Title>
+	</Card.Header>
+	<Card.Content>
+		<DropdownMenu.Root>
+			<DropdownMenu.Trigger>
+				<Button>Open</Button>
+			</DropdownMenu.Trigger>
+			<DropdownMenu.Content>
+				<DropdownMenu.Group>
+					<DropdownMenu.Label>My Account</DropdownMenu.Label>
+					<DropdownMenu.Separator />
+					<DropdownMenu.Item>Profile</DropdownMenu.Item>
+					<DropdownMenu.Item>Billing</DropdownMenu.Item>
+					<DropdownMenu.Item>Team</DropdownMenu.Item>
+					<DropdownMenu.Item>Subscription</DropdownMenu.Item>
+				</DropdownMenu.Group>
+			</DropdownMenu.Content>
+		</DropdownMenu.Root>
 	</Card.Content>
 </Card.Root>
