@@ -1,10 +1,28 @@
 <script lang="ts">
-	import { Loader, LightSwitch, Actions, ThemeSelector, NumberTicker } from "$lib";
+	import { Loader, LightSwitch, Actions, ThemeSelector, NumberTicker, AvatarGroup } from "$lib";
 	import ProgressLoading from "$lib/components/custom/progress-loading/ProgressLoading.svelte";
 	import { Button, Card } from "$lib/components/ui";
 	import { HomeIcon, MoreHorizontalIcon } from "@lucide/svelte";
 
 	let isLoading = $state(true);
+
+	const members = [
+		{
+			username: "huntabyte",
+			image: "https://github.com/huntabyte.png",
+		},
+		{
+			username: "AdrianGonz97",
+			image: "https://github.com/AdrianGonz97.png",
+		},
+		{
+			username: "shyakadavis",
+			image: "https://github.com/shyakadavis.png",
+		},
+		{
+			username: "Another Day",
+		},
+	];
 </script>
 
 <Card.Root class="m-5">
@@ -73,5 +91,24 @@
 	</Card.Header>
 	<Card.Content>
 		<NumberTicker value={1000} duration={800} class="text-4xl font-bold" />
+	</Card.Content>
+</Card.Root>
+
+<Card.Root class="m-5">
+	<Card.Header>
+		<Card.Title>Avatar Group</Card.Title>
+	</Card.Header>
+	<Card.Content>
+		<AvatarGroup.Root>
+			{#each members as member (member.username)}
+				<AvatarGroup.Member>
+					<AvatarGroup.MemberImage src={member.image} alt={member.username} />
+					<AvatarGroup.MemberFallback>
+						{member.username[0]}
+					</AvatarGroup.MemberFallback>
+				</AvatarGroup.Member>
+			{/each}
+			<AvatarGroup.Etc plus={2} />
+		</AvatarGroup.Root>
 	</Card.Content>
 </Card.Root>

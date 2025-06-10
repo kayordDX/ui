@@ -8,3 +8,4 @@ export * as TreeView from "$lib/components/custom/tree-view/index.js";
 export { ThemeSelector } from "$lib/components/custom/theme-selector/index.js";
 export { LightSwitch } from "$lib/components/custom/light-switch.svelte/index.js";
 export * from "$lib/components/custom/animations/index.js";
+export * as AvatarGroup from "$lib/components/custom/avatar-group/index.js";
