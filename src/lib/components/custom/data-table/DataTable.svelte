@@ -138,6 +138,7 @@
 						<Table.Row data-state={row.getIsSelected() && "selected"}>
 							{#each row.getVisibleCells() as cell}
 								<Table.Cell
+									class={cell.column.columnDef.meta?.className}
 									style={`width: ${cell.column.getSize()}px; min-width:${cell.column.columnDef.minSize}px; max-width:${cell.column.columnDef.maxSize}px`}
 								>
 									<FlexRender content={cell.column.columnDef.cell} context={cell.getContext()} />
