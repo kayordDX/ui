@@ -21,6 +21,9 @@
 			header: "Name",
 			cell: (info) => info.getValue(),
 			size: 100000,
+			meta: {
+				className: "whitespace-pre",
+			},
 		},
 		{
 			header: "Day",
