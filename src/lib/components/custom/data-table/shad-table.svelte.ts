@@ -220,12 +220,5 @@ export function createShadTable<TData extends RowData>(
 	// $effect.pre(() => {
 	// 	updateOptions(table, state);
 	// });
-
-	if (stateUpdate) {
-		$effect.pre(() => {
-			stateUpdate(state);
-		});
-	}
-
 	return table;
 }

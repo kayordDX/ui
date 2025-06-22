@@ -111,8 +111,4 @@
 	});
 </script>
 
-{#snippet test(value: string)}
-	<div>Test: {value}</div>
-{/snippet}
-
 <DataTable {table} enableVisibility enableFullscreen headerClass="mt-2" />
