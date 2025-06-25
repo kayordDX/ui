@@ -21,7 +21,6 @@ interface ShadTableOptions<TData extends RowData> extends Omit<TableOptions<TDat
 	enablePaging?: boolean;
 	enableVisibility?: boolean;
 	enableRowSelectionUI?: boolean;
-	defaultState?: Partial<TableState>;
 }
 
 export function createShadTable<TData extends RowData>(shadOptions: ShadTableOptions<TData>) {
@@ -196,11 +195,6 @@ export function createShadTable<TData extends RowData>(shadOptions: ShadTableOpt
 
 	const table = createTable(resolvedOptions);
 	let state = $state<Partial<TableState>>(table.initialState);
-
-	// DefaultState
-	if (shadOptions.defaultState) {
-		state = { ...state, ...shadOptions.defaultState };
-	}
 
 	const updateOptions = (table: Table<TData>, state: Partial<TableState>) => {
 		table.setOptions((prev) => {
