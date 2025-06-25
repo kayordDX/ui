@@ -53,7 +53,6 @@
 				return search;
 			},
 		},
-		defaultState: decodeTableState(),
 	});
 
 	$effect(() => {
