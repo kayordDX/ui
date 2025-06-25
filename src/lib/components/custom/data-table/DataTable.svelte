@@ -36,6 +36,7 @@
 		class?: string;
 		headerClass?: string;
 		disableUISorting?: boolean;
+		useQueryParamState?: boolean;
 	}
 
 	let {
@@ -53,11 +54,31 @@
 		class: className,
 		headerClass,
 		disableUISorting = false,
+		useQueryParamState = false,
 	}: Props<T> = $props();
 
 	const tableStore = new TableStore();
 	const isPaginationEnabled = table.options.getPaginationRowModel !== undefined;
 	let end: HTMLElement | undefined = $state();
+
+	$effect(() => {
+		if (useQueryParamState) {
+			const params = encodeTableState(table.getState());
+			goto(params, {
+				replaceState: true,
+				keepFocus: true,
+				noScroll: true,
+			});
+		}
+	});
+	onMount(() => {
+		if (useQueryParamState) {
+			table.setColumnFilters(decodeColumnFilters());
+			table.setGlobalFilter(decodeGlobalFilter());
+			table.setSorting(decodeSorting());
+			table.setPageIndex(decodePageIndex());
+		}
+	});
 </script>
 
 <div

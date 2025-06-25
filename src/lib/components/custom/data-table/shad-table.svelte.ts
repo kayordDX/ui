@@ -217,8 +217,9 @@ export function createShadTable<TData extends RowData>(
 
 	updateOptions(table, state);
 
-	// $effect.pre(() => {
-	// 	updateOptions(table, state);
-	// });
+	$effect.pre(() => {
+		updateOptions(table, state);
+	});
+
 	return table;
 }
