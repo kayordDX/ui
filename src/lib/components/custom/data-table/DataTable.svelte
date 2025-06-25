@@ -73,10 +73,10 @@
 	});
 	onMount(() => {
 		if (useQueryParamState) {
-			table.setPageIndex(decodePageIndex());
+			table.setColumnFilters(decodeColumnFilters());
 			table.setSorting(decodeSorting());
 			table.setGlobalFilter(decodeGlobalFilter());
-			table.setColumnFilters(decodeColumnFilters());
+			table.setPageIndex(decodePageIndex());
 		}
 	});
 </script>

@@ -75,16 +75,16 @@ export const encodeTableState = (state: TableState, options?: Options, searchPar
 		options = {};
 	}
 
-	options.sorting = options.sorting ?? true;
-	options.globalFilter = options.globalFilter ?? true;
 	options.pagination = options.pagination ?? true;
+	options.globalFilter = options.globalFilter ?? true;
+	options.sorting = options.sorting ?? true;
 	options.columnFilter = options.columnFilter ?? true;
 
-	if (options.globalFilter && state.globalFilter?.length > 0) {
-		searchParams.set("globalFilter", encodeGlobalFilter(state));
-	}
 	if (options.pagination && state.pagination.pageIndex != 0) {
 		searchParams.set("page", encodePageIndex(state));
+	}
+	if (options.globalFilter && state.globalFilter?.length > 0) {
+		searchParams.set("globalFilter", encodeGlobalFilter(state));
 	}
 	if (options.sorting && state.sorting?.length > 0) {
 		searchParams.set("sort", encodeSorting(state));
