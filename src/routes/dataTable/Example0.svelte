@@ -8,23 +8,13 @@
 	import { data } from "./data.svelte";
 	import { DataTable, createShadTable } from "$lib";
 	import Input from "$lib/components/ui/input/input.svelte";
-	import { page } from "$app/state";
-	import { goto } from "$app/navigation";
-	import {
-		decodePageIndex,
-		decodeSorting,
-		encodeTableState,
-	} from "$lib/components/custom/data-table/table-search-params";
+	import { decodeGlobalFilter } from "$lib/components/custom/data-table/table-search-params";
+	import { onMount } from "svelte";
 
-	let search = $state(page.url.searchParams.get("globalFilter") ?? "");
+	let search = $state("");
 
-	$effect(() => {
-		const params = encodeTableState(table.getState());
-		goto(params, {
-			replaceState: true,
-			keepFocus: true,
-			noScroll: true,
-		});
+	onMount(() => {
+		search = decodeGlobalFilter();
 	});
 
 	const columns: ColumnDef<DataType>[] = [
@@ -50,12 +40,6 @@
 		columns,
 		data: data.value,
 		enableRowSelection: false,
-		initialState: {
-			pagination: {
-				pageIndex: decodePageIndex(),
-			},
-			sorting: decodeSorting(),
-		},
 		state: {
 			get globalFilter() {
 				return search;
@@ -65,4 +49,4 @@
 </script>
 
 <Input bind:value={search} />
-<DataTable {table} enableFullscreen headerClass="mt-2" />
+<DataTable {table} enableFullscreen headerClass="mt-2" useQueryParamState />

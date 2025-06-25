@@ -3,7 +3,7 @@
 	import { FlexRender } from "$lib/components/ui/data-table";
 	import { Skeleton, Table } from "$lib/components/ui";
 	import Pagination from "./Pagination.svelte";
-	import type { Snippet } from "svelte";
+	import { onMount, type Snippet } from "svelte";
 	import { fade } from "svelte/transition";
 	import { ProgressLoading } from "../progress-loading";
 	import FullscreenModeToggle from "./FullscreenModeToggle.svelte";
@@ -12,6 +12,14 @@
 	import DataTableHeader from "./DataTableHeader.svelte";
 	import VisibilitySelect from "./VisibilitySelect.svelte";
 	import DataTableFooter from "./DataTableFooter.svelte";
+	import { goto } from "$app/navigation";
+	import {
+		decodeColumnFilters,
+		decodeGlobalFilter,
+		decodePageIndex,
+		decodeSorting,
+		encodeTableState,
+	} from "./table-search-params";
 
 	interface Props<T> {
 		table: TableType<T>;
@@ -28,6 +36,7 @@
 		class?: string;
 		headerClass?: string;
 		disableUISorting?: boolean;
+		useQueryParamState?: boolean;
 	}
 
 	let {
@@ -45,11 +54,31 @@
 		class: className,
 		headerClass,
 		disableUISorting = false,
+		useQueryParamState = false,
 	}: Props<T> = $props();
 
 	const tableStore = new TableStore();
 	const isPaginationEnabled = table.options.getPaginationRowModel !== undefined;
 	let end: HTMLElement | undefined = $state();
+
+	$effect(() => {
+		if (useQueryParamState) {
+			const params = encodeTableState(table.getState());
+			goto(params, {
+				replaceState: true,
+				keepFocus: true,
+				noScroll: true,
+			});
+		}
+	});
+	onMount(() => {
+		if (useQueryParamState) {
+			table.setPageIndex(decodePageIndex());
+			table.setSorting(decodeSorting());
+			table.setGlobalFilter(decodeGlobalFilter());
+			table.setColumnFilters(decodeColumnFilters());
+		}
+	});
 </script>
 
 <div

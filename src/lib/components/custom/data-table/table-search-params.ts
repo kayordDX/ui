@@ -26,7 +26,7 @@ export const encodeGlobalFilter = (state: TableState) => {
 };
 
 export const decodeGlobalFilter = () => {
-	return page.url.searchParams.get("globalFilter");
+	return page.url.searchParams.get("globalFilter") ?? "";
 };
 
 export const encodePageIndex = (state: TableState) => {
@@ -43,19 +43,21 @@ export const encodeColumnFilters = (state: TableState) => {
 };
 
 export const decodeColumnFilters = () => {
-	return page.url.searchParams
-		.get("columnFilters")
-		?.split(",")
-		.map((v) => {
-			const [id, stringValue] = v.split(".");
-			if (!id) throw new Error("Invalid columnFilters");
-			if (stringValue === undefined) throw new Error("Invalid columnFilters");
-			return {
-				id,
-				value: stringValue === "undefined" ? undefined : JSON.parse(decodeURIComponent(stringValue)),
-			};
-		})
-		.filter((x) => x !== null);
+	return (
+		page.url.searchParams
+			.get("columnFilters")
+			?.split(",")
+			.map((v) => {
+				const [id, stringValue] = v.split(".");
+				if (!id) throw new Error("Invalid columnFilters");
+				if (stringValue === undefined) throw new Error("Invalid columnFilters");
+				return {
+					id,
+					value: stringValue === "undefined" ? undefined : JSON.parse(decodeURIComponent(stringValue)),
+				};
+			})
+			.filter((x) => x !== null) ?? []
+	);
 };
 
 interface Options {
