@@ -8,7 +8,7 @@ import type { TableState } from "@tanstack/table-core";
   columnFilters
 */
 
-export const encodeSorting = (state: TableState) => {
+export const encodeSorting = (state: Partial<TableState>) => {
 	return state.sorting?.map((s) => `${s.desc ? "-" : ""}${s.id}`).join(",") ?? "";
 };
 
@@ -21,7 +21,7 @@ export const decodeSorting = () => {
 	);
 };
 
-export const encodeGlobalFilter = (state: TableState) => {
+export const encodeGlobalFilter = (state: Partial<TableState>) => {
 	return state.globalFilter;
 };
 
@@ -29,17 +29,19 @@ export const decodeGlobalFilter = () => {
 	return page.url.searchParams.get("globalFilter") ?? "";
 };
 
-export const encodePageIndex = (state: TableState) => {
-	return state.pagination?.pageIndex?.toString() ?? undefined;
+export const encodePageIndex = (state: Partial<TableState>) => {
+	return state.pagination?.pageIndex?.toString() ?? "";
 };
 export const decodePageIndex = () => {
 	return Number(page.url.searchParams.get("page") ?? "0");
 };
 
-export const encodeColumnFilters = (state: TableState) => {
-	return state.columnFilters
-		?.map(({ id, value }) => `${id}.${encodeURIComponent(JSON.stringify(value).replaceAll(".", "%2E"))}`)
-		.join(",");
+export const encodeColumnFilters = (state: Partial<TableState>) => {
+	return (
+		state.columnFilters
+			?.map(({ id, value }) => `${id}.${encodeURIComponent(JSON.stringify(value).replaceAll(".", "%2E"))}`)
+			.join(",") ?? ""
+	);
 };
 
 export const decodeColumnFilters = () => {
@@ -67,7 +69,19 @@ interface Options {
 	columnFilter?: boolean;
 }
 
-export const encodeTableState = (state: TableState, options?: Options, searchParams?: URLSearchParams) => {
+export const decodeTableState = (): Partial<TableState> => {
+	return {
+		pagination: {
+			pageIndex: decodePageIndex(),
+			pageSize: 10,
+		},
+		sorting: decodeSorting(),
+		columnFilters: decodeColumnFilters(),
+		globalFilter: decodeGlobalFilter(),
+	};
+};
+
+export const encodeTableState = (state: Partial<TableState>, options?: Options, searchParams?: URLSearchParams) => {
 	if (searchParams === undefined) {
 		searchParams = new URLSearchParams();
 	}
@@ -80,16 +94,16 @@ export const encodeTableState = (state: TableState, options?: Options, searchPar
 	options.sorting = options.sorting ?? true;
 	options.columnFilter = options.columnFilter ?? true;
 
-	if (options.pagination && state.pagination.pageIndex != 0) {
+	if (options.pagination && state.pagination?.pageIndex != 0) {
 		searchParams.set("page", encodePageIndex(state));
 	}
 	if (options.globalFilter && state.globalFilter?.length > 0) {
 		searchParams.set("globalFilter", encodeGlobalFilter(state));
 	}
-	if (options.sorting && state.sorting?.length > 0) {
+	if (options.sorting && (state.sorting?.length ?? 0) > 0) {
 		searchParams.set("sort", encodeSorting(state));
 	}
-	if (options.columnFilter && state.columnFilters?.length > 0) {
+	if (options.columnFilter && (state.columnFilters?.length ?? 0) > 0) {
 		searchParams.set("columnFilters", encodeColumnFilters(state));
 	}
 	return `?${searchParams.toString()}`;

@@ -13,6 +13,7 @@
 		decodeGlobalFilter,
 		decodePageIndex,
 		decodeSorting,
+		decodeTableState,
 		encodeTableState,
 	} from "$lib/components/custom/data-table/table-search-params";
 	import { onMount } from "svelte";
@@ -52,6 +53,7 @@
 				return search;
 			},
 		},
+		defaultState: decodeTableState(),
 	});
 
 	$effect(() => {
@@ -61,12 +63,6 @@
 			keepFocus: true,
 			noScroll: true,
 		});
-	});
-	onMount(() => {
-		table.setColumnFilters(decodeColumnFilters());
-		table.setSorting(decodeSorting());
-		table.setGlobalFilter(decodeGlobalFilter());
-		table.setPageIndex(decodePageIndex());
 	});
 </script>
 

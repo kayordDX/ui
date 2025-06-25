@@ -6,6 +6,7 @@ export {
 	decodeGlobalFilter,
 	decodePageIndex,
 	decodeSorting,
+	decodeTableState,
 	encodeColumnFilters,
 	encodeGlobalFilter,
 	encodePageIndex,
