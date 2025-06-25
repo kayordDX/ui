@@ -8,8 +8,15 @@
 	import { data } from "./data.svelte";
 	import { DataTable, createShadTable } from "$lib";
 	import Input from "$lib/components/ui/input/input.svelte";
-	import { decodeGlobalFilter } from "$lib/components/custom/data-table/table-search-params";
+	import {
+		decodeColumnFilters,
+		decodeGlobalFilter,
+		decodePageIndex,
+		decodeSorting,
+		encodeTableState,
+	} from "$lib/components/custom/data-table/table-search-params";
 	import { onMount } from "svelte";
+	import { goto } from "$app/navigation";
 
 	let search = $state("");
 
@@ -46,7 +53,22 @@
 			},
 		},
 	});
+
+	$effect(() => {
+		const params = encodeTableState(table.getState());
+		goto(params, {
+			replaceState: true,
+			keepFocus: true,
+			noScroll: true,
+		});
+	});
+	onMount(() => {
+		table.setColumnFilters(decodeColumnFilters());
+		table.setSorting(decodeSorting());
+		table.setGlobalFilter(decodeGlobalFilter());
+		table.setPageIndex(decodePageIndex());
+	});
 </script>
 
 <Input bind:value={search} />
-<DataTable {table} enableFullscreen headerClass="mt-2" useQueryParamState />
+<DataTable {table} enableFullscreen headerClass="mt-2" />
