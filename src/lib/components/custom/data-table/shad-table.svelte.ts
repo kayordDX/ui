@@ -32,6 +32,10 @@ export function createShadTable<TData extends RowData>(shadOptions: ShadTableOpt
 		shadOptions.manualPagination = true;
 	}
 
+	if (shadOptions.useURLSearchParams) {
+		shadOptions.autoResetPageIndex = false;
+	}
+
 	const options: TableOptions<TData> = shadOptions as TableOptions<TData>;
 
 	// Features

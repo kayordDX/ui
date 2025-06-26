@@ -36,8 +36,6 @@
 		},
 	];
 
-	let sss = $state<Partial<TableState>>({});
-
 	let globalFilter: GlobalFilterTableState = $state({ globalFilter: undefined });
 	const setGlobalFilter = (updater: Updater<GlobalFilterTableState>) => {
 		if (updater instanceof Function) {
@@ -45,24 +43,21 @@
 		} else globalFilter = updater;
 	};
 
-	const table = createShadTable(
-		{
-			columns,
-			get data() {
-				return data.value;
-			},
-			state: {
-				get globalFilter() {
-					return globalFilter;
-				},
-			},
-			onGlobalFilterChange: setGlobalFilter,
-			enableRowSelection: false,
-			enableVisibility: true,
-			enableGlobalFilter: true,
+	const table = createShadTable({
+		columns,
+		get data() {
+			return data.value;
 		},
-		(state) => (sss = state)
-	);
+		state: {
+			get globalFilter() {
+				return globalFilter;
+			},
+		},
+		onGlobalFilterChange: setGlobalFilter,
+		enableRowSelection: false,
+		enableVisibility: true,
+		enableGlobalFilter: true,
+	});
 </script>
 
 <DataTable {table} headerClass="mt-2" enableVisibility enableFullscreen />

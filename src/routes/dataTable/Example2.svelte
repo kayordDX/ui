@@ -35,18 +35,16 @@
 
 	let sss = $state<Partial<TableState>>({});
 
-	const table = createShadTable(
-		{
-			columns,
-			get data() {
-				return data.value;
-			},
-			enableRowSelection: false,
-			enableVisibility: true,
-			enablePaging: false,
+	const table = createShadTable({
+		columns,
+		get data() {
+			return data.value;
 		},
-		(state) => (sss = state)
-	);
+		state: sss,
+		enableRowSelection: false,
+		enableVisibility: true,
+		enablePaging: false,
+	});
 
 	const addRecord = () => {
 		// data.value.push({ day: "1", id: 99, name: "1" });

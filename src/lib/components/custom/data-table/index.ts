@@ -13,3 +13,4 @@ export {
 	encodeSorting,
 	encodeTableState,
 } from "./table-search-params";
+export type { CustomColumnMeta, CustomOptions } from "./types";

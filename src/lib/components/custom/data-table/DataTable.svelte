@@ -12,7 +12,7 @@
 	import DataTableHeader from "./DataTableHeader.svelte";
 	import VisibilitySelect from "./VisibilitySelect.svelte";
 	import DataTableFooter from "./DataTableFooter.svelte";
-	import { goto } from "$app/navigation";
+	import { beforeNavigate, goto } from "$app/navigation";
 	import {
 		decodeColumnFilters,
 		decodeGlobalFilter,
@@ -20,6 +20,7 @@
 		decodeSorting,
 		encodeTableState,
 	} from "./table-search-params";
+	import { de } from "zod/v4/locales";
 
 	interface Props<T> {
 		table: TableType<T>;
@@ -57,6 +58,45 @@
 
 	const tableStore = new TableStore();
 	const isPaginationEnabled = table.options.getPaginationRowModel !== undefined;
+
+	// Load Default Values from Page Params
+	onMount(() => {
+		if (table.options.useURLSearchParams) {
+			table.setPageIndex(decodePageIndex());
+			table.setSorting(decodeSorting());
+			table.setGlobalFilter(decodeGlobalFilter());
+			table.setColumnFilters(decodeColumnFilters());
+		}
+	});
+
+	// Reset pageIndex
+	beforeNavigate((navigation) => {
+		if (table.options.useURLSearchParams) {
+			if (Number(navigation.to?.url.searchParams.get("page") ?? "0") > 0) {
+				if (
+					navigation.from?.url.searchParams.get("sort") != navigation.to?.url.searchParams.get("sort") ||
+					navigation.from?.url.searchParams.get("globalFilter") !=
+						navigation.to?.url.searchParams.get("globalFilter") ||
+					navigation.from?.url.searchParams.get("columnFilters") != navigation.to?.url.searchParams.get("columnFilters")
+				) {
+					table.resetPageIndex();
+				}
+			}
+		}
+	});
+
+	// Set URL Page Params
+	$effect(() => {
+		if (table.options.useURLSearchParams) {
+			const params = encodeTableState(table.getState());
+			goto(params, {
+				replaceState: true,
+				keepFocus: true,
+				noScroll: true,
+			});
+		}
+	});
+
 	let end: HTMLElement | undefined = $state();
 </script>
 

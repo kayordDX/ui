@@ -8,22 +8,9 @@
 	import { data } from "./data.svelte";
 	import { DataTable, createShadTable } from "$lib";
 	import Input from "$lib/components/ui/input/input.svelte";
-	import {
-		decodeColumnFilters,
-		decodeGlobalFilter,
-		decodePageIndex,
-		decodeSorting,
-		decodeTableState,
-		encodeTableState,
-	} from "$lib/components/custom/data-table/table-search-params";
-	import { onMount } from "svelte";
-	import { goto } from "$app/navigation";
+	import { decodeGlobalFilter } from "$lib/components/custom/data-table/table-search-params";
 
-	let search = $state("");
-
-	onMount(() => {
-		search = decodeGlobalFilter();
-	});
+	let search = $state(decodeGlobalFilter());
 
 	const columns: ColumnDef<DataType>[] = [
 		{
@@ -48,20 +35,12 @@
 		columns,
 		data: data.value,
 		enableRowSelection: false,
+		useURLSearchParams: true,
 		state: {
 			get globalFilter() {
 				return search;
 			},
 		},
-	});
-
-	$effect(() => {
-		const params = encodeTableState(table.getState());
-		goto(params, {
-			replaceState: true,
-			keepFocus: true,
-			noScroll: true,
-		});
 	});
 </script>
 
