@@ -20,7 +20,6 @@
 		decodeSorting,
 		encodeTableState,
 	} from "./table-search-params";
-	import { de } from "zod/v4/locales";
 
 	interface Props<T> {
 		table: TableType<T>;
@@ -63,9 +62,9 @@
 	onMount(() => {
 		if (table.options.useURLSearchParams) {
 			table.setPageIndex(decodePageIndex());
-			table.setSorting(decodeSorting());
+			table.setSorting(decodeSorting() ?? []);
 			table.setGlobalFilter(decodeGlobalFilter());
-			table.setColumnFilters(decodeColumnFilters());
+			table.setColumnFilters(decodeColumnFilters() ?? []);
 		}
 	});
 

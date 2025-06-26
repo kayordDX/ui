@@ -13,20 +13,19 @@ export const encodeSorting = (state: Partial<TableState>) => {
 };
 
 export const decodeSorting = () => {
-	return (
-		page.url.searchParams
-			.get("sort")
-			?.split(",")
-			.map((s) => ({ id: s[0] === "-" ? s.slice(1) : s.slice(0), desc: s[0] === "-" })) ?? []
-	);
+	return page.url.searchParams
+		.get("sort")
+		?.split(",")
+		.map((s) => ({ id: s[0] === "-" ? s.slice(1) : s.slice(0), desc: s[0] === "-" }));
 };
 
 export const encodeGlobalFilter = (state: Partial<TableState>) => {
 	return state.globalFilter;
 };
 
-export const decodeGlobalFilter = () => {
-	return page.url.searchParams.get("globalFilter") ?? "";
+export const decodeGlobalFilter = (): string | undefined => {
+	const globalFilter = page.url.searchParams.get("globalFilter");
+	return globalFilter != null ? globalFilter : undefined;
 };
 
 export const encodePageIndex = (state: Partial<TableState>) => {
@@ -45,21 +44,19 @@ export const encodeColumnFilters = (state: Partial<TableState>) => {
 };
 
 export const decodeColumnFilters = () => {
-	return (
-		page.url.searchParams
-			.get("columnFilters")
-			?.split(",")
-			.map((v) => {
-				const [id, stringValue] = v.split(".");
-				if (!id) throw new Error("Invalid columnFilters");
-				if (stringValue === undefined) throw new Error("Invalid columnFilters");
-				return {
-					id,
-					value: stringValue === "undefined" ? undefined : JSON.parse(decodeURIComponent(stringValue)),
-				};
-			})
-			.filter((x) => x !== null) ?? []
-	);
+	return page.url.searchParams
+		.get("columnFilters")
+		?.split(",")
+		.map((v) => {
+			const [id, stringValue] = v.split(".");
+			if (!id) throw new Error("Invalid columnFilters");
+			if (stringValue === undefined) throw new Error("Invalid columnFilters");
+			return {
+				id,
+				value: stringValue === "undefined" ? undefined : JSON.parse(decodeURIComponent(stringValue)),
+			};
+		})
+		.filter((x) => x !== null);
 };
 
 interface Options {

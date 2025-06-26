@@ -4,13 +4,14 @@
 		name: string;
 	}
 
-	import { type ColumnDef } from "@tanstack/table-core";
+	import { type ColumnDef, type ColumnFiltersState } from "@tanstack/table-core";
 	import { data } from "./data.svelte";
 	import { DataTable, createShadTable } from "$lib";
 	import Input from "$lib/components/ui/input/input.svelte";
-	import { decodeGlobalFilter } from "$lib/components/custom/data-table/table-search-params";
+	import { decodeColumnFilters } from "$lib/components/custom/data-table/table-search-params";
 
-	let search = $state(decodeGlobalFilter());
+	let search = $state(decodeColumnFilters()?.find((x) => x.id == "name")?.value ?? "");
+	let columnFilters = $state<ColumnFiltersState>(decodeColumnFilters() ?? []);
 
 	const columns: ColumnDef<DataType>[] = [
 		{
@@ -36,11 +37,29 @@
 		data: data.value,
 		enableRowSelection: false,
 		useURLSearchParams: true,
+		onColumnFiltersChange: (updater) => {
+			if (typeof updater === "function") {
+				columnFilters = updater(columnFilters);
+			} else {
+				columnFilters = updater;
+			}
+		},
 		state: {
-			get globalFilter() {
-				return search;
+			// get globalFilter() {
+			// 	return search;
+			// },
+			get columnFilters() {
+				return columnFilters;
 			},
 		},
+	});
+
+	$effect(() => {
+		if (search) {
+			columnFilters = [{ id: "name", value: search }];
+		} else {
+			columnFilters = [];
+		}
 	});
 </script>
 

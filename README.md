@@ -200,3 +200,15 @@ pnpm i
 	}
 }
 ```
+
+## Data Table Types
+
+```ts
+// Add to app.d.ts
+import { CustomOptions, CustomColumnMeta } from "@kayord/ui";
+
+declare module "@tanstack/table-core" {
+	interface ColumnMeta<TData extends RowData, TValue> extends CustomColumnMeta {}
+	interface TableOptionsResolved<TData extends RowData> extends CustomOptions {}
+}
+```
