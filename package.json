@@ -1,7 +1,7 @@
 {
 	"name": "@kayord/ui",
 	"private": false,
-	"version": "1.0.11",
+	"version": "1.0.12",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -64,7 +64,7 @@
 	"devDependencies": {
 		"@lucide/svelte": "^0.523.0",
 		"@sveltejs/adapter-auto": "^6.0.1",
-		"@sveltejs/kit": "^2.22.1",
+		"@sveltejs/kit": "^2.22.2",
 		"@sveltejs/package": "^2.3.12",
 		"@sveltejs/vite-plugin-svelte": "^5.1.0",
 		"@tailwindcss/vite": "^4.1.10",
