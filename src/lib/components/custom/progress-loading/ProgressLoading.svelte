@@ -4,14 +4,15 @@
 
 	interface Props {
 		class?: ProgressRootProps["class"];
+		innerClass?: ProgressRootProps["class"];
 		[key: string]: any;
 	}
 
-	let { class: className = undefined, ...rest }: Props = $props();
+	let { class: className = undefined, innerClass = undefined, ...rest }: Props = $props();
 </script>
 
 <Progress.Root class={cn("bg-secondary relative h-4 w-full overflow-hidden rounded-full", className)} {...rest}>
-	<div class="progressbar-infinite bg-primary h-full w-full flex-1 transition-all"></div>
+	<div class={cn("progressbar-infinite bg-primary h-full w-full flex-1 transition-all", innerClass)}></div>
 </Progress.Root>
 
 <style>

@@ -51,8 +51,10 @@
 	<Card.Header>
 		<Card.Title>ProgressLoading</Card.Title>
 	</Card.Header>
-	<Card.Content>
+	<Card.Content class="flex flex-col gap-2">
 		<ProgressLoading value={20} />
+
+		<ProgressLoading value={20} class="h-1" innerClass="bg-red-500" />
 	</Card.Content>
 </Card.Root>
 
