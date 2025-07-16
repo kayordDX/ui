@@ -16,24 +16,27 @@
 		ToggleGroup,
 	} from "$lib";
 
-	import { z } from "zod";
+	import { z } from "zod/v4";
 	import { type SuperValidated, superForm, type Infer } from "sveltekit-superforms";
-	import { zodClient } from "sveltekit-superforms/adapters";
+	import { zod4Client } from "sveltekit-superforms/adapters";
 
 	const formSchema = z.object({
 		username: z.string().min(2).max(50),
 	});
 
+	// type FormSchema = typeof formSchema;
+
+	type FormSchema = z.infer<typeof formSchema>;
+
 	interface Props {
-		data: SuperValidated<Infer<FormSchema>>;
+		data: SuperValidated<FormSchema>;
 	}
 
 	let { data }: Props = $props();
-	const form = superForm(data, {
-		validators: zodClient(formSchema),
-	});
 
-	type FormSchema = typeof formSchema;
+	const form = superForm(data, {
+		validators: zod4Client(formSchema),
+	});
 
 	const { form: formData, enhance } = form;
 
