@@ -1,7 +1,7 @@
 {
 	"name": "@kayord/ui",
 	"private": false,
-	"version": "1.1.2",
+	"version": "1.1.3",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -73,8 +73,8 @@
 		"@testing-library/user-event": "^14.6.1",
 		"@types/d3-scale": "^4.0.9",
 		"@types/d3-shape": "^3.1.7",
-		"@typescript-eslint/eslint-plugin": "^8.37.0",
-		"@typescript-eslint/parser": "^8.37.0",
+		"@typescript-eslint/eslint-plugin": "^8.38.0",
+		"@typescript-eslint/parser": "^8.38.0",
 		"d3-scale": "^4.0.2",
 		"d3-shape": "^3.2.0",
 		"eslint": "^9.31.0",
@@ -86,7 +86,7 @@
 		"prettier-plugin-svelte": "^3.4.0",
 		"prettier-plugin-tailwindcss": "^0.6.14",
 		"publint": "^0.3.12",
-		"svelte": "5.36.10",
+		"svelte": "5.36.13",
 		"svelte-check": "^4.3.0",
 		"sveltekit-superforms": "^2.27.1",
 		"tailwindcss": "^4.1.11",
