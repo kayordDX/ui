@@ -16,7 +16,7 @@
 		ToggleGroup,
 	} from "$lib";
 
-	import { z } from "zod/v4";
+	import { z } from "zod";
 	import { type SuperValidated, superForm, type Infer } from "sveltekit-superforms";
 	import { zod4Client } from "sveltekit-superforms/adapters";
 
