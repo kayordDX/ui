@@ -16,3 +16,6 @@ Object.defineProperty(window, "matchMedia", {
 });
 
 // add more mocks here if you need them
+
+// Temp workaround https://github.com/sveltejs/kit/issues/14143
+vi.stubGlobal("__SVELTEKIT_PAYLOAD__", { data: null });
