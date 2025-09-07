@@ -1,11 +1,11 @@
-const sum = <T>(data: T[], columnId: keyof T) => {
+export const sum = <T>(data: T[], columnId: keyof T) => {
 	return data.reduce((sum, next) => {
 		const nextValue = next[columnId];
 		return sum + (typeof nextValue === "number" ? nextValue : 0);
 	}, 0);
 };
 
-const min = <T>(data: T[], columnId: keyof T) => {
+export const min = <T>(data: T[], columnId: keyof T) => {
 	let min: number | undefined;
 
 	data.forEach((row) => {
@@ -19,7 +19,7 @@ const min = <T>(data: T[], columnId: keyof T) => {
 	return min;
 };
 
-const max = <T>(data: T[], columnId: keyof T) => {
+export const max = <T>(data: T[], columnId: keyof T) => {
 	let max: number | undefined;
 
 	data.forEach((row) => {
@@ -32,15 +32,15 @@ const max = <T>(data: T[], columnId: keyof T) => {
 	return max;
 };
 
-const uniqueCount = <T>(data: T[], columnId: keyof T) => {
+export const uniqueCount = <T>(data: T[], columnId: keyof T) => {
 	return new Set(data.map((d) => d[columnId])).size;
 };
 
-const count = <T>(data: T[], columnId: keyof T) => {
+export const count = <T>(data: T[], columnId: keyof T) => {
 	return data.length;
 };
 
-const mean = <T>(data: T[], columnId: keyof T) => {
+export const mean = <T>(data: T[], columnId: keyof T) => {
 	let count = 0;
 	let sum = 0;
 

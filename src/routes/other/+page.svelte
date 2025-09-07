@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Accordion, Button, Calendar, Card, Carousel } from "$lib";
-	import { CalendarDate, getLocalTimeZone, today } from "@internationalized/date";
+	import { CalendarDate, getLocalTimeZone } from "@internationalized/date";
 
 	let value = $state<CalendarDate | undefined>(new CalendarDate(2025, 6, 12));
 	let selectedTime = $state<string | null>("10:00");
