@@ -54,3 +54,8 @@ if (typeof window !== "undefined") {
 		};
 	}
 }
+
+vi.mock("$app/navigation", () => ({
+	goto: vi.fn(),
+	beforeNavigate: vi.fn(),
+}));
