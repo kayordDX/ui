@@ -15,7 +15,42 @@ Object.defineProperty(window, "matchMedia", {
 	})),
 });
 
-// add more mocks here if you need them
+// Mock IntersectionObserver for test environment
+class IntersectionObserverMock {
+	constructor() {}
+	observe() {}
+	unobserve() {}
+	disconnect() {}
+}
+globalThis.IntersectionObserver = globalThis.IntersectionObserver || IntersectionObserverMock;
 
-// Temp workaround https://github.com/sveltejs/kit/issues/14143
-vi.stubGlobal("__SVELTEKIT_PAYLOAD__", { data: null });
+// Mock ResizeObserver for test environment
+class ResizeObserverMock {
+	constructor() {}
+	observe() {}
+	unobserve() {}
+	disconnect() {}
+}
+globalThis.ResizeObserver = globalThis.ResizeObserver || ResizeObserverMock;
+
+// Polyfill scrollIntoView for Vitest/JSDOM
+if (typeof window !== "undefined" && typeof window.HTMLElement !== "undefined") {
+	if (!window.HTMLElement.prototype.scrollIntoView) {
+		window.HTMLElement.prototype.scrollIntoView = function () {
+			// no-op for test environment
+		};
+	}
+}
+
+// Polyfill window.CSS.supports for Vitest/JSDOM
+if (typeof window !== "undefined") {
+	if (!window.CSS) {
+		window.CSS = {} as any;
+	}
+	if (typeof window.CSS.supports !== "function") {
+		window.CSS.supports = function () {
+			// Always return true for test environment
+			return true;
+		};
+	}
+}

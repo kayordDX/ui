@@ -1,6 +1,7 @@
 import { describe, test, expect } from "vitest";
 import { render, screen } from "@testing-library/svelte";
 import userEvent from "@testing-library/user-event";
+
 import Page from "./+page.svelte";
 
 describe("no initial dialog", () => {
@@ -11,6 +12,7 @@ describe("no initial dialog", () => {
 		const button = screen.getAllByRole("button", { name: "Show Dialog" })[0];
 
 		expect(button).toBeInTheDocument();
+		expect(button).toBeVisible();
 
 		const dialog = screen.queryByText("Are you absolutely sure?");
 		expect(dialog).not.toBeInTheDocument();
