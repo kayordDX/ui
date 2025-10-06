@@ -2,6 +2,7 @@
 	import { Loader, LightSwitch, Actions, ThemeSelector, NumberTicker, AvatarGroup } from "$lib";
 	import ProgressLoading from "$lib/components/custom/progress-loading/ProgressLoading.svelte";
 	import { Button, Card } from "$lib/components/ui";
+	import Spinner from "$lib/components/ui/spinner/spinner.svelte";
 	import { HomeIcon, MoreHorizontalIcon } from "@lucide/svelte";
 
 	let isLoading = $state(true);
@@ -33,6 +34,9 @@
 		<div class="w-10">
 			<Loader {isLoading} />
 		</div>
+		{#if isLoading}
+			<Spinner class="size-6" />
+		{/if}
 		<Button onclick={() => (isLoading = !isLoading)}>Toggle Loading</Button>
 	</Card.Content>
 </Card.Root>
