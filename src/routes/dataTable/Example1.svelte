@@ -21,6 +21,7 @@
 	import { data } from "./data.svelte";
 	import { DataTable, createShadTable, renderSnippet } from "$lib";
 	import { aggregationFns } from "$lib/components/custom/data-table/data-table-utils";
+	import { CloudIcon, SunIcon } from "@lucide/svelte";
 
 	const columns: ColumnDef<DataType>[] = [
 		{
@@ -39,6 +40,13 @@
 			accessorKey: "day",
 			size: 100,
 			minSize: 150,
+		},
+		{
+			header: "Weather",
+			accessorKey: "",
+			size: 100,
+			minSize: 150,
+			cell: () => renderSnippet(weatherSnippet, { weather: Math.round(Math.random()) }),
 		},
 	];
 
@@ -110,5 +118,13 @@
 		enableRowSelection: true,
 	});
 </script>
+
+{#snippet weatherSnippet(param: { weather: number })}
+	{#if param.weather === 0}
+		<SunIcon class="mr-1 inline size-4 text-yellow-400" />
+	{:else}
+		<CloudIcon class="inline size-4 text-blue-400" />
+	{/if}
+{/snippet}
 
 <DataTable {table} enableVisibility enableFullscreen headerClass="mt-2" />
