@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { scaleBand } from "d3-scale";
-	import { Bar, BarChart, Highlight, type ChartContextValue } from "layerchart";
+	import { BarChart, Highlight, type ChartContextValue } from "layerchart";
 	import TrendingUpIcon from "@lucide/svelte/icons/trending-up";
 	import { cubicInOut } from "svelte/easing";
-	import { Card, Chart } from "$lib";
+	import { Card } from "$lib";
+	import { Chart } from "$lib/chart";
 
 	const chartData = [
 		{ month: "January", desktop: 186, color: "var(--chart-1)" },

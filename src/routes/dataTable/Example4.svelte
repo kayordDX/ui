@@ -18,7 +18,7 @@
 		getFilteredRowModel,
 	} from "@tanstack/table-core";
 
-	import { DataTable, createShadTable, renderSnippet } from "$lib";
+	import { DataTable, createShadTable } from "$lib/data-table";
 
 	const data: Array<DataType> = [
 		{

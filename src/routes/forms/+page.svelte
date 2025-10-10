@@ -3,7 +3,6 @@
 		Card,
 		Checkbox,
 		Combobox,
-		Form,
 		Input,
 		InputOTP,
 		Label,
@@ -15,6 +14,7 @@
 		Toggle,
 		ToggleGroup,
 	} from "$lib";
+	import { Form } from "$lib/form";
 
 	import { z } from "zod";
 	import { type SuperValidated, superForm, type Infer } from "sveltekit-superforms";

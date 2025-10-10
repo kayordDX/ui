@@ -1,7 +1,7 @@
 {
 	"name": "@kayord/ui",
 	"private": false,
-	"version": "1.1.19",
+	"version": "2.0.0",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -23,17 +23,45 @@
 			"types": "./dist/index.d.ts",
 			"svelte": "./dist/index.js"
 		},
+		"./calendar": {
+			"types": "./dist/calendar/index.d.ts",
+			"default": "./dist/calendar/index.js"
+		},
+		"./carousel": {
+			"types": "./dist/carousel/index.d.ts",
+			"default": "./dist/carousel/index.js"
+		},
+		"./chart": {
+			"types": "./dist/chart/index.d.ts",
+			"default": "./dist/chart/index.js"
+		},
+		"./data-table": {
+			"types": "./dist/form/index.d.ts",
+			"default": "./dist/form/index.js"
+		},
+		"./drawer": {
+			"types": "./dist/drawer/index.d.ts",
+			"default": "./dist/drawer/index.js"
+		},
+		"./form": {
+			"types": "./dist/form/index.d.ts",
+			"default": "./dist/form/index.js"
+		},
+		"./hooks": {
+			"types": "./dist/hooks/index.d.ts",
+			"default": "./dist/hooks/index.js"
+		},
+		"./resizable": {
+			"types": "./dist/resizable/index.d.ts",
+			"default": "./dist/resizable/index.js"
+		},
+		"./sonner": {
+			"types": "./dist/sonner/index.d.ts",
+			"default": "./dist/sonner/index.js"
+		},
 		"./utils": {
 			"types": "./dist/utils/index.d.ts",
 			"default": "./dist/utils/index.js"
-		},
-		"./mode-watcher": {
-			"types": "./dist/mode-watcher/index.d.ts",
-			"default": "./dist/mode-watcher/index.js"
-		},
-		"./formsnap": {
-			"types": "./dist/formsnap/index.d.ts",
-			"default": "./dist/formsnap/index.js"
 		}
 	},
 	"files": [
@@ -43,26 +71,63 @@
 	],
 	"peerDependencies": {
 		"@lucide/svelte": ">= 0.482.0 < 1.0.0",
-		"@tanstack/table-core": "^8.20.5",
-		"layerchart": "^2.0.0-next.6",
+		"mode-watcher": "^1.1.0",
 		"svelte": "^5.0.0",
+		"layerchart": "^2.0.0-next.6",
+		"svelte-sonner": "^1.0.5",
+		"embla-carousel-svelte": "^8.6.0",
+		"@tanstack/table-core": "^8.20.5",
+		"vaul-svelte": "^1.0.0-next.7",
 		"sveltekit-superforms": "^2.27.1",
+		"@internationalized/date": "^3.10.0",
+		"formsnap": "^2.0.1",
+		"paneforge": "^1.0.2",
 		"zod": "^4.0.5"
 	},
+	"peerDependenciesMeta": {
+		"layerchart": {
+			"optional": true
+		},
+		"svelte-sonner": {
+			"optional": true
+		},
+		"embla-carousel-svelte": {
+			"optional": true
+		},
+		"@tanstack/table-core": {
+			"optional": true
+		},
+		"vaul-svelte": {
+			"optional": true
+		},
+		"sveltekit-superforms": {
+			"optional": true
+		},
+		"formsnap": {
+			"optional": true
+		},
+		"zod": {
+			"optional": true
+		},
+		"@internationalized/date": {
+			"optional": true
+		},
+		"paneforge": {
+			"optional": true
+		}
+	},
 	"dependencies": {
-		"@internationalized/date": "^3.10.0",
 		"bits-ui": "2.11.4",
 		"clsx": "^2.1.1",
-		"embla-carousel-svelte": "8.6.0",
-		"formsnap": "2.0.1",
-		"mode-watcher": "^1.1.0",
-		"paneforge": "1.0.2",
-		"svelte-sonner": "^1.0.5",
 		"tailwind-merge": "^3.3.1",
-		"tailwind-variants": "^3.1.1",
-		"vaul-svelte": "1.0.0-next.7"
+		"tailwind-variants": "^3.1.1"
 	},
 	"devDependencies": {
+		"formsnap": "^2.0.1",
+		"mode-watcher": "^1.1.0",
+		"paneforge": "^1.0.2",
+		"svelte-sonner": "^1.0.5",
+		"@internationalized/date": "^3.10.0",
 		"@lucide/svelte": "^0.545.0",
 		"@sveltejs/adapter-auto": "^6.1.1",
 		"@sveltejs/kit": "^2.46.4",
@@ -79,6 +144,7 @@
 		"@vitest/coverage-v8": "3.2.4",
 		"d3-scale": "^4.0.2",
 		"d3-shape": "^3.2.0",
+		"embla-carousel-svelte": "^8.6.0",
 		"eslint": "^9.37.0",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-svelte": "^3.12.4",
@@ -97,13 +163,14 @@
 		"typescript": "^5.9.3",
 		"vite": "^7.1.9",
 		"vitest": "^3.2.4",
+		"vaul-svelte": "1.0.0-next.7",
 		"zod": "4.1.12"
 	},
 	"svelte": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"main": "./dist/index.js",
 	"type": "module",
-	"packageManager": "pnpm@10.18.1+sha512.77a884a165cbba2d8d1c19e3b4880eee6d2fcabd0d879121e282196b80042351d5eb3ca0935fa599da1dc51265cc68816ad2bddd2a2de5ea9fdf92adbec7cd34",
+	"packageManager": "pnpm@10.18.2+sha512.9fb969fa749b3ade6035e0f109f0b8a60b5d08a1a87fdf72e337da90dcc93336e2280ca4e44f2358a649b83c17959e9993e777c2080879f3801e6f0d999ad3dd",
 	"pnpm": {
 		"onlyBuiltDependencies": [
 			"@tailwindcss/oxide",
