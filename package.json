@@ -1,7 +1,7 @@
 {
 	"name": "@kayord/ui",
 	"private": false,
-	"version": "2.0.0",
+	"version": "2.0.1",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -36,8 +36,8 @@
 			"default": "./dist/chart/index.js"
 		},
 		"./data-table": {
-			"types": "./dist/form/index.d.ts",
-			"default": "./dist/form/index.js"
+			"types": "./dist/data-table/index.d.ts",
+			"default": "./dist/data-table/index.js"
 		},
 		"./drawer": {
 			"types": "./dist/drawer/index.d.ts",
