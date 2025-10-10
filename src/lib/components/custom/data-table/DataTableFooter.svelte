@@ -1,5 +1,6 @@
 <script lang="ts" generics="T">
-	import { FlexRender, Table } from "$lib";
+	import { Table } from "$lib";
+	import { FlexRender } from "$lib/data-table";
 	import { type Header, type Table as TypeType } from "@tanstack/table-core";
 
 	interface Props<T> {

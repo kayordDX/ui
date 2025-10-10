@@ -6,7 +6,7 @@
 
 	import { type ColumnDef, type ColumnFiltersState } from "@tanstack/table-core";
 	import { data } from "./data.svelte";
-	import { DataTable, createShadTable } from "$lib";
+	import { DataTable, createShadTable } from "$lib/data-table";
 	import Input from "$lib/components/ui/input/input.svelte";
 	import { decodeColumnFilters } from "$lib/components/custom/data-table/table-search-params";
 

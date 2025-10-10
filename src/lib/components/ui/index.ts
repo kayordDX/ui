@@ -7,26 +7,15 @@ export { Badge, badgeVariants, type BadgeVariant } from "./badge/index.js";
 export * as Breadcrumb from "./breadcrumb/index.js";
 export * as ButtonGroup from "./button-group/index.js";
 export { Button, type ButtonProps, buttonVariants } from "./button/index.js";
-export { Calendar } from "./calendar/index.js";
 export * as Card from "./card/index.js";
-export * as Carousel from "./carousel/index.js";
 export { Checkbox } from "./checkbox/index.js";
 export * as Collapsible from "./collapsible/index.js";
 export * as Command from "./command/index.js";
 export * as ContextMenu from "./context-menu/index.js";
-export {
-	FlexRender,
-	renderComponent,
-	renderSnippet,
-	createSvelteTable,
-	createSvelteTable as createTable,
-} from "./data-table/index.js";
 export * as Dialog from "./dialog/index.js";
-export * as Drawer from "./drawer/index.js";
 export * as DropdownMenu from "./dropdown-menu/index.js";
 export * as Empty from "./empty/index.js";
 export * as Field from "./field/index.js";
-export * as Form from "./form/index.js";
 export * as HoverCard from "./hover-card/index.js";
 export * as InputGroup from "./input-group/index.js";
 export { Input } from "./input/index.js";
@@ -39,7 +28,6 @@ export * as Pagination from "./pagination/index.js";
 export * as Popover from "./popover/index.js";
 export { Progress } from "./progress/index.js";
 export * as RadioGroup from "./radio-group/index.js";
-export * as RangeCalendar from "./range-calendar/index.js";
 export * as Resizable from "./resizable/index.js";
 export { ScrollArea } from "./scroll-area/index.js";
 export * as Select from "./select/index.js";

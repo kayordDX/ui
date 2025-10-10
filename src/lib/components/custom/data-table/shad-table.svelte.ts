@@ -13,7 +13,7 @@ import {
 	type TableState,
 } from "@tanstack/table-core";
 import DataTableCheckbox from "./DataTableCheckbox.svelte";
-import { renderComponent } from "$lib/components/ui";
+import { renderComponent } from "$lib/data-table";
 import { mergeObjects } from "$lib/components/ui/data-table/data-table.svelte";
 
 interface ShadTableOptions<TData extends RowData> extends Omit<TableOptions<TData>, "getCoreRowModel"> {

@@ -13,7 +13,8 @@
 	} from "@tanstack/table-core";
 
 	import { data } from "./data.svelte";
-	import { Button, DataTable } from "$lib";
+	import { Button } from "$lib";
+	import { DataTable } from "$lib/data-table";
 	import { createShadTable } from "$lib/components/custom/data-table/shad-table.svelte";
 
 	const columns: ColumnDef<DataType>[] = [

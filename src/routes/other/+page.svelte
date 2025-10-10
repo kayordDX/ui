@@ -1,5 +1,7 @@
 <script lang="ts">
-	import { Accordion, Button, Calendar, Card, Carousel } from "$lib";
+	import { Accordion, Button, Card } from "$lib";
+	import { Calendar } from "$lib/calendar";
+	import { Carousel } from "$lib/carousel";
 	import { CalendarDate, getLocalTimeZone } from "@internationalized/date";
 
 	let value = $state<CalendarDate | undefined>(new CalendarDate(2025, 6, 12));

@@ -20,9 +20,6 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
-      embla-carousel-svelte:
-        specifier: 8.6.0
-        version: 8.6.0(svelte@5.39.11)
       formsnap:
         specifier: 2.0.1
         version: 2.0.1(svelte@5.39.11)(sveltekit-superforms@2.27.2(@sveltejs/kit@2.46.4(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.39.11)(vite@7.1.9(@types/node@20.19.0)(jiti@2.6.1)(lightningcss@1.30.1)(yaml@2.6.1)))(svelte@5.39.11)(vite@7.1.9(@types/node@20.19.0)(jiti@2.6.1)(lightningcss@1.30.1)(yaml@2.6.1)))(@types/json-schema@7.0.15)(esbuild@0.25.10)(svelte@5.39.11)(typescript@5.9.3))
@@ -41,9 +38,6 @@ importers:
       tailwind-variants:
         specifier: ^3.1.1
         version: 3.1.1(tailwind-merge@3.3.1)(tailwindcss@4.1.14)
-      vaul-svelte:
-        specifier: 1.0.0-next.7
-        version: 1.0.0-next.7(svelte@5.39.11)
     devDependencies:
       '@lucide/svelte':
         specifier: ^0.545.0
@@ -93,6 +87,9 @@ importers:
       d3-shape:
         specifier: ^3.2.0
         version: 3.2.0
+      embla-carousel-svelte:
+        specifier: ^8.6.0
+        version: 8.6.0(svelte@5.39.11)
       eslint:
         specifier: ^9.37.0
         version: 9.37.0(jiti@2.6.1)
@@ -141,6 +138,9 @@ importers:
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
+      vaul-svelte:
+        specifier: 1.0.0-next.7
+        version: 1.0.0-next.7(svelte@5.39.11)
       vite:
         specifier: ^7.1.9
         version: 7.1.9(@types/node@20.19.0)(jiti@2.6.1)(lightningcss@1.30.1)(yaml@2.6.1)

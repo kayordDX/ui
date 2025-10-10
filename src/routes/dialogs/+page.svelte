@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { Card, AlertDialog, Button, Drawer, toast, DropdownMenu, buttonVariants } from "$lib";
+	import { Card, AlertDialog, Button, toast, DropdownMenu, buttonVariants } from "$lib";
+	import { Drawer } from "$lib/drawer";
 </script>
 
 <Card.Root class="m-5">

@@ -19,7 +19,7 @@
 	} from "@tanstack/table-core";
 
 	import { data } from "./data.svelte";
-	import { DataTable, createShadTable, renderSnippet } from "$lib";
+	import { DataTable, createShadTable, renderSnippet } from "$lib/data-table";
 	import { aggregationFns } from "$lib/components/custom/data-table/data-table-utils";
 	import { CloudIcon, SunIcon } from "@lucide/svelte";
 
