@@ -64,6 +64,9 @@ Kayord UI exports components individually. Some components require additional pe
 # Core dependencies
 pnpm add -D svelte @lucide/svelte tailwindcss-animate mode-watcher
 
+# Most likely dependencies
+pnpm add -D svelte @lucide/svelte tailwindcss-animate mode-watcher formsnap zod sveltekit-superforms @internationalized/date svelte-sonner
+
 # For charts
 pnpm add -D layerchart d3-scale d3-shape @types/d3-scale @types/d3-shape
 
@@ -73,8 +76,8 @@ pnpm add -D embla-carousel-svelte
 # For data table
 pnpm add -D @tanstack/table-core
 
-# For drawer
-pnpm add -D vaul-svelte
+# For drawer @next for now
+pnpm add -D vaul-svelte@next
 
 # For forms
 pnpm add -D formsnap zod sveltekit-superforms
