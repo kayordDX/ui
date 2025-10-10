@@ -17,9 +17,6 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
-      paneforge:
-        specifier: 1.0.2
-        version: 1.0.2(svelte@5.39.11)
       tailwind-merge:
         specifier: ^3.3.1
         version: 3.3.1
@@ -102,6 +99,9 @@ importers:
       mode-watcher:
         specifier: ^1.1.0
         version: 1.1.0(svelte@5.39.11)
+      paneforge:
+        specifier: ^1.0.2
+        version: 1.0.2(svelte@5.39.11)
       prettier:
         specifier: ^3.6.2
         version: 3.6.2
