@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@internationalized/date':
-        specifier: ^3.10.0
-        version: 3.10.0
       '@tanstack/table-core':
         specifier: ^8.20.5
         version: 8.20.5
@@ -20,18 +17,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
-      formsnap:
-        specifier: 2.0.1
-        version: 2.0.1(svelte@5.39.11)(sveltekit-superforms@2.27.2(@sveltejs/kit@2.46.4(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.39.11)(vite@7.1.9(@types/node@20.19.0)(jiti@2.6.1)(lightningcss@1.30.1)(yaml@2.6.1)))(svelte@5.39.11)(vite@7.1.9(@types/node@20.19.0)(jiti@2.6.1)(lightningcss@1.30.1)(yaml@2.6.1)))(@types/json-schema@7.0.15)(esbuild@0.25.10)(svelte@5.39.11)(typescript@5.9.3))
-      mode-watcher:
-        specifier: ^1.1.0
-        version: 1.1.0(svelte@5.39.11)
       paneforge:
         specifier: 1.0.2
         version: 1.0.2(svelte@5.39.11)
-      svelte-sonner:
-        specifier: ^1.0.5
-        version: 1.0.5(svelte@5.39.11)
       tailwind-merge:
         specifier: ^3.3.1
         version: 3.3.1
@@ -39,6 +27,9 @@ importers:
         specifier: ^3.1.1
         version: 3.1.1(tailwind-merge@3.3.1)(tailwindcss@4.1.14)
     devDependencies:
+      '@internationalized/date':
+        specifier: ^3.10.0
+        version: 3.10.0
       '@lucide/svelte':
         specifier: ^0.545.0
         version: 0.545.0(svelte@5.39.11)
@@ -99,12 +90,18 @@ importers:
       eslint-plugin-svelte:
         specifier: ^3.12.4
         version: 3.12.4(eslint@9.37.0(jiti@2.6.1))(svelte@5.39.11)
+      formsnap:
+        specifier: ^2.0.1
+        version: 2.0.1(svelte@5.39.11)(sveltekit-superforms@2.27.2(@sveltejs/kit@2.46.4(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.39.11)(vite@7.1.9(@types/node@20.19.0)(jiti@2.6.1)(lightningcss@1.30.1)(yaml@2.6.1)))(svelte@5.39.11)(vite@7.1.9(@types/node@20.19.0)(jiti@2.6.1)(lightningcss@1.30.1)(yaml@2.6.1)))(@types/json-schema@7.0.15)(esbuild@0.25.10)(svelte@5.39.11)(typescript@5.9.3))
       jsdom:
         specifier: ^27.0.0
         version: 27.0.0(postcss@8.5.6)
       layerchart:
         specifier: 2.0.0-next.40
         version: 2.0.0-next.40(svelte@5.39.11)
+      mode-watcher:
+        specifier: ^1.1.0
+        version: 1.1.0(svelte@5.39.11)
       prettier:
         specifier: ^3.6.2
         version: 3.6.2
@@ -123,6 +120,9 @@ importers:
       svelte-check:
         specifier: ^4.3.3
         version: 4.3.3(picomatch@4.0.2)(svelte@5.39.11)(typescript@5.9.3)
+      svelte-sonner:
+        specifier: ^1.0.5
+        version: 1.0.5(svelte@5.39.11)
       sveltekit-superforms:
         specifier: ^2.27.2
         version: 2.27.2(@sveltejs/kit@2.46.4(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.39.11)(vite@7.1.9(@types/node@20.19.0)(jiti@2.6.1)(lightningcss@1.30.1)(yaml@2.6.1)))(svelte@5.39.11)(vite@7.1.9(@types/node@20.19.0)(jiti@2.6.1)(lightningcss@1.30.1)(yaml@2.6.1)))(@types/json-schema@7.0.15)(esbuild@0.25.10)(svelte@5.39.11)(typescript@5.9.3)
@@ -4719,7 +4719,7 @@ snapshots:
   svelte-toolbelt@0.5.0(svelte@5.39.11):
     dependencies:
       clsx: 2.1.1
-      style-to-object: 1.0.8
+      style-to-object: 1.0.9
       svelte: 5.39.11
 
   svelte-toolbelt@0.7.1(svelte@5.39.11):

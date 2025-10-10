@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { Card, AlertDialog, Button, toast, DropdownMenu, buttonVariants } from "$lib";
+	import { Card, AlertDialog, Button, DropdownMenu, buttonVariants } from "$lib";
+	import { toast } from "$lib/sonner";
 	import { Drawer } from "$lib/drawer";
 </script>
 
