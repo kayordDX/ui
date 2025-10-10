@@ -3,7 +3,7 @@
 	import ProgressLoading from "$lib/components/custom/progress-loading/ProgressLoading.svelte";
 	import { Button, Card } from "$lib/components/ui";
 	import Spinner from "$lib/components/ui/spinner/spinner.svelte";
-	import { HomeIcon, MoreHorizontalIcon } from "@lucide/svelte";
+	import { HouseIcon, EllipsisIcon } from "@lucide/svelte";
 
 	let isLoading = $state(true);
 
@@ -71,23 +71,22 @@
 			actions={[
 				{
 					text: "Title",
-					icon: HomeIcon,
+					icon: HouseIcon,
 					action: () => console.log("test"),
 				},
 				{
 					text: "Another",
-					icon: MoreHorizontalIcon,
+					icon: EllipsisIcon,
 					href: "/",
 				},
 			]}
 			variant="outline"
 		/>
 		<Actions
-			actions={[{ label: "test" }, {}, { text: "Test", icon: HomeIcon, action: () => console.log("test") }]}
+			actions={[{ label: "test" }, {}, { text: "Test", icon: HouseIcon, action: () => console.log("test") }]}
 			variant="outline"
 		/>
-
-		<Actions actions={[{ text: "Test", action: () => console.log("test") }]} />
+		<Actions actions={[{ text: "Test", class: "bg-primary", action: () => console.log("test") }]} />
 	</Card.Content>
 </Card.Root>
 

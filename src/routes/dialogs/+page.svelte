@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Card, AlertDialog, Button, Drawer, toast, DropdownMenu } from "$lib";
+	import { Card, AlertDialog, Button, Drawer, toast, DropdownMenu, buttonVariants } from "$lib";
 </script>
 
 <Card.Root class="m-5">
@@ -8,9 +8,7 @@
 	</Card.Header>
 	<Card.Content>
 		<AlertDialog.Root>
-			<AlertDialog.Trigger>
-				<Button variant="outline">Show Dialog</Button>
-			</AlertDialog.Trigger>
+			<AlertDialog.Trigger class={buttonVariants({ variant: "outline" })}>Show Dialog</AlertDialog.Trigger>
 			<AlertDialog.Content>
 				<AlertDialog.Header>
 					<AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>
@@ -34,9 +32,7 @@
 	</Card.Header>
 	<Card.Content class="w-fit">
 		<Drawer.Root>
-			<Drawer.Trigger>
-				<Button>Open</Button>
-			</Drawer.Trigger>
+			<Drawer.Trigger class={buttonVariants({ variant: "default" })}>Open</Drawer.Trigger>
 			<Drawer.Content>
 				<Drawer.Header>
 					<Drawer.Title>Move Goal</Drawer.Title>
@@ -70,9 +66,7 @@
 	</Card.Header>
 	<Card.Content>
 		<DropdownMenu.Root>
-			<DropdownMenu.Trigger>
-				<Button>Open</Button>
-			</DropdownMenu.Trigger>
+			<DropdownMenu.Trigger class={buttonVariants({ variant: "default" })}>Open</DropdownMenu.Trigger>
 			<DropdownMenu.Content>
 				<DropdownMenu.Group>
 					<DropdownMenu.Label>My Account</DropdownMenu.Label>
