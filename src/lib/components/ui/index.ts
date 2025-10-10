@@ -10,7 +10,6 @@ export { Button, type ButtonProps, buttonVariants } from "./button/index.js";
 export { Calendar } from "./calendar/index.js";
 export * as Card from "./card/index.js";
 export * as Carousel from "./carousel/index.js";
-export * as Chart from "./chart/index.js";
 export { Checkbox } from "./checkbox/index.js";
 export * as Collapsible from "./collapsible/index.js";
 export * as Command from "./command/index.js";
