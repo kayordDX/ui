@@ -1,10 +1,13 @@
 <script lang="ts">
 	import { Loader, LightSwitch, Actions, ThemeSelector, NumberTicker, AvatarGroup } from "$lib";
+	import Meter from "$lib/components/custom/meter/meter.svelte";
 	import ProgressLoading from "$lib/components/custom/progress-loading/ProgressLoading.svelte";
 	import { Button, Card } from "$lib/components/ui";
 	import Spinner from "$lib/components/ui/spinner/spinner.svelte";
-	import { HouseIcon, EllipsisIcon } from "@lucide/svelte";
+	import { HouseIcon, EllipsisIcon, CircleIcon, CircleArrowDown, CircleArrowDownIcon } from "@lucide/svelte";
+	import * as StarRating from "$lib/components/custom/star-rating";
 
+	let starValue = $state(0);
 	let isLoading = $state(true);
 
 	const members = [
@@ -57,8 +60,23 @@
 	</Card.Header>
 	<Card.Content class="flex flex-col gap-2">
 		<ProgressLoading value={20} />
+		<ProgressLoading value={20} class="h-1" innerClass="bg-purple-500" />
+	</Card.Content>
+</Card.Root>
 
-		<ProgressLoading value={20} class="h-1" innerClass="bg-red-500" />
+<Card.Root class="m-5">
+	<Card.Header>
+		<Card.Title>Meter</Card.Title>
+	</Card.Header>
+	<Card.Content class="flex flex-col gap-2">
+		<Meter value={30} />
+		<div class="flex w-100 flex-col">
+			<div class="mb-1 flex w-full justify-between text-sm font-medium">
+				<div>Total</div>
+				<div>7 / 10</div>
+			</div>
+			<Meter value={7} max={10} />
+		</div>
 	</Card.Content>
 </Card.Root>
 
@@ -115,5 +133,42 @@
 			{/each}
 			<AvatarGroup.Etc plus={2} />
 		</AvatarGroup.Root>
+	</Card.Content>
+</Card.Root>
+
+<Card.Root class="m-5">
+	<Card.Header>
+		<Card.Title>StarRating</Card.Title>
+	</Card.Header>
+	<Card.Content>
+		<div>
+			<StarRating.Root bind:value={starValue}>
+				{#snippet children({ items })}
+					{#each items as item (item.index)}
+						<StarRating.Star {...item} />
+					{/each}
+				{/snippet}
+			</StarRating.Root>
+			<span class="text-muted-foreground text-sm">Rating is {starValue}</span>
+		</div>
+		<div>
+			<StarRating.Root bind:value={starValue} allowHalf>
+				{#snippet children({ items })}
+					{#each items as item (item.index)}
+						<StarRating.Star {...item} />
+					{/each}
+				{/snippet}
+			</StarRating.Root>
+			<span class="text-muted-foreground text-sm">Rating is {starValue}</span>
+		</div>
+		<div>
+			<StarRating.Root bind:value={starValue} max={10}>
+				{#snippet children({ items })}
+					{#each items as item (item.index)}
+						<StarRating.Star {...item} class="text-yellow-500" />
+					{/each}
+				{/snippet}
+			</StarRating.Root>
+		</div>
 	</Card.Content>
 </Card.Root>
