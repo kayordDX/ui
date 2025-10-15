@@ -2,14 +2,6 @@
 
 The UI components used to build kayord applications.
 
-## Update
-
-```bash
-npx shadcn-svelte@latest
-
-npx shadcn-svelte@latest update -a
-```
-
 ## Installing
 
 Pnpm command to install ui library.
@@ -17,20 +9,12 @@ Pnpm command to install ui library.
 ```bash
 # create a new project in the current directory
 pnpm add -D @kayord/ui
-# install peer dependencies
-pnpm add -D @lucide/svelte zod sveltekit-superforms tailwindcss-animate
-
+# install minimal dependencies
+pnpm add -D @lucide/svelte tw-animate-css
+# install other dependencies as required
+pnpm add -D zod sveltekit-superforms
 # include charts
 pnpm add -D layerchart@next d3-scale d3-shape @types/d3-scale @types/d3-shape
-```
-
-### Manual Setup New Project
-
-```bash
-# Setup new sveltekit project
-npm create svelte@latest my-app
-npx svelte-add@latest tailwindcss
-pnpm i
 ```
 
 ## Peer Dependencies
@@ -96,7 +80,8 @@ pnpm add -D svelte-sonner
 
 ```css
 @import "tailwindcss";
-@import "./tailwindcss-animate.css";
+@source "../node_modules/@kayord/ui";
+@import "tw-animate-css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
