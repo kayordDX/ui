@@ -249,7 +249,7 @@ pnpm add -D svelte-sonner
 
 ```ts
 // Add to app.d.ts
-import { CustomOptions, CustomColumnMeta } from "@kayord/ui";
+import { CustomOptions, CustomColumnMeta } from "@kayord/ui/data-table";
 
 declare module "@tanstack/table-core" {
  interface ColumnMeta<TData extends RowData, TValue> extends CustomColumnMeta {}
