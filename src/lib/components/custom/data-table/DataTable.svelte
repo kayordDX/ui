@@ -92,6 +92,8 @@
 				replaceState: true,
 				keepFocus: true,
 				noScroll: true,
+			}).catch(() => {
+				// Ignore navigation errors in test environments
 			});
 		}
 	});

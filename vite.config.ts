@@ -1,16 +1,39 @@
+/// <reference types="vitest/config" />
 import { sveltekit } from "@sveltejs/kit/vite";
 import tailwindcss from "@tailwindcss/vite";
-import { svelteTesting } from "@testing-library/svelte/vite";
-import { type UserConfig } from "vite";
-import { defineConfig } from "vitest/config";
+import { defineConfig } from "vite";
+import { playwright } from "@vitest/browser-playwright";
 
-const config: UserConfig = defineConfig({
-	plugins: [sveltekit(), tailwindcss(), svelteTesting()],
+export default defineConfig({
+	plugins: [tailwindcss(), sveltekit()],
 	test: {
-		include: ["src/**/*.{test,spec}.{js,ts}"],
-		environment: "jsdom",
-		setupFiles: ["./vitest-setup.ts"],
+		expect: { requireAssertions: true },
+		projects: [
+			{
+				extends: "./vite.config.ts",
+				test: {
+					name: "client",
+					browser: {
+						enabled: true,
+						provider: playwright(),
+						instances: [{ browser: "chromium" }],
+						headless: false,
+					},
+					include: ["src/**/*.svelte.{test,spec}.{js,ts}"],
+					exclude: ["src/lib/server/**"],
+					setupFiles: ["./vitest-setup.ts"],
+					css: true,
+				},
+			},
+			{
+				extends: "./vite.config.ts",
+				test: {
+					name: "server",
+					environment: "node",
+					include: ["src/**/*.{test,spec}.{js,ts}"],
+					exclude: ["src/**/*.svelte.{test,spec}.{js,ts}"],
+				},
+			},
+		],
 	},
 });
-
-export default config;
