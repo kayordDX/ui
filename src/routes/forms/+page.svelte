@@ -13,6 +13,7 @@
 		Textarea,
 		Toggle,
 		ToggleGroup,
+		NativeSelect,
 	} from "$lib";
 	import { Form } from "$lib/form";
 
@@ -110,6 +111,20 @@
 				{/each}
 			</Select.Content>
 		</Select.Root>
+	</Card.Content>
+</Card.Root>
+
+<Card.Root class="m-5">
+	<Card.Header>
+		<Card.Title>Native Select</Card.Title>
+	</Card.Header>
+	<Card.Content>
+		<NativeSelect.Root>
+			<NativeSelect.Option value="">Select option</NativeSelect.Option>
+			{#each items as item}
+				<NativeSelect.Option value={item.value}>{item.label}</NativeSelect.Option>
+			{/each}
+		</NativeSelect.Root>
 	</Card.Content>
 </Card.Root>
 

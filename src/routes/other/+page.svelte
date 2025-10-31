@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Accordion, Button, Card } from "$lib";
+	import { Accordion, Button, Card, NavigationMenu } from "$lib";
 	import { Calendar } from "$lib/calendar";
 	import { Carousel } from "$lib/carousel";
 	import { CalendarDate, getLocalTimeZone } from "@internationalized/date";
@@ -112,5 +112,43 @@
 			<Carousel.Previous />
 			<Carousel.Next />
 		</Carousel.Root>
+	</Card.Content>
+</Card.Root>
+
+<Card.Root class="m-5">
+	<Card.Header>
+		<Card.Title>Navigation Menu</Card.Title>
+	</Card.Header>
+	<Card.Content class="ml-8 w-fit">
+		<NavigationMenu.Root>
+			<NavigationMenu.List>
+				<NavigationMenu.Item>
+					<NavigationMenu.Trigger>Item One</NavigationMenu.Trigger>
+					<NavigationMenu.Content>
+						<ul class="grid w-[300px] gap-4 p-2">
+							<li>
+								<NavigationMenu.Link>Link</NavigationMenu.Link>
+							</li>
+							<li>
+								<NavigationMenu.Link>Other Link</NavigationMenu.Link>
+							</li>
+						</ul>
+					</NavigationMenu.Content>
+				</NavigationMenu.Item>
+				<NavigationMenu.Item>
+					<NavigationMenu.Trigger>Item Two</NavigationMenu.Trigger>
+					<NavigationMenu.Content>
+						<ul class="grid w-[300px] gap-4 p-2">
+							<li>
+								<NavigationMenu.Link>Link 1</NavigationMenu.Link>
+							</li>
+							<li>
+								<NavigationMenu.Link>Link 2</NavigationMenu.Link>
+							</li>
+						</ul>
+					</NavigationMenu.Content>
+				</NavigationMenu.Item>
+			</NavigationMenu.List>
+		</NavigationMenu.Root>
 	</Card.Content>
 </Card.Root>
