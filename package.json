@@ -1,7 +1,7 @@
 {
 	"name": "@kayord/ui",
 	"private": false,
-	"version": "2.0.9",
+	"version": "2.0.10",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && pnpm package",
@@ -134,8 +134,8 @@
 		"@types/d3-shape": "^3.1.7",
 		"@typescript-eslint/eslint-plugin": "^8.46.4",
 		"@typescript-eslint/parser": "^8.46.4",
-		"@vitest/browser": "^4.0.8",
-		"@vitest/browser-playwright": "^4.0.8",
+		"@vitest/browser": "^4.0.9",
+		"@vitest/browser-playwright": "^4.0.9",
 		"d3-scale": "^4.0.2",
 		"d3-shape": "^3.2.0",
 		"embla-carousel-svelte": "^8.6.0",
@@ -160,7 +160,7 @@
 		"typescript": "^5.9.3",
 		"vaul-svelte": "1.0.0-next.7",
 		"vite": "^7.2.2",
-		"vitest": "^4.0.8",
+		"vitest": "^4.0.9",
 		"vitest-browser-svelte": "^2.0.0",
 		"zod": "4.1.12"
 	},
@@ -168,7 +168,7 @@
 	"types": "./dist/index.d.ts",
 	"main": "./dist/index.js",
 	"type": "module",
-	"packageManager": "pnpm@10.21.0",
+	"packageManager": "pnpm@10.22.0",
 	"pnpm": {
 		"onlyBuiltDependencies": [
 			"@tailwindcss/oxide",
