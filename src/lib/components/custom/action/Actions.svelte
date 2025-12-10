@@ -8,9 +8,9 @@
 
 	let { actions, text, class: className, icon, variant = "ghost" }: ActionsType = $props();
 
-	const ActionIcon = icon;
+	const ActionIcon = $derived(icon);
 
-	const size = text ? "default" : "icon";
+	const size = $derived(text ? "default" : "icon");
 </script>
 
 <DropdownMenu.Root>

@@ -13,6 +13,7 @@
 
 	let { table, canChangePageSize = false }: Props<T> = $props();
 
+	// svelte-ignore state_referenced_locally
 	let value = $state(table.getState().pagination.pageSize.toString());
 </script>
 

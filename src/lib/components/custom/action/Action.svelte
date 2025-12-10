@@ -6,9 +6,9 @@
 
 	let { text, icon, action, href, class: className }: ActionType = $props();
 
-	const ActionIcon = icon;
+	const ActionIcon = $derived(icon);
 
-	const clickAction = href ? () => goto(href) : action;
+	const clickAction = $derived(href ? () => goto(href) : action);
 </script>
 
 <DropdownMenu.Item onclick={clickAction} class={cn(className)}>

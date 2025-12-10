@@ -13,6 +13,7 @@
 
 	let { value, initial = 0, duration = 2000, class: className, ...restProps }: Props = $props();
 
+	// svelte-ignore state_referenced_locally
 	let num = new Tween(initial, {
 		duration: duration,
 		easing: cubicOut,

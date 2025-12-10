@@ -7,7 +7,7 @@
 	}
 
 	let { path, text }: Props = $props();
-	let isActive = $page.url.pathname == path;
+	let isActive = $derived($page.url.pathname == path);
 </script>
 
 <div class="space-y-1">

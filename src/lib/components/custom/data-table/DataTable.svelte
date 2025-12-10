@@ -56,6 +56,7 @@
 	}: Props<T> = $props();
 
 	const tableStore = new TableStore();
+	// svelte-ignore state_referenced_locally
 	const isPaginationEnabled = table.options.getPaginationRowModel !== undefined;
 
 	// Load Default Values from Page Params
