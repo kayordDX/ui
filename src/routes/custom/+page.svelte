@@ -4,7 +4,7 @@
 	import ProgressLoading from "$lib/components/custom/progress-loading/ProgressLoading.svelte";
 	import { Button, Card } from "$lib/components/ui";
 	import Spinner from "$lib/components/ui/spinner/spinner.svelte";
-	import { HouseIcon, EllipsisIcon, CircleIcon, CircleArrowDown, CircleArrowDownIcon } from "@lucide/svelte";
+	import { HouseIcon, EllipsisIcon } from "@lucide/svelte";
 	import * as StarRating from "$lib/components/custom/star-rating";
 
 	let starValue = $state(0);

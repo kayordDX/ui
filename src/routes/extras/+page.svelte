@@ -15,7 +15,7 @@
 					<TreeView.File name="+page.svelte" />
 				</TreeView.Folder>
 				<TreeView.File name="app.css">
-					{#snippet icon({ name })}
+					{#snippet icon()}
 						<LayoutGridIcon />
 					{/snippet}
 				</TreeView.File>

@@ -4,6 +4,6 @@ interface DataItem {
 	parentId: number | null;
 }
 
-interface TreeNode extends DataItem {
+export interface TreeNode extends DataItem {
 	children?: TreeNode[];
 }

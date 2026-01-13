@@ -18,7 +18,7 @@
 	import { Form } from "$lib/form";
 
 	import { z } from "zod";
-	import { type SuperValidated, superForm, type Infer } from "sveltekit-superforms";
+	import { superForm } from "sveltekit-superforms";
 	import { zod4Client } from "sveltekit-superforms/adapters";
 
 	const formSchema = z.object({
@@ -107,7 +107,7 @@
 		<Select.Root type="single" bind:value={selectedValue} {items}>
 			<Select.Trigger class="w-[180px]">{triggerContent}</Select.Trigger>
 			<Select.Content>
-				{#each items as item}
+				{#each items as item (item.value)}
 					<Select.Item value={item.value}>{item.label}</Select.Item>
 				{/each}
 			</Select.Content>

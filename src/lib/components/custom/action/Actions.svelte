@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
-	import { Button, buttonVariants } from "$lib/components/ui/button";
+	import { buttonVariants } from "$lib/components/ui/button";
 	import EllipsisVerticalIcon from "@lucide/svelte/icons/ellipsis-vertical";
 	import { isActionGroup, isActionType, type ActionsType } from "./types";
 	import Action from "./Action.svelte";

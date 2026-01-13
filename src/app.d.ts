@@ -10,7 +10,9 @@ declare global {
 }
 
 declare module "@tanstack/table-core" {
+	// eslint-disable-next-line @typescript-eslint/no-empty-object-type, @typescript-eslint/no-unused-vars
 	interface ColumnMeta<TData extends RowData, TValue> extends CustomColumnMeta {}
+	// eslint-disable-next-line @typescript-eslint/no-empty-object-type, @typescript-eslint/no-unused-vars
 	interface TableOptionsResolved<TData extends RowData> extends CustomOptions {}
 }
 

@@ -5,6 +5,7 @@ import type { Snippet } from "svelte";
 export interface ActionType {
 	text: string;
 	icon?: typeof Icon;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	action?: (...args: any[]) => void;
 	href?: string;
 	class?: string;
@@ -15,6 +16,7 @@ export interface ActionGroupType {
 	child?: Snippet;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface ActionSeparatorType {}
 
 export const isActionType = (action: ActionType | ActionGroupType | ActionSeparatorType): action is ActionType => {

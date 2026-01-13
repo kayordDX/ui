@@ -4,13 +4,7 @@
 		name: string;
 	}
 
-	import {
-		getFilteredRowModel,
-		type ColumnDef,
-		type GlobalFilterTableState,
-		type TableState,
-		type Updater,
-	} from "@tanstack/table-core";
+	import { type ColumnDef, type GlobalFilterTableState, type Updater } from "@tanstack/table-core";
 
 	import { data } from "./data.svelte";
 	import { Button } from "$lib";

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { Card, Command } from "$lib/components/ui";
-	import { CalculatorIcon, CalendarIcon, CreditCardIcon, SettingsIcon, SmileIcon, UserIcon } from "@lucide/svelte";
 	import TreeItem from "./TreeItem.svelte";
 	let myValue = $state("");
 
