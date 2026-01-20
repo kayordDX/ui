@@ -1,6 +1,15 @@
 <script lang="ts">
 	import { Card } from "$lib";
-	import { NumberTicker } from "$lib";
+	import { useSearchParams } from "runed/kit";
+	import { z } from "zod";
+
+	const productSearchSchema = z.object({
+		page: z.coerce.number().default(1),
+		filter: z.string().default(""),
+		sort: z.enum(["newest", "oldest", "price"]).default("newest"),
+	});
+
+	const params = useSearchParams(productSearchSchema);
 </script>
 
 <Card.Root class="m-5">
@@ -8,6 +17,6 @@
 		<Card.Title>Test</Card.Title>
 	</Card.Header>
 	<Card.Content>
-		<NumberTicker value={1000} duration={800} class="text-4xl font-bold" />
+		<input type="text" bind:value={params.filter} />
 	</Card.Content>
 </Card.Root>
