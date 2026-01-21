@@ -34,6 +34,8 @@ export function createGrid<TData extends RowData>(options: DataGridOptions<TData
 	// Support both direct data array and getter function for reactivity
 	// Using a getter function () => data allows Svelte 5 to track changes
 	const getData = typeof dataProp === "function" ? dataProp : () => dataProp;
+	const getRowCount =
+		typeof dataGridProps.rowCount === "function" ? dataGridProps.rowCount : () => dataGridProps.rowCount;
 
 	// ========================================
 	// Reactive State using Svelte 5 runes
@@ -155,7 +157,7 @@ export function createGrid<TData extends RowData>(options: DataGridOptions<TData
 		manualPagination: (dataGridProps?.isPaginationEnabled ?? true) == false ? true : dataGridProps?.manualPagination,
 		manualSorting: dataGridProps.manualSorting,
 		columnResizeMode: "onChange",
-		rowCount: dataGridProps.rowCount,
+		rowCount: getRowCount(),
 		enableColumnResizing: true,
 		defaultColumn: {
 			minSize: 0,
@@ -201,11 +203,13 @@ export function createGrid<TData extends RowData>(options: DataGridOptions<TData
 			globalFilter,
 		};
 		const currentData = getData();
+		const currentRowCount = getRowCount();
 
 		// Update table with current state
 		table.setOptions((prev) => ({
 			...prev,
 			data: currentData,
+			rowCount: currentRowCount,
 			state: {
 				...prev.state,
 				...currentState,
@@ -280,6 +284,10 @@ export function createGrid<TData extends RowData>(options: DataGridOptions<TData
 		getLeftLeafColumns: () => {
 			subscribeToTable();
 			return table.getLeftLeafColumns();
+		},
+		getRowCount: () => {
+			subscribeToTable();
+			return table.getRowCount();
 		},
 		getRightLeafColumns: () => {
 			subscribeToTable();

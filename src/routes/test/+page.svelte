@@ -244,11 +244,15 @@
 
 	// let rowSelection: RowSelectionState = $state({});
 
+	let rc = $state(100);
+
 	const { table, dataGridProps } = createGrid({
 		columns,
 		data: () => data,
 		dataGridProps: {
 			useURLSearchParams: true,
+			manualPagination: true,
+			rowCount: rc,
 		},
 	});
 
@@ -264,6 +268,7 @@
 <Card.Root class="m-5">
 	<Card.Header>
 		<Card.Title>Test</Card.Title>
+		{rc}
 	</Card.Header>
 	<Card.Content>
 		<!-- Test<Input bind:value={params.test} /> -->
@@ -274,6 +279,7 @@
 		<Button onclick={() => table.resetColumnFilters()}>Reset</Button>
 		<Button onclick={() => table.setGlobalFilter("z")}>Global Filter</Button>
 		<Button onclick={() => table.resetGlobalFilter()}>Reset Global</Button>
+		<Button onclick={() => (rc = 1)}>RC</Button>
 		<Button onclick={addData}>Add Data</Button>
 	</Card.Content>
 </Card.Root>
