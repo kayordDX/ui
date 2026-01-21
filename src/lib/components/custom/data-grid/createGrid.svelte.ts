@@ -155,6 +155,7 @@ export function createGrid<TData extends RowData>(options: DataGridOptions<TData
 		manualPagination: (dataGridProps?.isPaginationEnabled ?? true) == false ? true : dataGridProps?.manualPagination,
 		manualSorting: dataGridProps.manualSorting,
 		columnResizeMode: "onChange",
+		rowCount: dataGridProps.rowCount,
 		enableColumnResizing: true,
 		defaultColumn: {
 			minSize: 0,
@@ -247,6 +248,10 @@ export function createGrid<TData extends RowData>(options: DataGridOptions<TData
 		getState: () => {
 			subscribeToTable();
 			return table.getState();
+		},
+		getPageCount: () => {
+			subscribeToTable();
+			return table.getPageCount();
 		},
 		getColumn: (columnId: string) => {
 			subscribeToTable();
