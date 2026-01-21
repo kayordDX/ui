@@ -5,13 +5,15 @@
 	import DoubleArrowLeft from "@lucide/svelte/icons/arrow-left";
 	import DoubleArrowRight from "@lucide/svelte/icons/arrow-right";
 	import { Select, Button } from "$lib";
+	import type { DataGridProps } from "./types";
 
 	interface Props<T> {
 		table: Table<T>;
+		dataGridProps?: DataGridProps;
 		canChangePageSize?: boolean;
 	}
 
-	let { table, canChangePageSize = false }: Props<T> = $props();
+	let { table, dataGridProps, canChangePageSize = false }: Props<T> = $props();
 
 	// svelte-ignore state_referenced_locally
 	let value = $state(table.getState().pagination.pageSize.toString());
@@ -19,7 +21,7 @@
 
 <div class="flex items-center justify-between py-2">
 	<div class="text-muted-foreground flex-1 text-sm">
-		{#if table.options.enableRowSelection}
+		{#if dataGridProps?.enableRowSelectionUI}
 			{table.getFilteredSelectedRowModel().rows.length} of
 			{table.getFilteredRowModel().rows.length} row(s) selected.
 		{/if}

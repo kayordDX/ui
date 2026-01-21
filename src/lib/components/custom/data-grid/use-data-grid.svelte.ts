@@ -17,9 +17,12 @@ import {
 	type ColumnSizingState,
 	type ColumnSizingInfoState,
 	type PaginationState,
+	type ColumnDef,
 } from "@tanstack/table-core";
 import type { DataGridOptions, DataGridResponse } from "./types";
 import { defaultDataGridProps } from "./types";
+import { renderComponent } from "$lib/data-table";
+import DataGridCheckbox from "./DataGridCheckbox.svelte";
 
 export function useDataGrid<TData extends RowData>(options: DataGridOptions<TData>): DataGridResponse<TData> {
 	// Merge provided dataGridProps with defaults. If none provided, use defaults.
@@ -71,6 +74,27 @@ export function useDataGrid<TData extends RowData>(options: DataGridOptions<TDat
 		}
 	});
 
+	// Row Selection
+	if (dataGridProps.enableRowSelectionUI) {
+		const rowSelectionColumn: ColumnDef<TData> = {
+			id: "select",
+			header: () =>
+				renderComponent(DataGridCheckbox, {
+					checked: table.getIsAllPageRowsSelected(),
+					onCheckedChange: () => table.toggleAllPageRowsSelected(),
+				}),
+			cell: (r) =>
+				renderComponent(DataGridCheckbox, {
+					checked: r.row.getIsSelected(),
+					onCheckedChange: () => r.row.toggleSelected(),
+				}),
+			enableResizing: false,
+			enableSorting: false,
+			size: 0,
+		};
+		options.columns.unshift(rowSelectionColumn);
+	}
+
 	// Create the base table options
 	const baseTableOptions: TableOptionsResolved<TData> = {
 		data: getData(),
@@ -119,7 +143,7 @@ export function useDataGrid<TData extends RowData>(options: DataGridOptions<TDat
 		columnResizeMode: "onChange",
 		enableColumnResizing: true,
 		defaultColumn: {
-			minSize: 60,
+			minSize: 0,
 			maxSize: 1000,
 			size: 150,
 		},
@@ -266,6 +290,10 @@ export function useDataGrid<TData extends RowData>(options: DataGridOptions<TDat
 		getCanNextPage: () => {
 			subscribeToTable();
 			return table.getCanNextPage();
+		},
+		getFilteredSelectedRowModel: () => {
+			subscribeToTable();
+			return table.getFilteredSelectedRowModel();
 		},
 		toggleAllRowsSelected: table.toggleAllRowsSelected.bind(table),
 		toggleAllPageRowsSelected: table.toggleAllPageRowsSelected.bind(table),

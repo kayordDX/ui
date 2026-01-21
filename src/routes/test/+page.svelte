@@ -6,6 +6,8 @@
 	import { z } from "zod";
 	import DataGrid from "$lib/components/custom/data-grid/DataGrid.svelte";
 	import Input from "$lib/components/ui/input/input.svelte";
+	import DataTable from "$lib/components/custom/data-table/DataTable.svelte";
+	import { createShadTable } from "$lib/data-table";
 
 	const productSearchSchema = z.object({
 		page: z.coerce.number().default(1),
@@ -243,20 +245,16 @@
 	const { table, dataGridProps } = useDataGrid({
 		columns,
 		data: () => data,
-		dataGridProps: {},
+		dataGridProps: {
+			enableRowSelectionUI: true,
+		},
 	});
 
-	const sorts = $derived(
-		table
-			.getState()
-			.sorting.map((sort) => `${sort.desc ? "-" : ""}${sort.id}`)
-			.join(",")
-	);
-
-	$effect(() => {
-		console.log("test", sorts);
-		// $inspect(table, dataGridProps);
-	});
+	// const what = createShadTable({
+	// 	columns,
+	// 	data,
+	// 	enableRowSelection: true,
+	// });
 </script>
 
 <Card.Root class="m-5">
@@ -265,6 +263,7 @@
 	</Card.Header>
 	<Card.Content>
 		<Input type="text" bind:value={params.filter} />
+		<!-- <DataTable table={what} headerClass="mt-2" /> -->
 		<DataGrid {table} {dataGridProps} headerClass="mt-2" />
 	</Card.Content>
 </Card.Root>

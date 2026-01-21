@@ -29,6 +29,7 @@ export interface DataGridOptions<TData extends RowData> {
 export interface DataGridProps {
 	isPaginationEnabled?: boolean;
 	manualPagination?: boolean;
+	enableRowSelectionUI?: boolean;
 }
 
 export const defaultDataGridProps: DataGridProps = {

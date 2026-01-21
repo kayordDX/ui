@@ -144,7 +144,7 @@
 		{/if}
 	</div>
 	{#if dataGridProps.isPaginationEnabled}
-		<Pagination {table} />
+		<Pagination {table} {dataGridProps} />
 	{/if}
 
 	{#if footer}
