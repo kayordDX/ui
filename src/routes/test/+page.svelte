@@ -1,20 +1,9 @@
 <script lang="ts">
 	import { Button, Card } from "$lib";
-	import { useDataGrid } from "$lib/components/custom/data-grid/use-data-grid.svelte";
 	import type { ColumnDef } from "@tanstack/table-core";
-	import { useSearchParams } from "runed/kit";
-	import { z } from "zod";
 	import DataGrid from "$lib/components/custom/data-grid/DataGrid.svelte";
 	import Input from "$lib/components/ui/input/input.svelte";
-
-	const productSearchSchema = z.object({
-		page: z.coerce.number().default(1),
-		filter: z.string().default(""),
-		sort: z.enum(["newest", "oldest", "price"]).default("newest"),
-		test: z.string().default(""),
-	});
-
-	// const params = useSearchParams(productSearchSchema);
+	import { createGrid } from "$lib/components/custom/data-grid/createGrid.svelte";
 
 	type Employee = {
 		id: string;
@@ -241,7 +230,7 @@
 
 	// let rowSelection: RowSelectionState = $state({});
 
-	const { table, dataGridProps } = useDataGrid({
+	const { table, dataGridProps } = createGrid({
 		columns,
 		data: () => data,
 		dataGridProps: {

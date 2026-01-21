@@ -25,7 +25,7 @@ import { defaultDataGridProps } from "./types";
 import { renderComponent } from "$lib/data-table";
 import DataGridCheckbox from "./DataGridCheckbox.svelte";
 
-export function useDataGrid<TData extends RowData>(options: DataGridOptions<TData>): DataGridResponse<TData> {
+export function createGrid<TData extends RowData>(options: DataGridOptions<TData>): DataGridResponse<TData> {
 	// Merge provided dataGridProps with defaults. If none provided, use defaults.
 	options.dataGridProps = { ...defaultDataGridProps, ...(options.dataGridProps ?? {}) };
 

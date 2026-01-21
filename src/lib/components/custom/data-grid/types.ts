@@ -57,26 +57,14 @@ export const defaultSearchParamSchema = z.object({
 	page: z.coerce.number().default(0),
 	filter: z.string().default(""),
 	sort: z.string().default(""),
-	// sort: z
-	// 	.array(
-	// 		z.object({
-	// 			desc: z.boolean(),
-	// 			id: z.string(),
-	// 		})
-	// 	)
-	// 	.default([]),
-	// page: z.object({
-	// 	pageIndex: z.number(),
-	// 	pageSize: z.number(),
-	// }),
-	// globalFilter: z.any(),
-	// columnFilters: z.array(
-	// 	z.object({
-	// 		id: z.string(),
-	// 		value: z.unknown(),
-	// 	})
-	// ),
 });
 
-// const what = useSearchParams(defaultSearchParamSchema);
 export type SearchParamSchema = z.infer<typeof defaultSearchParamSchema>;
+
+export interface CustomOptions {
+	useURLSearchParams?: boolean;
+}
+
+export interface CustomColumnMeta {
+	className?: string;
+}
