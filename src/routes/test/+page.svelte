@@ -1,13 +1,11 @@
 <script lang="ts">
-	import { Card } from "$lib";
+	import { Button, Card } from "$lib";
 	import { useDataGrid } from "$lib/components/custom/data-grid/use-data-grid.svelte";
 	import type { ColumnDef } from "@tanstack/table-core";
 	import { useSearchParams } from "runed/kit";
 	import { z } from "zod";
 	import DataGrid from "$lib/components/custom/data-grid/DataGrid.svelte";
 	import Input from "$lib/components/ui/input/input.svelte";
-	import DataTable from "$lib/components/custom/data-table/DataTable.svelte";
-	import { createShadTable } from "$lib/data-table";
 
 	const productSearchSchema = z.object({
 		page: z.coerce.number().default(1),
@@ -245,9 +243,6 @@
 	const { table, dataGridProps } = useDataGrid({
 		columns,
 		data: () => data,
-		dataGridProps: {
-			enableRowSelectionUI: true,
-		},
 	});
 
 	// const what = createShadTable({
@@ -255,6 +250,8 @@
 	// 	data,
 	// 	enableRowSelection: true,
 	// });
+
+	// table.setGlobalFilter("John Doe");
 </script>
 
 <Card.Root class="m-5">
@@ -262,8 +259,12 @@
 		<Card.Title>Test</Card.Title>
 	</Card.Header>
 	<Card.Content>
-		<Input type="text" bind:value={params.filter} />
+		<Input bind:value={() => table.getState().globalFilter, (v) => table.setGlobalFilter(v)} />
 		<!-- <DataTable table={what} headerClass="mt-2" /> -->
-		<DataGrid {table} {dataGridProps} headerClass="mt-2" />
+		<DataGrid {table} {dataGridProps} headerClass="mt-2" enableVisibility />
+		<Button onclick={() => table.setColumnFilters([{ id: "name", value: "John" }])}>Filter 1</Button>
+		<Button onclick={() => table.resetColumnFilters()}>Reset</Button>
+		<Button onclick={() => table.setGlobalFilter("z")}>Global Filter</Button>
+		<Button onclick={() => table.resetGlobalFilter()}>Reset Global</Button>
 	</Card.Content>
 </Card.Root>

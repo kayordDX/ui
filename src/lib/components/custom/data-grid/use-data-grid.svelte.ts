@@ -18,6 +18,7 @@ import {
 	type ColumnSizingInfoState,
 	type PaginationState,
 	type ColumnDef,
+	type GlobalFilterTableState,
 } from "@tanstack/table-core";
 import type { DataGridOptions, DataGridResponse } from "./types";
 import { defaultDataGridProps } from "./types";
@@ -40,6 +41,7 @@ export function useDataGrid<TData extends RowData>(options: DataGridOptions<TDat
 
 	// Table state - use initialState if provided
 	let sorting = $state<SortingState>(initialState?.sorting ?? []);
+	let globalFilter = $state<GlobalFilterTableState | undefined>(initialState?.globalFilter);
 	let pagination = $state<PaginationState>(initialState?.pagination ?? { pageIndex: 0, pageSize: 10 });
 	let columnFilters = $state<ColumnFiltersState>(initialState?.columnFilters ?? []);
 	let rowSelection = $state<RowSelectionState>(initialState?.rowSelection ?? {});
@@ -78,22 +80,34 @@ export function useDataGrid<TData extends RowData>(options: DataGridOptions<TDat
 	if (dataGridProps.enableRowSelectionUI) {
 		const rowSelectionColumn: ColumnDef<TData> = {
 			id: "select",
-			header: () =>
-				renderComponent(DataGridCheckbox, {
+			header: () => {
+				subscribeToTable();
+				return renderComponent(DataGridCheckbox, {
 					checked: table.getIsAllPageRowsSelected(),
+					indeterminate: table.getIsSomePageRowsSelected(),
 					onCheckedChange: () => table.toggleAllPageRowsSelected(),
-				}),
-			cell: (r) =>
-				renderComponent(DataGridCheckbox, {
+				});
+			},
+			cell: (r) => {
+				subscribeToTable();
+				return renderComponent(DataGridCheckbox, {
 					checked: r.row.getIsSelected(),
 					onCheckedChange: () => r.row.toggleSelected(),
-				}),
+				});
+			},
 			enableResizing: false,
 			enableSorting: false,
 			size: 0,
 		};
 		options.columns.unshift(rowSelectionColumn);
 	}
+
+	// Search globalFilter
+	$effect(() => {
+		if (options.search) {
+			globalFilter = { globalFilter: options.search };
+		}
+	});
 
 	// Create the base table options
 	const baseTableOptions: TableOptionsResolved<TData> = {
@@ -108,6 +122,7 @@ export function useDataGrid<TData extends RowData>(options: DataGridOptions<TDat
 			columnVisibility,
 			columnSizing,
 			columnSizingInfo,
+			globalFilter,
 		},
 		onColumnSizingChange: (updater) => {
 			columnSizing = typeof updater === "function" ? updater(columnSizing) : updater;
@@ -135,11 +150,17 @@ export function useDataGrid<TData extends RowData>(options: DataGridOptions<TDat
 		onRowSelectionChange: (updater) => {
 			rowSelection = typeof updater === "function" ? updater(rowSelection) : updater;
 		},
+		onGlobalFilterChange: (updater) => {
+			globalFilter = typeof updater === "function" ? updater(globalFilter) : updater;
+		},
 		getCoreRowModel: getCoreRowModel(),
 		getPaginationRowModel: getPaginationRowModel(),
 		getSortedRowModel: getSortedRowModel(),
 		getFilteredRowModel: getFilteredRowModel(),
+		globalFilterFn: "auto",
+		manualFiltering: dataGridProps.manualFiltering,
 		manualPagination: (dataGridProps?.isPaginationEnabled ?? true) == false ? true : dataGridProps?.manualPagination,
+		manualSorting: dataGridProps.manualSorting,
 		columnResizeMode: "onChange",
 		enableColumnResizing: true,
 		defaultColumn: {
@@ -150,6 +171,7 @@ export function useDataGrid<TData extends RowData>(options: DataGridOptions<TDat
 		enableRowSelection: true,
 		enableColumnFilters: true,
 		enableFilters: true,
+		enableGlobalFilter: true,
 		renderFallbackValue: null,
 		onStateChange: () => {},
 		mergeOptions: (defaultOptions: TableOptions<TData>, newOptions: Partial<TableOptions<TData>>) => {
@@ -182,6 +204,7 @@ export function useDataGrid<TData extends RowData>(options: DataGridOptions<TDat
 			columnVisibility,
 			columnSizing,
 			columnSizingInfo,
+			globalFilter,
 		};
 		const currentData = getData();
 
@@ -247,6 +270,7 @@ export function useDataGrid<TData extends RowData>(options: DataGridOptions<TDat
 		setRowSelection: table.setRowSelection.bind(table),
 		setColumnSizing: table.setColumnSizing.bind(table),
 		setOptions: table.setOptions.bind(table),
+		// setGlobalFilter: table.setGlobalFilter.bind(table),
 		getFlatHeaders: () => {
 			subscribeToTable();
 			return table.getFlatHeaders();

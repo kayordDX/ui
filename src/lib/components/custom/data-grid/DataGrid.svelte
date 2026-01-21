@@ -8,9 +8,9 @@
 	import { ProgressLoading } from "../progress-loading";
 	import { cn } from "$lib/utils";
 	import DataGridHeader from "./DataGridHeader.svelte";
-	import VisibilitySelect from "./VisibilitySelect.svelte";
 	import DataGridFooter from "./DataGridFooter.svelte";
 	import { defaultDataGridProps, type DataGridProps } from "./types";
+	import DataGridView from "./DataGridView.svelte";
 
 	interface Props<T> {
 		table: TableType<T>;
@@ -69,9 +69,7 @@
 						{@render rightToolbar()}
 					{/if}
 					{#if enableVisibility}
-						<div>
-							<VisibilitySelect {table} />
-						</div>
+						<DataGridView {table} />
 					{/if}
 				</div>
 			</div>

@@ -3,6 +3,7 @@ import type {
 	ColumnFiltersState,
 	ColumnPinningState,
 	ColumnSizingState,
+	GlobalFilterTableState,
 	PaginationState,
 	RowData,
 	RowSelectionState,
@@ -22,6 +23,7 @@ export interface DataGridOptions<TData extends RowData> {
 		columnPinning?: ColumnPinningState;
 		columnSizing?: ColumnSizingState;
 		rowSelection?: RowSelectionState;
+		globalFilter?: GlobalFilterTableState;
 	};
 	dataGridProps?: DataGridProps;
 }
@@ -30,11 +32,16 @@ export interface DataGridProps {
 	isPaginationEnabled?: boolean;
 	manualPagination?: boolean;
 	enableRowSelectionUI?: boolean;
+	manualFiltering?: boolean;
+	manualSorting?: boolean;
 }
 
 export const defaultDataGridProps: DataGridProps = {
 	isPaginationEnabled: true,
 	manualPagination: false,
+	enableRowSelectionUI: false,
+	manualFiltering: false,
+	manualSorting: false,
 };
 
 export interface DataGridResponse<TData extends RowData> {
