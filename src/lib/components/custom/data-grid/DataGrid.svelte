@@ -3,14 +3,17 @@
 	import { FlexRender } from "$lib/components/ui/data-table";
 	import { Skeleton, Table } from "$lib/components/ui";
 	import Pagination from "./Pagination.svelte";
-	import { type Snippet } from "svelte";
+	import { onMount, type Snippet } from "svelte";
 	import { fade } from "svelte/transition";
 	import { ProgressLoading } from "../progress-loading";
 	import { cn } from "$lib/utils";
 	import DataGridHeader from "./DataGridHeader.svelte";
 	import DataGridFooter from "./DataGridFooter.svelte";
-	import { defaultDataGridProps, type DataGridProps } from "./types";
+	import { defaultDataGridProps, defaultSearchParamSchema, type DataGridProps } from "./types";
 	import DataGridView from "./DataGridView.svelte";
+	import { useSearchParams } from "runed/kit";
+	import { untrack } from "svelte";
+	import { decodeColumnFilters, decodeSorting, encodeColumnFilters, encodeSorting } from "../data-table";
 
 	interface Props<T> {
 		table: TableType<T>;
@@ -50,6 +53,31 @@
 
 	const tableState = $derived(table.getState());
 	const columnVisibility = $derived(tableState.columnVisibility);
+
+	const params = useSearchParams(defaultSearchParamSchema, { pushHistory: false });
+
+	// Load current url search params
+	onMount(() => {
+		if (dataGridProps.useURLSearchParams) {
+			table.setGlobalFilter(params.search);
+			table.setSorting(decodeSorting() ?? []);
+			table.setPageIndex(params.page);
+			table.setColumnFilters(decodeColumnFilters() ?? []);
+		}
+	});
+
+	// Set url search params
+	$effect(() => {
+		if (dataGridProps.useURLSearchParams) {
+			const tableState = table.getState();
+			untrack(() => {
+				params.search = tableState.globalFilter;
+				params.page = tableState.pagination.pageIndex;
+				params.sort = encodeSorting(tableState);
+				params.filter = encodeColumnFilters(tableState);
+			});
+		}
+	});
 </script>
 
 <div class={cn("w-full", className)}>

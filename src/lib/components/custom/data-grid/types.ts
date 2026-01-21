@@ -11,6 +11,7 @@ import type {
 	Table,
 	VisibilityState,
 } from "@tanstack/table-core";
+import z from "zod";
 
 export interface DataGridOptions<TData extends RowData> {
 	columns: ColumnDef<TData, unknown>[];
@@ -34,6 +35,7 @@ export interface DataGridProps {
 	enableRowSelectionUI?: boolean;
 	manualFiltering?: boolean;
 	manualSorting?: boolean;
+	useURLSearchParams?: boolean;
 }
 
 export const defaultDataGridProps: DataGridProps = {
@@ -42,9 +44,39 @@ export const defaultDataGridProps: DataGridProps = {
 	enableRowSelectionUI: false,
 	manualFiltering: false,
 	manualSorting: false,
+	useURLSearchParams: false,
 };
 
 export interface DataGridResponse<TData extends RowData> {
 	table: Table<TData>;
 	dataGridProps?: DataGridProps;
 }
+
+export const defaultSearchParamSchema = z.object({
+	search: z.any().default(""),
+	page: z.coerce.number().default(0),
+	filter: z.string().default(""),
+	sort: z.string().default(""),
+	// sort: z
+	// 	.array(
+	// 		z.object({
+	// 			desc: z.boolean(),
+	// 			id: z.string(),
+	// 		})
+	// 	)
+	// 	.default([]),
+	// page: z.object({
+	// 	pageIndex: z.number(),
+	// 	pageSize: z.number(),
+	// }),
+	// globalFilter: z.any(),
+	// columnFilters: z.array(
+	// 	z.object({
+	// 		id: z.string(),
+	// 		value: z.unknown(),
+	// 	})
+	// ),
+});
+
+// const what = useSearchParams(defaultSearchParamSchema);
+export type SearchParamSchema = z.infer<typeof defaultSearchParamSchema>;

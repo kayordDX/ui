@@ -1,6 +1,5 @@
 import { page } from "$app/state";
 import type { TableState } from "@tanstack/table-core";
-import { z } from "zod";
 
 /*
   sort
@@ -8,35 +7,6 @@ import { z } from "zod";
   page
   columnFilters
 */
-
-export const defaultSearchParamSchema = z.object({
-	sort: z
-		.array(
-			z.object({
-				desc: z.boolean(),
-				id: z.string(),
-			})
-		)
-		.optional(),
-	page: z
-		.object({
-			pageIndex: z.number(),
-			pageSize: z.number(),
-		})
-		.optional(),
-	globalFilter: z.any().optional(),
-	columnFilters: z
-		.array(
-			z.object({
-				id: z.string(),
-				value: z.unknown(),
-			})
-		)
-		.optional(),
-});
-
-// const what = useSearchParams(defaultSearchParamSchema);
-export type SearchParamSchema = z.infer<typeof defaultSearchParamSchema>;
 
 export const encodeSorting = (state: Partial<TableState>) => {
 	return state.sorting?.map((s) => `${s.desc ? "-" : ""}${s.id}`).join(",") ?? "";

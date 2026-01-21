@@ -102,13 +102,6 @@ export function useDataGrid<TData extends RowData>(options: DataGridOptions<TDat
 		options.columns.unshift(rowSelectionColumn);
 	}
 
-	// Search globalFilter
-	$effect(() => {
-		if (options.search) {
-			globalFilter = { globalFilter: options.search };
-		}
-	});
-
 	// Create the base table options
 	const baseTableOptions: TableOptionsResolved<TData> = {
 		data: getData(),

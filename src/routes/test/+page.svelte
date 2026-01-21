@@ -11,9 +11,10 @@
 		page: z.coerce.number().default(1),
 		filter: z.string().default(""),
 		sort: z.enum(["newest", "oldest", "price"]).default("newest"),
+		test: z.string().default(""),
 	});
 
-	const params = useSearchParams(productSearchSchema);
+	// const params = useSearchParams(productSearchSchema);
 
 	type Employee = {
 		id: string;
@@ -243,6 +244,9 @@
 	const { table, dataGridProps } = useDataGrid({
 		columns,
 		data: () => data,
+		dataGridProps: {
+			useURLSearchParams: true,
+		},
 	});
 
 	// const what = createShadTable({
@@ -259,6 +263,7 @@
 		<Card.Title>Test</Card.Title>
 	</Card.Header>
 	<Card.Content>
+		<!-- Test<Input bind:value={params.test} /> -->
 		<Input bind:value={() => table.getState().globalFilter, (v) => table.setGlobalFilter(v)} />
 		<!-- <DataTable table={what} headerClass="mt-2" /> -->
 		<DataGrid {table} {dataGridProps} headerClass="mt-2" enableVisibility />
