@@ -34,8 +34,10 @@ export function createGrid<TData extends RowData>(options: DataGridOptions<TData
 	// Support both direct data array and getter function for reactivity
 	// Using a getter function () => data allows Svelte 5 to track changes
 	const getData = typeof dataProp === "function" ? dataProp : () => dataProp;
-	const getRowCount =
-		typeof dataGridProps.rowCount === "function" ? dataGridProps.rowCount : () => dataGridProps.rowCount;
+	const getRowCount: () => number | undefined =
+		typeof dataGridProps.rowCount === "function"
+			? (dataGridProps.rowCount as () => number)
+			: () => dataGridProps.rowCount as number | undefined;
 
 	// ========================================
 	// Reactive State using Svelte 5 runes

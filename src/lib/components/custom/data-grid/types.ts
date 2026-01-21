@@ -30,7 +30,7 @@ export interface DataGridOptions<TData extends RowData> {
 }
 
 export interface DataGridProps {
-	rowCount?: number;
+	rowCount?: () => number;
 	isPaginationEnabled?: boolean;
 	manualPagination?: boolean;
 	enableRowSelectionUI?: boolean;

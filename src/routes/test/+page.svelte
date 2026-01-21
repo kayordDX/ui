@@ -252,7 +252,7 @@
 		dataGridProps: {
 			useURLSearchParams: true,
 			manualPagination: true,
-			rowCount: rc,
+			rowCount: () => rc,
 		},
 	});
 
