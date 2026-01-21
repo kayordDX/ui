@@ -4,7 +4,7 @@ import {
 	getCoreRowModel,
 	getSortedRowModel,
 	getFilteredRowModel,
-	type ColumnDef,
+	getPaginationRowModel,
 	type RowData,
 	type TableOptions,
 	type TableOptionsResolved,
@@ -16,39 +16,16 @@ import {
 	type VisibilityState,
 	type ColumnSizingState,
 	type ColumnSizingInfoState,
+	type PaginationState,
 } from "@tanstack/table-core";
+import type { DataGridOptions, DataGridResponse } from "./types";
+import { defaultDataGridProps } from "./types";
 
-// ============================================
-// Types
-// ============================================
+export function useDataGrid<TData extends RowData>(options: DataGridOptions<TData>): DataGridResponse<TData> {
+	// Merge provided dataGridProps with defaults. If none provided, use defaults.
+	options.dataGridProps = { ...defaultDataGridProps, ...(options.dataGridProps ?? {}) };
 
-export interface UseDataGridOptions<TData extends RowData> {
-	columns: ColumnDef<TData, unknown>[];
-	/** Pass data as a getter function for reactivity: () => data */
-	data: TData[] | (() => TData[]);
-	initialState?: {
-		sorting?: SortingState;
-		columnFilters?: ColumnFiltersState;
-		columnVisibility?: VisibilityState;
-		columnPinning?: ColumnPinningState;
-		columnSizing?: ColumnSizingState;
-		rowSelection?: RowSelectionState;
-	};
-}
-
-export interface UseDataGridReturn<TData extends RowData> {
-	// Table instance
-	table: Table<TData>;
-	// Row selection state - reactive for header checkbox
-	getRowSelection: () => RowSelectionState;
-}
-
-// ============================================
-// Main Hook
-// ============================================
-
-export function useDataGrid<TData extends RowData>(options: UseDataGridOptions<TData>): UseDataGridReturn<TData> {
-	const { columns, data: dataProp, initialState } = options;
+	const { columns, data: dataProp, initialState, dataGridProps } = options;
 
 	// Support both direct data array and getter function for reactivity
 	// Using a getter function () => data allows Svelte 5 to track changes
@@ -60,6 +37,7 @@ export function useDataGrid<TData extends RowData>(options: UseDataGridOptions<T
 
 	// Table state - use initialState if provided
 	let sorting = $state<SortingState>(initialState?.sorting ?? []);
+	let pagination = $state<PaginationState>(initialState?.pagination ?? { pageIndex: 0, pageSize: 10 });
 	let columnFilters = $state<ColumnFiltersState>(initialState?.columnFilters ?? []);
 	let rowSelection = $state<RowSelectionState>(initialState?.rowSelection ?? {});
 	let columnPinning = $state<ColumnPinningState>(initialState?.columnPinning ?? {});
@@ -99,6 +77,7 @@ export function useDataGrid<TData extends RowData>(options: UseDataGridOptions<T
 		columns,
 		state: {
 			sorting,
+			pagination,
 			columnFilters,
 			rowSelection,
 			columnPinning,
@@ -123,6 +102,9 @@ export function useDataGrid<TData extends RowData>(options: UseDataGridOptions<T
 		onSortingChange: (updater) => {
 			sorting = typeof updater === "function" ? updater(sorting) : updater;
 		},
+		onPaginationChange: (updater) => {
+			pagination = typeof updater === "function" ? updater(pagination) : updater;
+		},
 		onColumnFiltersChange: (updater) => {
 			columnFilters = typeof updater === "function" ? updater(columnFilters) : updater;
 		},
@@ -130,8 +112,10 @@ export function useDataGrid<TData extends RowData>(options: UseDataGridOptions<T
 			rowSelection = typeof updater === "function" ? updater(rowSelection) : updater;
 		},
 		getCoreRowModel: getCoreRowModel(),
+		getPaginationRowModel: getPaginationRowModel(),
 		getSortedRowModel: getSortedRowModel(),
 		getFilteredRowModel: getFilteredRowModel(),
+		manualPagination: (dataGridProps?.isPaginationEnabled ?? true) == false ? true : dataGridProps?.manualPagination,
 		columnResizeMode: "onChange",
 		enableColumnResizing: true,
 		defaultColumn: {
@@ -167,6 +151,7 @@ export function useDataGrid<TData extends RowData>(options: UseDataGridOptions<T
 		// Read all reactive state to create dependencies
 		const currentState = {
 			sorting,
+			pagination,
 			columnFilters,
 			rowSelection,
 			columnPinning,
@@ -230,6 +215,9 @@ export function useDataGrid<TData extends RowData>(options: UseDataGridOptions<T
 		// Forward all other methods to the original table
 		setColumnFilters: table.setColumnFilters.bind(table),
 		setSorting: table.setSorting.bind(table),
+		setPagination: table.setPagination.bind(table),
+		setPageIndex: table.setPageIndex.bind(table),
+		setPageSize: table.setPageSize.bind(table),
 		setColumnPinning: table.setColumnPinning.bind(table),
 		setColumnVisibility: table.setColumnVisibility.bind(table),
 		setRowSelection: table.setRowSelection.bind(table),
@@ -271,6 +259,14 @@ export function useDataGrid<TData extends RowData>(options: UseDataGridOptions<T
 			subscribeToTable();
 			return table.getIsSomePageRowsSelected();
 		},
+		getCanPreviousPage: () => {
+			subscribeToTable();
+			return table.getCanPreviousPage();
+		},
+		getCanNextPage: () => {
+			subscribeToTable();
+			return table.getCanNextPage();
+		},
 		toggleAllRowsSelected: table.toggleAllRowsSelected.bind(table),
 		toggleAllPageRowsSelected: table.toggleAllPageRowsSelected.bind(table),
 		// Keep table reference for any other property access
@@ -284,6 +280,6 @@ export function useDataGrid<TData extends RowData>(options: UseDataGridOptions<T
 
 	return {
 		table: reactiveTable,
-		getRowSelection: () => rowSelection,
+		dataGridProps: dataGridProps,
 	};
 }
