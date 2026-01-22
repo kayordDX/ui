@@ -26,85 +26,108 @@ interface ShadTableOptions<TData extends RowData> extends Omit<TableOptions<TDat
 }
 
 export function createShadTable<TData extends RowData>(shadOptions: ShadTableOptions<TData>) {
-	if (!shadOptions.getCoreRowModel) {
-		shadOptions.getCoreRowModel = getCoreRowModel();
-	}
+	let notifyTableUpdate: () => void;
+	const subscribeToTable = createSubscriber((update) => {
+		notifyTableUpdate = update;
+		return () => {};
+	});
 
-	if ((shadOptions.enablePaging ?? true) == false) {
-		shadOptions.manualPagination = true;
-	}
+	const defaultOptions: TableOptions<TData> = {
+		columns: [],
+		data: [],
+		getCoreRowModel: getCoreRowModel(),
+		getPaginationRowModel: getPaginationRowModel(),
+		getSortedRowModel: getSortedRowModel(),
+		getFilteredRowModel: getFilteredRowModel(),
+		globalFilterFn: "auto",
+		columnResizeMode: "onChange",
+		// enableColumnResizing: true
+		enableRowSelection: false,
+		// enableFilters: true,
+		enableGlobalFilter: true,
+		onSortingChange: (updater) => {
+			if (options.state?.sorting) {
+				options.state.sorting = typeof updater === "function" ? updater(options.state.sorting) : updater;
+			} else if (state.sorting) {
+				state.sorting = typeof updater === "function" ? updater(state.sorting) : updater;
+			}
+			notifyTableUpdate();
+		},
+		// onColumnSizingChange: (updater) => {
+		// 	columnSizing = typeof updater === "function" ? updater(columnSizing) : updater;
+		// },
+		// onColumnSizingInfoChange: (updater) => {
+		// 	columnSizingInfo = typeof updater === "function" ? updater(columnSizingInfo) : updater;
+		// },
+		// onColumnPinningChange: (updater) => {
+		// 	columnPinning = typeof updater === "function" ? updater(columnPinning) : updater;
+		// },
+		onColumnVisibilityChange: (updater) => {
+			if (options.state?.columnVisibility) {
+				options.state.columnVisibility =
+					typeof updater === "function" ? updater(options.state.columnVisibility) : updater;
+			} else if (state.columnVisibility) {
+				state.columnVisibility = typeof updater === "function" ? updater(state.columnVisibility) : updater;
+			}
+			notifyTableUpdate();
+		},
+		onPaginationChange: (updater) => {
+			if (options.state?.pagination) {
+				options.state.pagination = typeof updater === "function" ? updater(options.state.pagination) : updater;
+			} else if (state.pagination) {
+				state.pagination = typeof updater === "function" ? updater(state.pagination) : updater;
+			}
+			notifyTableUpdate();
+		},
+		onColumnFiltersChange: (updater) => {
+			if (options.state?.columnFilters) {
+				options.state.columnFilters = typeof updater === "function" ? updater(options.state.columnFilters) : updater;
+			} else if (state.columnFilters) {
+				state.columnFilters = typeof updater === "function" ? updater(state.columnFilters) : updater;
+			}
+			notifyTableUpdate();
+		},
+		onRowSelectionChange: (updater) => {
+			if (options.state?.rowSelection) {
+				options.state.rowSelection = typeof updater === "function" ? updater(options.state.rowSelection) : updater;
+			} else if (state.rowSelection) {
+				state.rowSelection = typeof updater === "function" ? updater(state.rowSelection) : updater;
+			}
+			notifyTableUpdate();
+		},
+		onGlobalFilterChange: (updater) => {
+			if (options.state?.globalFilter) {
+				options.state.globalFilter = typeof updater === "function" ? updater(options.state.globalFilter) : updater;
+			} else {
+				state.globalFilter = typeof updater === "function" ? updater(state.globalFilter) : updater;
+			}
+			notifyTableUpdate();
+		},
+	};
 
 	if (shadOptions.useURLSearchParams) {
 		shadOptions.autoResetPageIndex = false;
 	}
 
-	const options: TableOptions<TData> = shadOptions as TableOptions<TData>;
+	// Use default but extend with shadOptions
+	const options = { ...defaultOptions, ...((shadOptions as TableOptions<TData>) ?? {}) };
 
-	// Features
-	// Sorting
-	if ((options.enableSorting ?? true) && !options.getSortedRowModel) {
-		options.getSortedRowModel = getSortedRowModel();
+	const resolvedOptions: TableOptionsResolved<TData> = mergeObjects(
+		{
+			state: {},
+			onStateChange() {},
+			renderFallbackValue: null,
+			mergeOptions: (defaultOptions: TableOptions<TData>, options: Partial<TableOptions<TData>>) => {
+				return mergeObjects(defaultOptions, options);
+			},
+		},
+		options
+	);
 
-		if (!options.onSortingChange) {
-			options.onSortingChange = (updater) => {
-				if (typeof updater === "function") {
-					if (options.state?.sorting) {
-						options.state.sorting = updater(options.state.sorting);
-					} else if (state.sorting) {
-						state.sorting = updater(state.sorting);
-					}
-				} else {
-					if (options.state?.sorting) {
-						options.state.sorting = updater;
-					} else {
-						state.sorting = updater;
-					}
-				}
-			};
-		}
-	}
-	// Paging
-	if ((shadOptions.enablePaging ?? true) && !options.getPaginationRowModel) {
-		options.getPaginationRowModel = getPaginationRowModel();
-
-		if (!options.onPaginationChange) {
-			options.onPaginationChange = (updater) => {
-				if (typeof updater === "function") {
-					if (options.state?.pagination) {
-						options.state.pagination = updater(options.state.pagination);
-					} else if (state.pagination) {
-						state.pagination = updater(state.pagination);
-					}
-				} else {
-					if (options.state?.pagination) {
-						options.state.pagination = updater;
-					} else {
-						state.pagination = updater;
-					}
-				}
-			};
-		}
-	}
+	const table = createTable(resolvedOptions);
+	const state = $state<Partial<TableState>>(table.initialState);
 
 	// Row Selection
-	if ((options.enableRowSelection ?? true) && !options.onRowSelectionChange) {
-		options.onRowSelectionChange = (updater) => {
-			if (typeof updater === "function") {
-				if (options.state?.rowSelection) {
-					options.state.rowSelection = updater(options.state.rowSelection);
-				} else if (state.rowSelection) {
-					state.rowSelection = updater(state.rowSelection);
-				}
-			} else {
-				if (options.state?.rowSelection) {
-					options.state.rowSelection = updater;
-				} else {
-					state.rowSelection = updater;
-				}
-			}
-		};
-	}
-
 	if (options.enableRowSelection && (shadOptions.enableRowSelectionUI ?? true)) {
 		const rowSelectionColumn: ColumnDef<TData> = {
 			id: "select",
@@ -129,103 +152,15 @@ export function createShadTable<TData extends RowData>(shadOptions: ShadTableOpt
 		options.columns.unshift(rowSelectionColumn);
 	}
 
-	// Column Visibility
-	if ((shadOptions.enableVisibility ?? false) && !options.onColumnVisibilityChange) {
-		options.onColumnVisibilityChange = (updater) => {
-			if (typeof updater === "function") {
-				if (options.state?.columnVisibility) {
-					options.state.columnVisibility = updater(options.state.columnVisibility);
-				} else if (state.columnVisibility) {
-					state.columnVisibility = updater(state.columnVisibility);
-				}
-			} else {
-				if (options.state?.columnVisibility) {
-					options.state.columnVisibility = updater;
-				} else {
-					state.columnVisibility = updater;
-				}
-			}
-		};
-	}
-
-	// Filtering
-	if ((options.enableFilters ?? true) && !options.getFilteredRowModel) {
-		options.getFilteredRowModel = getFilteredRowModel();
-
-		// Global Filtering
-		if (options.enableGlobalFilter ?? false) {
-			if (!options.onGlobalFilterChange) {
-				options.onGlobalFilterChange = (updater) => {
-					if (typeof updater === "function") {
-						if (options.state?.globalFilter) {
-							options.state.globalFilter = updater(options.state.globalFilter);
-						} else if (state.globalFilter) {
-							state.globalFilter = updater(state.globalFilter);
-						}
-					} else {
-						if (options.state?.globalFilter) {
-							options.state.globalFilter = updater;
-						} else {
-							state.globalFilter = updater;
-						}
-					}
-				};
-			}
-		} else {
-			if (!options.onColumnFiltersChange) {
-				options.onColumnFiltersChange = (updater) => {
-					if (typeof updater === "function") {
-						if (options.state?.columnFilters) {
-							options.state.columnFilters = updater(options.state.columnFilters);
-						} else if (state.columnFilters) {
-							state.columnFilters = updater(state.columnFilters);
-						}
-					} else {
-						if (options.state?.columnFilters) {
-							options.state.columnFilters = updater;
-						} else {
-							state.columnFilters = updater;
-						}
-					}
-				};
-			}
-		}
-	}
-
-	const resolvedOptions: TableOptionsResolved<TData> = mergeObjects(
-		{
-			state: {},
-			onStateChange() {},
-			renderFallbackValue: null,
-			mergeOptions: (defaultOptions: TableOptions<TData>, options: Partial<TableOptions<TData>>) => {
-				return mergeObjects(defaultOptions, options);
-			},
-		},
-		options
-	);
-
-	// Work with effects
-	let notifyTableUpdate: () => void;
-	const subscribeToTable = createSubscriber((update) => {
-		notifyTableUpdate = update;
-		return () => {};
-	});
-
-	const table = createTable(resolvedOptions);
-	const state = $state<Partial<TableState>>(table.initialState);
-
 	const updateOptions = (table: Table<TData>, state: Partial<TableState>) => {
 		table.setOptions((prev) => {
 			return mergeObjects(prev, options, {
 				state: mergeObjects(state, options.state || {}),
-
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				onStateChange: (updater: any) => {
 					if (updater instanceof Function) state = updater(state);
 					else state = mergeObjects(state, updater);
-
 					options.onStateChange?.(updater);
-					notifyTableUpdate();
 				},
 			});
 		});
@@ -280,7 +215,7 @@ export function createShadTable<TData extends RowData>(shadOptions: ShadTableOpt
 		setRowSelection: table.setRowSelection.bind(table),
 		setColumnSizing: table.setColumnSizing.bind(table),
 		setOptions: table.setOptions.bind(table),
-		// setGlobalFilter: table.setGlobalFilter.bind(table),
+		setGlobalFilter: table.setGlobalFilter.bind(table),
 		getFlatHeaders: () => {
 			subscribeToTable();
 			return table.getFlatHeaders();
