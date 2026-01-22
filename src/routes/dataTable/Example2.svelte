@@ -48,9 +48,7 @@
 	});
 
 	const addRecord = () => {
-		// data.value.push({ day: "1", id: 99, name: "1" });
-		// data.value = [...data.value, { day: "1", id: 99, name: "1" }];
-		data.value = [{ day: "1", id: 99, name: "1" }];
+		data.value = [...data.value, { day: "1", id: 99, name: "1" }];
 	};
 </script>
 
