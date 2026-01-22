@@ -39,10 +39,6 @@
 			"types": "./dist/data-table/index.d.ts",
 			"default": "./dist/data-table/index.js"
 		},
-		"./data-grid": {
-			"types": "./dist/data-grid/index.d.ts",
-			"default": "./dist/data-grid/index.js"
-		},
 		"./drawer": {
 			"types": "./dist/drawer/index.d.ts",
 			"default": "./dist/drawer/index.js"
@@ -138,8 +134,8 @@
 		"@tailwindcss/vite": "^4.1.18",
 		"@types/d3-scale": "^4.0.9",
 		"@types/d3-shape": "^3.1.8",
-		"@vitest/browser": "^4.0.17",
-		"@vitest/browser-playwright": "^4.0.17",
+		"@vitest/browser": "^4.0.18",
+		"@vitest/browser-playwright": "^4.0.18",
 		"d3-scale": "^4.0.2",
 		"d3-shape": "^3.2.0",
 		"embla-carousel-svelte": "^8.6.0",
@@ -151,12 +147,12 @@
 		"layerchart": "2.0.0-next.40",
 		"mode-watcher": "^1.1.0",
 		"paneforge": "^1.0.2",
-		"prettier": "^3.8.0",
+		"prettier": "^3.8.1",
 		"prettier-plugin-svelte": "^3.4.1",
 		"prettier-plugin-tailwindcss": "^0.7.2",
-		"publint": "^0.3.16",
+		"publint": "^0.3.17",
 		"runed": "^0.37.1",
-		"svelte": "5.47.1",
+		"svelte": "5.48.0",
 		"svelte-check": "^4.3.5",
 		"svelte-sonner": "^1.0.7",
 		"sveltekit-superforms": "^2.29.1",
@@ -167,9 +163,9 @@
 		"typescript-eslint": "^8.53.1",
 		"vaul-svelte": "1.0.0-next.7",
 		"vite": "^7.3.1",
-		"vitest": "^4.0.17",
-		"vitest-browser-svelte": "^2.0.0",
-		"zod": "4.3.5"
+		"vitest": "^4.0.18",
+		"vitest-browser-svelte": "^2.0.2",
+		"zod": "4.3.6"
 	},
 	"svelte": "./dist/index.js",
 	"types": "./dist/index.d.ts",

@@ -3,7 +3,7 @@
 	import { FlexRender } from "$lib/components/ui/data-table";
 	import { Skeleton, Table } from "$lib/components/ui";
 	import Pagination from "./Pagination.svelte";
-	import { onMount, type Snippet } from "svelte";
+	import { onMount, untrack, type Snippet } from "svelte";
 	import { fade } from "svelte/transition";
 	import { ProgressLoading } from "../progress-loading";
 	import FullscreenModeToggle from "./FullscreenModeToggle.svelte";
@@ -22,7 +22,7 @@
 		encodeTableState,
 	} from "./table-search-params";
 	import { useSearchParams } from "runed/kit";
-	import { defaultSearchParamSchema } from "../data-grid/types";
+	import { defaultSearchParamSchema } from "./types";
 	import DataTableView from "./DataTableView.svelte";
 
 	interface Props<T> {
@@ -64,26 +64,25 @@
 	const isPaginationEnabled = table.options.getPaginationRowModel !== undefined;
 
 	// Load Default Values from Page Params
-	onMount(() => {
-		if (table.options.useURLSearchParams) {
-			table.setPageIndex(decodePageIndex());
-			table.setSorting(decodeSorting() ?? []);
-			table.setGlobalFilter(decodeGlobalFilter());
-			table.setColumnFilters(decodeColumnFilters() ?? []);
-		}
-	});
-
-	// const params = useSearchParams(defaultSearchParamSchema, { pushHistory: false });
-
-	// // Load current url search params
 	// onMount(() => {
 	// 	if (table.options.useURLSearchParams) {
-	// 		table.setGlobalFilter(params.search);
+	// 		table.setPageIndex(decodePageIndex());
 	// 		table.setSorting(decodeSorting() ?? []);
-	// 		table.setPageIndex(params.page);
+	// 		table.setGlobalFilter(decodeGlobalFilter());
 	// 		table.setColumnFilters(decodeColumnFilters() ?? []);
 	// 	}
 	// });
+
+	const params = useSearchParams(defaultSearchParamSchema, { pushHistory: false });
+	// Load current url search params
+	onMount(() => {
+		if (table.options.useURLSearchParams) {
+			table.setGlobalFilter(params.search);
+			table.setSorting(decodeSorting() ?? []);
+			table.setPageIndex(params.page);
+			table.setColumnFilters(decodeColumnFilters() ?? []);
+		}
+	});
 
 	// Reset pageIndex
 	beforeNavigate((navigation) => {
@@ -102,32 +101,31 @@
 	});
 
 	// Set url search params
-	// $effect(() => {
-	// 	if (table.options.useURLSearchParams) {
-	// 		const tableState = table.getState();
-	// 		untrack(() => {
-	// 			console.log("running");
-	// 			params.search = tableState.globalFilter;
-	// 			params.page = tableState.pagination.pageIndex;
-	// 			params.sort = encodeSorting(tableState);
-	// 			params.filter = encodeColumnFilters(tableState);
-	// 		});
-	// 	}
-	// });
-
-	// Set URL Page Params
 	$effect(() => {
 		if (table.options.useURLSearchParams) {
-			const params = encodeTableState(table.getState());
-			goto(params, {
-				replaceState: true,
-				keepFocus: true,
-				noScroll: true,
-			}).catch(() => {
-				// Ignore navigation errors in test environments
+			const tableState = table.getState();
+			untrack(() => {
+				params.search = tableState.globalFilter;
+				params.page = tableState.pagination.pageIndex;
+				params.sort = encodeSorting(tableState);
+				params.filter = encodeColumnFilters(tableState);
 			});
 		}
 	});
+
+	// Set URL Page Params
+	// $effect(() => {
+	// 	if (table.options.useURLSearchParams) {
+	// 		const params = encodeTableState(table.getState());
+	// 		goto(params, {
+	// 			replaceState: true,
+	// 			keepFocus: true,
+	// 			noScroll: true,
+	// 		}).catch(() => {
+	// 			// Ignore navigation errors in test environments
+	// 		});
+	// 	}
+	// });
 
 	let end: HTMLElement | undefined = $state();
 </script>
