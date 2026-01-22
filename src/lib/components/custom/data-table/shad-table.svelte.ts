@@ -51,7 +51,7 @@ export function createShadTable<TData extends RowData>(shadOptions: ShadTableOpt
 			} else if (state.sorting) {
 				state.sorting = typeof updater === "function" ? updater(state.sorting) : updater;
 			}
-			notifyTableUpdate();
+			notifyTableUpdate?.();
 		},
 		// onColumnSizingChange: (updater) => {
 		// 	columnSizing = typeof updater === "function" ? updater(columnSizing) : updater;
@@ -69,7 +69,7 @@ export function createShadTable<TData extends RowData>(shadOptions: ShadTableOpt
 			} else if (state.columnVisibility) {
 				state.columnVisibility = typeof updater === "function" ? updater(state.columnVisibility) : updater;
 			}
-			notifyTableUpdate();
+			notifyTableUpdate?.();
 		},
 		onPaginationChange: (updater) => {
 			if (options.state?.pagination) {
@@ -77,7 +77,7 @@ export function createShadTable<TData extends RowData>(shadOptions: ShadTableOpt
 			} else if (state.pagination) {
 				state.pagination = typeof updater === "function" ? updater(state.pagination) : updater;
 			}
-			notifyTableUpdate();
+			notifyTableUpdate?.();
 		},
 		onColumnFiltersChange: (updater) => {
 			if (options.state?.columnFilters) {
@@ -85,7 +85,7 @@ export function createShadTable<TData extends RowData>(shadOptions: ShadTableOpt
 			} else if (state.columnFilters) {
 				state.columnFilters = typeof updater === "function" ? updater(state.columnFilters) : updater;
 			}
-			notifyTableUpdate();
+			notifyTableUpdate?.();
 		},
 		onRowSelectionChange: (updater) => {
 			if (options.state?.rowSelection) {
@@ -93,7 +93,7 @@ export function createShadTable<TData extends RowData>(shadOptions: ShadTableOpt
 			} else if (state.rowSelection) {
 				state.rowSelection = typeof updater === "function" ? updater(state.rowSelection) : updater;
 			}
-			notifyTableUpdate();
+			notifyTableUpdate?.();
 		},
 		onGlobalFilterChange: (updater) => {
 			if (options.state?.globalFilter) {
@@ -101,7 +101,7 @@ export function createShadTable<TData extends RowData>(shadOptions: ShadTableOpt
 			} else {
 				state.globalFilter = typeof updater === "function" ? updater(state.globalFilter) : updater;
 			}
-			notifyTableUpdate();
+			notifyTableUpdate?.();
 		},
 	};
 
