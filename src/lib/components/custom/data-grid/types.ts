@@ -11,11 +11,40 @@ import type {
 	Table,
 	VisibilityState,
 } from "@tanstack/table-core";
+import type { Snippet } from "svelte";
 import z from "zod";
 
+export interface DataGrid<T> {
+	table?: Table<T>;
+	columns: ColumnDef<T, unknown>[];
+	data: T[];
+	isLoading?: boolean;
+	noDataMessage?: string;
+	class?: string;
+	headerClass?: string;
+	tableProps?: TableProps;
+	snippets?: Snippets;
+	uiConfig?: DataGridUIConfig;
+}
+
+interface DataGridUIConfig {
+	hideHeader?: boolean;
+	enableVisibility?: boolean;
+	disableUISorting?: boolean;
+}
+
+interface Snippets {
+	header?: Snippet;
+	subHeader?: Snippet;
+	footer?: Snippet;
+	leftToolbar?: Snippet;
+	rightToolbar?: Snippet;
+}
+
 export interface DataGridOptions<TData extends RowData> {
-	columns: ColumnDef<TData, unknown>[];
-	data: TData[] | (() => TData[]);
+	columns: () => ColumnDef<TData, unknown>[];
+	data: () => TData[];
+	tableProps: () => TableProps;
 	initialState?: {
 		sorting?: SortingState;
 		pagination?: PaginationState;
@@ -26,10 +55,9 @@ export interface DataGridOptions<TData extends RowData> {
 		rowSelection?: RowSelectionState;
 		globalFilter?: GlobalFilterTableState;
 	};
-	dataGridProps?: DataGridProps;
 }
 
-export interface DataGridProps {
+export interface TableProps {
 	rowCount?: () => number;
 	isPaginationEnabled?: boolean;
 	manualPagination?: boolean;
@@ -39,7 +67,7 @@ export interface DataGridProps {
 	useURLSearchParams?: boolean;
 }
 
-export const defaultDataGridProps: DataGridProps = {
+export const defaultTableProps: TableProps = {
 	isPaginationEnabled: true,
 	manualPagination: false,
 	enableRowSelectionUI: false,
@@ -48,10 +76,7 @@ export const defaultDataGridProps: DataGridProps = {
 	useURLSearchParams: false,
 };
 
-export interface DataGridResponse<TData extends RowData> {
-	table: Table<TData>;
-	dataGridProps?: DataGridProps;
-}
+export type DataGridResponse<TData extends RowData> = Table<TData>;
 
 export const defaultSearchParamSchema = z.object({
 	search: z.any().default(""),

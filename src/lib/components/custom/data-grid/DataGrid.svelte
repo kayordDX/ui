@@ -1,64 +1,51 @@
 <script lang="ts" generics="T">
-	import { type Table as TableType } from "@tanstack/table-core";
 	import { FlexRender } from "$lib/components/ui/data-table";
 	import { Skeleton, Table } from "$lib/components/ui";
 	import Pagination from "./Pagination.svelte";
-	import { onMount, type Snippet } from "svelte";
+	import { onMount } from "svelte";
 	import { fade } from "svelte/transition";
 	import { ProgressLoading } from "../progress-loading";
 	import { cn } from "$lib/utils";
 	import DataGridHeader from "./DataGridHeader.svelte";
 	import DataGridFooter from "./DataGridFooter.svelte";
-	import { defaultDataGridProps, defaultSearchParamSchema, type DataGridProps } from "./types";
+	import { defaultSearchParamSchema, defaultTableProps, type DataGrid } from "./types";
 	import DataGridView from "./DataGridView.svelte";
 	import { useSearchParams } from "runed/kit";
 	import { untrack } from "svelte";
 	import { decodeColumnFilters, decodeSorting, encodeColumnFilters, encodeSorting } from "../data-table";
-
-	interface Props<T> {
-		table: TableType<T>;
-		dataGridProps?: DataGridProps;
-		isLoading?: boolean;
-		header?: Snippet;
-		subHeader?: Snippet;
-		footer?: Snippet;
-		leftToolbar?: Snippet;
-		rightToolbar?: Snippet;
-		noDataMessage?: string;
-		hideHeader?: boolean;
-		enableVisibility?: boolean;
-		class?: string;
-		headerClass?: string;
-		disableUISorting?: boolean;
-	}
+	import { createGrid } from "./createGrid.svelte";
 
 	let {
-		table,
-		dataGridProps = defaultDataGridProps,
+		table = $bindable(),
+		columns,
+		data,
 		isLoading = false,
-		header,
-		subHeader,
-		footer,
-		leftToolbar,
-		rightToolbar,
 		noDataMessage = "No data",
-		hideHeader = false,
-		enableVisibility = false,
 		class: className,
 		headerClass,
-		disableUISorting = false,
-	}: Props<T> = $props();
+		tableProps = defaultTableProps,
+		snippets = {},
+		uiConfig = {},
+	}: DataGrid<T> = $props();
 
-	let end: HTMLElement | undefined = $state();
+	table = createGrid({
+		columns: () => columns,
+		data: () => data,
+		tableProps: () => tableProps,
+	});
+
+	let ending = $state<HTMLElement | undefined>();
 
 	const tableState = $derived(table.getState());
 	const columnVisibility = $derived(tableState.columnVisibility);
 
 	const params = useSearchParams(defaultSearchParamSchema, { pushHistory: false });
 
+	const config = $derived({ ...defaultTableProps, ...(tableProps ?? {}) });
+
 	// Load current url search params
 	onMount(() => {
-		if (dataGridProps.useURLSearchParams) {
+		if (config.useURLSearchParams) {
 			table.setGlobalFilter(params.search);
 			table.setSorting(decodeSorting() ?? []);
 			table.setPageIndex(params.page);
@@ -68,7 +55,7 @@
 
 	// Set url search params
 	$effect(() => {
-		if (dataGridProps.useURLSearchParams) {
+		if (config.useURLSearchParams) {
 			const tableState = table.getState();
 			untrack(() => {
 				params.search = tableState.globalFilter;
@@ -82,21 +69,21 @@
 
 <div class={cn("w-full", className)}>
 	<div class={cn(headerClass)}>
-		{#if header}
-			{@render header()}
+		{#if snippets.header}
+			{@render snippets.header()}
 		{:else}
 			<div class="flex items-center justify-between gap-2 pb-2">
 				<div>
-					{#if leftToolbar}
-						{@render leftToolbar()}
+					{#if snippets.leftToolbar}
+						{@render snippets.leftToolbar()}
 					{/if}
 				</div>
 				<div></div>
 				<div class="flex items-center justify-between gap-2">
-					{#if rightToolbar}
-						{@render rightToolbar()}
+					{#if snippets.rightToolbar}
+						{@render snippets.rightToolbar()}
 					{/if}
-					{#if enableVisibility}
+					{#if uiConfig.enableVisibility}
 						<DataGridView {table} />
 					{/if}
 				</div>
@@ -111,17 +98,17 @@
 			</span>
 		{/if}
 
-		{#if subHeader}
-			{@render subHeader()}
+		{#if snippets.subHeader}
+			{@render snippets.subHeader()}
 		{/if}
 
 		<Table.Root class="table-auto">
-			{#if !hideHeader}
+			{#if !uiConfig.hideHeader}
 				<Table.Header>
 					{#each table.getHeaderGroups() as headerGroup (headerGroup.id)}
 						<Table.Row>
 							{#each headerGroup.headers.filter((h) => columnVisibility[h.column.id] !== false) as header (header.id)}
-								<DataGridHeader {header} {table} {disableUISorting} />
+								<DataGridHeader {header} {table} disableUISorting={uiConfig.disableUISorting} />
 							{/each}
 						</Table.Row>
 					{/each}
@@ -169,15 +156,15 @@
 			</span>
 		{/if}
 	</div>
-	{#if dataGridProps.isPaginationEnabled}
-		<Pagination {table} {dataGridProps} />
+	{#if config.isPaginationEnabled ?? true}
+		<Pagination {table} enableRowSelectionUI={config.enableRowSelectionUI} />
 	{/if}
 
-	{#if footer}
+	{#if snippets.footer}
 		<div class="overflow-hidden rounded-b-md">
-			{@render footer()}
+			{@render snippets.footer()}
 		</div>
 	{/if}
 </div>
 
-<div bind:this={end} aria-hidden="true"></div>
+<div bind:this={ending} aria-hidden="true"></div>

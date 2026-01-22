@@ -20,24 +20,22 @@ import {
 	type ColumnDef,
 	type GlobalFilterTableState,
 } from "@tanstack/table-core";
-import type { DataGridOptions, DataGridResponse } from "./types";
-import { defaultDataGridProps } from "./types";
+import { defaultTableProps, type DataGridOptions, type DataGridResponse } from "./types";
 import { renderComponent } from "$lib/data-table";
 import DataGridCheckbox from "./DataGridCheckbox.svelte";
 
 export function createGrid<TData extends RowData>(options: DataGridOptions<TData>): DataGridResponse<TData> {
-	// Merge provided dataGridProps with defaults. If none provided, use defaults.
-	options.dataGridProps = { ...defaultDataGridProps, ...(options.dataGridProps ?? {}) };
+	const config = $derived({ ...defaultTableProps, ...(options.tableProps() ?? {}) });
 
-	const { columns, data: dataProp, initialState, dataGridProps } = options;
+	const { columns, data: dataProp, initialState } = options;
 
 	// Support both direct data array and getter function for reactivity
 	// Using a getter function () => data allows Svelte 5 to track changes
 	const getData = typeof dataProp === "function" ? dataProp : () => dataProp;
 	const getRowCount: () => number | undefined =
-		typeof dataGridProps.rowCount === "function"
-			? (dataGridProps.rowCount as () => number)
-			: () => dataGridProps.rowCount as number | undefined;
+		typeof config.rowCount === "function"
+			? (config.rowCount as () => number)
+			: () => config.rowCount as number | undefined;
 
 	// ========================================
 	// Reactive State using Svelte 5 runes
@@ -69,7 +67,7 @@ export function createGrid<TData extends RowData>(options: DataGridOptions<TData
 	$effect.pre(() => {
 		if (Object.keys(columnSizing).length === 0) {
 			const sizing: Record<string, number> = {};
-			for (const col of columns) {
+			for (const col of columns()) {
 				if (col.size) {
 					sizing[col.id as string] = col.size;
 				}
@@ -81,7 +79,7 @@ export function createGrid<TData extends RowData>(options: DataGridOptions<TData
 	});
 
 	// Row Selection
-	if (dataGridProps.enableRowSelectionUI) {
+	if (config.enableRowSelectionUI) {
 		const rowSelectionColumn: ColumnDef<TData> = {
 			id: "select",
 			header: () => {
@@ -103,13 +101,13 @@ export function createGrid<TData extends RowData>(options: DataGridOptions<TData
 			enableSorting: false,
 			size: 0,
 		};
-		options.columns.unshift(rowSelectionColumn);
+		options.columns().unshift(rowSelectionColumn);
 	}
 
 	// Create the base table options
 	const baseTableOptions: TableOptionsResolved<TData> = {
 		data: getData(),
-		columns,
+		columns: columns(),
 		state: {
 			sorting,
 			pagination,
@@ -155,9 +153,9 @@ export function createGrid<TData extends RowData>(options: DataGridOptions<TData
 		getSortedRowModel: getSortedRowModel(),
 		getFilteredRowModel: getFilteredRowModel(),
 		globalFilterFn: "auto",
-		manualFiltering: dataGridProps.manualFiltering,
-		manualPagination: (dataGridProps?.isPaginationEnabled ?? true) == false ? true : dataGridProps?.manualPagination,
-		manualSorting: dataGridProps.manualSorting,
+		manualFiltering: config.manualFiltering,
+		manualPagination: (config?.isPaginationEnabled ?? true) == false ? true : config?.manualPagination,
+		manualSorting: config.manualSorting,
 		columnResizeMode: "onChange",
 		rowCount: getRowCount(),
 		enableColumnResizing: true,
@@ -338,8 +336,5 @@ export function createGrid<TData extends RowData>(options: DataGridOptions<TData
 		initialState: table.initialState,
 	} as unknown as Table<TData>;
 
-	return {
-		table: reactiveTable,
-		dataGridProps: dataGridProps,
-	};
+	return reactiveTable;
 }
