@@ -34,7 +34,9 @@ export function createShadTable<TData extends RowData>(shadOptions: ShadTableOpt
 
 	const defaultOptions: TableOptions<TData> = {
 		columns: shadOptions.columns,
-		data: shadOptions.data,
+		get data() {
+			return shadOptions.data;
+		},
 		getCoreRowModel: getCoreRowModel(),
 		getPaginationRowModel: getPaginationRowModel(),
 		getSortedRowModel: getSortedRowModel(),
@@ -109,8 +111,14 @@ export function createShadTable<TData extends RowData>(shadOptions: ShadTableOpt
 		shadOptions.autoResetPageIndex = false;
 	}
 
-	// Use default but extend with shadOptions
-	const options = { ...defaultOptions, ...((shadOptions as TableOptions<TData>) ?? {}) };
+	if ((shadOptions.enablePaging ?? true) == false) {
+		defaultOptions.getPaginationRowModel = undefined;
+		defaultOptions.manualPagination = true;
+	}
+
+	// Use default but extend with shadOptions, excluding data to preserve reactivity.
+	// Using mergeObjects to keep getter in tact
+	const options = mergeObjects(defaultOptions, shadOptions ?? {});
 
 	const resolvedOptions: TableOptionsResolved<TData> = mergeObjects(
 		{
