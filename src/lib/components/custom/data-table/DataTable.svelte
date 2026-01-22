@@ -3,7 +3,7 @@
 	import { FlexRender } from "$lib/components/ui/data-table";
 	import { Skeleton, Table } from "$lib/components/ui";
 	import Pagination from "./Pagination.svelte";
-	import { onMount, type Snippet } from "svelte";
+	import { onMount, untrack, type Snippet } from "svelte";
 	import { fade } from "svelte/transition";
 	import { ProgressLoading } from "../progress-loading";
 	import FullscreenModeToggle from "./FullscreenModeToggle.svelte";
@@ -18,8 +18,12 @@
 		decodeGlobalFilter,
 		decodePageIndex,
 		decodeSorting,
+		encodeColumnFilters,
+		encodeSorting,
 		encodeTableState,
 	} from "./table-search-params";
+	import { useSearchParams } from "runed/kit";
+	import { defaultSearchParamSchema } from "../data-grid/types";
 
 	interface Props<T> {
 		table: TableType<T>;
@@ -69,6 +73,18 @@
 		}
 	});
 
+	// const params = useSearchParams(defaultSearchParamSchema, { pushHistory: false });
+
+	// // Load current url search params
+	// onMount(() => {
+	// 	if (table.options.useURLSearchParams) {
+	// 		table.setGlobalFilter(params.search);
+	// 		table.setSorting(decodeSorting() ?? []);
+	// 		table.setPageIndex(params.page);
+	// 		table.setColumnFilters(decodeColumnFilters() ?? []);
+	// 	}
+	// });
+
 	// Reset pageIndex
 	beforeNavigate((navigation) => {
 		if (table.options.useURLSearchParams) {
@@ -84,6 +100,20 @@
 			}
 		}
 	});
+
+	// Set url search params
+	// $effect(() => {
+	// 	if (table.options.useURLSearchParams) {
+	// 		const tableState = table.getState();
+	// 		untrack(() => {
+	// 			console.log("running");
+	// 			params.search = tableState.globalFilter;
+	// 			params.page = tableState.pagination.pageIndex;
+	// 			params.sort = encodeSorting(tableState);
+	// 			params.filter = encodeColumnFilters(tableState);
+	// 		});
+	// 	}
+	// });
 
 	// Set URL Page Params
 	$effect(() => {
@@ -155,9 +185,9 @@
 		<Table.Root class="table-auto">
 			{#if !hideHeader}
 				<Table.Header>
-					{#each table.getHeaderGroups() as headerGroup}
+					{#each table.getHeaderGroups() as headerGroup (headerGroup)}
 						<Table.Row>
-							{#each headerGroup.headers as header}
+							{#each headerGroup.headers as header (header)}
 								<DataTableHeader {header} {table} {disableUISorting} />
 							{/each}
 						</Table.Row>
@@ -167,9 +197,9 @@
 
 			<Table.Body>
 				{#if isLoading && table.getRowModel().rows.length == 0}
-					{#each { length: 5 } as _, i}
+					{#each { length: 5 } as loadingTemplate (loadingTemplate)}
 						<Table.Row>
-							{#each table.getAllColumns() as _cell}
+							{#each table.getAllColumns() as _cell (_cell)}
 								<Table.Cell>
 									<Skeleton class="h-4" />
 								</Table.Cell>
@@ -184,9 +214,9 @@
 							</Table.Cell>
 						</Table.Row>
 					{/if}
-					{#each table.getRowModel().rows as row}
+					{#each table.getRowModel().rows as row (row)}
 						<Table.Row data-state={row.getIsSelected() && "selected"}>
-							{#each row.getVisibleCells() as cell}
+							{#each row.getVisibleCells() as cell (cell)}
 								<Table.Cell
 									class={cell.column.columnDef.meta?.className}
 									style={`width: ${cell.column.getSize()}px; min-width:${cell.column.columnDef.minSize}px; max-width:${cell.column.columnDef.maxSize}px`}
