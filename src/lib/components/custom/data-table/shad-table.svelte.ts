@@ -33,8 +33,8 @@ export function createShadTable<TData extends RowData>(shadOptions: ShadTableOpt
 	});
 
 	const defaultOptions: TableOptions<TData> = {
-		columns: [],
-		data: [],
+		columns: shadOptions.columns,
+		data: shadOptions.data,
 		getCoreRowModel: getCoreRowModel(),
 		getPaginationRowModel: getPaginationRowModel(),
 		getSortedRowModel: getSortedRowModel(),

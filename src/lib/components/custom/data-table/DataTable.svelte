@@ -3,14 +3,13 @@
 	import { FlexRender } from "$lib/components/ui/data-table";
 	import { Skeleton, Table } from "$lib/components/ui";
 	import Pagination from "./Pagination.svelte";
-	import { onMount, untrack, type Snippet } from "svelte";
+	import { onMount, type Snippet } from "svelte";
 	import { fade } from "svelte/transition";
 	import { ProgressLoading } from "../progress-loading";
 	import FullscreenModeToggle from "./FullscreenModeToggle.svelte";
 	import { cn } from "$lib/utils";
 	import { TableStore } from "./table.svelte";
 	import DataTableHeader from "./DataTableHeader.svelte";
-	import VisibilitySelect from "./VisibilitySelect.svelte";
 	import DataTableFooter from "./DataTableFooter.svelte";
 	import { beforeNavigate, goto } from "$app/navigation";
 	import {
@@ -24,6 +23,7 @@
 	} from "./table-search-params";
 	import { useSearchParams } from "runed/kit";
 	import { defaultSearchParamSchema } from "../data-grid/types";
+	import DataTableView from "./DataTableView.svelte";
 
 	interface Props<T> {
 		table: TableType<T>;
@@ -158,7 +158,7 @@
 					{/if}
 					{#if enableVisibility}
 						<div>
-							<VisibilitySelect {table} />
+							<DataTableView {table} />
 						</div>
 					{/if}
 					{#if enableFullscreen}
