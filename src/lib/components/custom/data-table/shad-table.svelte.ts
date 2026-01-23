@@ -16,8 +16,9 @@ import DataTableCheckbox from "./DataTableCheckbox.svelte";
 import { renderComponent } from "$lib/data-table";
 import { mergeObjects } from "$lib/components/ui/data-table/data-table.svelte";
 import { createSubscriber } from "svelte/reactivity";
+import type { BaseOptions } from "./types";
 
-interface ShadTableOptions<TData extends RowData> extends Omit<TableOptions<TData>, "getCoreRowModel"> {
+interface ShadTableOptions<TData extends RowData> extends BaseOptions<TData> {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	getCoreRowModel?: (table: Table<any>) => () => RowModel<any>;
 	enablePaging?: boolean;
@@ -33,10 +34,10 @@ export function createShadTable<TData extends RowData>(shadOptions: ShadTableOpt
 	});
 
 	const defaultOptions: TableOptions<TData> = {
-		columns: shadOptions.columns,
 		get data() {
 			return shadOptions.data;
 		},
+		columns: shadOptions.columns,
 		getCoreRowModel: getCoreRowModel(),
 		getPaginationRowModel: getPaginationRowModel(),
 		getSortedRowModel: getSortedRowModel(),

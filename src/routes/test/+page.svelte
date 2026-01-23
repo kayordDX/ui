@@ -1,30 +1,52 @@
 <script lang="ts">
-	interface DataType {
-		id: number;
-		name: string;
-	}
-
-	import { data } from "../dataTable/data.svelte";
 	import { DataTable, createShadTable } from "$lib/data-table";
 	import Input from "$lib/components/ui/input/input.svelte";
 	import type { ColumnDef, SortingState } from "@tanstack/table-core";
-	import { untrack } from "svelte";
 	import { Button } from "$lib";
 
-	const columns: ColumnDef<DataType>[] = [
+	interface Todo {
+		userId: number;
+		id: number;
+		title: string;
+		completed: boolean;
+	}
+
+	let data = $state<Todo[]>([]);
+	let isLoading = $state(true);
+
+	const fetchData = async () => {
+		isLoading = true;
+		const res = await fetch("https://jsonplaceholder.typicode.com/todos");
+		const json = await res.json();
+		data = json;
+		isLoading = false;
+	};
+
+	$effect(() => {
+		fetchData();
+	});
+
+	const columns: ColumnDef<Todo>[] = [
 		{
-			accessorKey: "id",
-			header: "ID",
+			accessorKey: "userId",
+			header: "UserId",
 			maxSize: 10,
 		},
 		{
-			accessorKey: "name",
+			header: "id",
+			accessorKey: "id",
+			size: 10,
+			minSize: 150,
+		},
+		{
+			accessorKey: "title",
 			cell: (info) => info.getValue(),
 			size: 100000,
 		},
+
 		{
-			header: "Day",
-			accessorKey: "day",
+			header: "completed",
+			accessorKey: "completed",
 			size: 100,
 			minSize: 150,
 		},
@@ -38,7 +60,9 @@
 
 	const table = createShadTable({
 		columns,
-		data: data.value,
+		get data() {
+			return data;
+		},
 		enableRowSelection: true,
 		// enableGlobalFilter: true,
 		// useURLSearchParams: true,
@@ -65,12 +89,12 @@
 	// 	});
 	// });
 
-	$effect(() => {
-		const s = table.getState();
-		untrack(() => {
-			console.log("Effect table.getState()", s);
-		});
-	});
+	// $effect(() => {
+	// 	const s = table.getState();
+	// 	untrack(() => {
+	// 		console.log("Effect table.getState()", s);
+	// 	});
+	// });
 
 	const fff = $derived(JSON.stringify(table.getState().globalFilter));
 </script>
@@ -84,5 +108,5 @@
 <div class="m-2">
 	<Button onclick={() => table.setGlobalFilter("b")}>Set</Button>
 	<Input bind:value={() => String(table.getState().globalFilter ?? ""), (v) => table.setGlobalFilter(v)} />
-	<DataTable {table} headerClass="mt-2" />
+	<DataTable {table} headerClass="mt-2" {isLoading} />
 </div>

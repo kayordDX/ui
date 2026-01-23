@@ -1,4 +1,7 @@
+import type { TableOptions } from "@tanstack/table-core";
 import z from "zod";
+
+export type BaseOptions<TData> = Omit<TableOptions<TData>, "getCoreRowModel">;
 
 export interface CustomOptions {
 	useURLSearchParams?: boolean;

@@ -195,7 +195,7 @@
 
 			<Table.Body>
 				{#if isLoading && table.getRowModel().rows.length == 0}
-					{#each { length: 5 } as loadingTemplate (loadingTemplate)}
+					{#each { length: 5 }, i (i)}
 						<Table.Row>
 							{#each table.getAllColumns() as _cell (_cell)}
 								<Table.Cell>
