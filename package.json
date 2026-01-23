@@ -1,7 +1,7 @@
 {
 	"name": "@kayord/ui",
 	"private": false,
-	"version": "2.1.5",
+	"version": "2.1.6",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && pnpm package",
@@ -126,7 +126,7 @@
 		"@eslint/compat": "^2.0.1",
 		"@eslint/js": "^9.39.2",
 		"@internationalized/date": "^3.10.1",
-		"@lucide/svelte": "^0.563.0",
+		"@lucide/svelte": "^0.563.1",
 		"@sveltejs/adapter-auto": "^7.0.0",
 		"@sveltejs/kit": "^2.50.1",
 		"@sveltejs/package": "^2.5.7",

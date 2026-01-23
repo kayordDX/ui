@@ -49,9 +49,7 @@ export function createShadTable<TData extends RowData>(shadOptions: ShadTableOpt
 		// enableFilters: true,
 		enableGlobalFilter: true,
 		onSortingChange: (updater) => {
-			if (options.state?.sorting) {
-				options.state.sorting = typeof updater === "function" ? updater(options.state.sorting) : updater;
-			} else if (state.sorting) {
+			if (state.sorting) {
 				state.sorting = typeof updater === "function" ? updater(state.sorting) : updater;
 			}
 			notifyTableUpdate?.();
@@ -66,44 +64,31 @@ export function createShadTable<TData extends RowData>(shadOptions: ShadTableOpt
 		// 	columnPinning = typeof updater === "function" ? updater(columnPinning) : updater;
 		// },
 		onColumnVisibilityChange: (updater) => {
-			if (options.state?.columnVisibility) {
-				options.state.columnVisibility =
-					typeof updater === "function" ? updater(options.state.columnVisibility) : updater;
-			} else if (state.columnVisibility) {
+			if (state.columnVisibility) {
 				state.columnVisibility = typeof updater === "function" ? updater(state.columnVisibility) : updater;
 			}
 			notifyTableUpdate?.();
 		},
 		onPaginationChange: (updater) => {
-			if (options.state?.pagination) {
-				options.state.pagination = typeof updater === "function" ? updater(options.state.pagination) : updater;
-			} else if (state.pagination) {
+			if (state.pagination) {
 				state.pagination = typeof updater === "function" ? updater(state.pagination) : updater;
 			}
 			notifyTableUpdate?.();
 		},
 		onColumnFiltersChange: (updater) => {
-			if (options.state?.columnFilters) {
-				options.state.columnFilters = typeof updater === "function" ? updater(options.state.columnFilters) : updater;
-			} else if (state.columnFilters) {
+			if (state.columnFilters) {
 				state.columnFilters = typeof updater === "function" ? updater(state.columnFilters) : updater;
 			}
 			notifyTableUpdate?.();
 		},
 		onRowSelectionChange: (updater) => {
-			if (options.state?.rowSelection) {
-				options.state.rowSelection = typeof updater === "function" ? updater(options.state.rowSelection) : updater;
-			} else if (state.rowSelection) {
+			if (state.rowSelection) {
 				state.rowSelection = typeof updater === "function" ? updater(state.rowSelection) : updater;
 			}
 			notifyTableUpdate?.();
 		},
 		onGlobalFilterChange: (updater) => {
-			if (options.state?.globalFilter) {
-				options.state.globalFilter = typeof updater === "function" ? updater(options.state.globalFilter) : updater;
-			} else {
-				state.globalFilter = typeof updater === "function" ? updater(state.globalFilter) : updater;
-			}
+			state.globalFilter = typeof updater === "function" ? updater(state.globalFilter) : updater;
 			notifyTableUpdate?.();
 		},
 	};
@@ -117,8 +102,6 @@ export function createShadTable<TData extends RowData>(shadOptions: ShadTableOpt
 		defaultOptions.manualPagination = true;
 	}
 
-	// Use default but extend with shadOptions, excluding data to preserve reactivity.
-	// Using mergeObjects to keep getter in tact
 	const options = mergeObjects(defaultOptions, shadOptions ?? {});
 
 	const resolvedOptions: TableOptionsResolved<TData> = mergeObjects(

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { DataTable, createShadTable } from "$lib/data-table";
 	import Input from "$lib/components/ui/input/input.svelte";
-	import type { ColumnDef, SortingState } from "@tanstack/table-core";
+	import type { ColumnDef, PaginationState, SortingState, Updater } from "@tanstack/table-core";
 	import { Button } from "$lib";
 
 	interface Todo {
@@ -12,7 +12,10 @@
 	}
 
 	let data = $state<Todo[]>([]);
+	let rowCount = $derived(data.length ?? 0);
 	let isLoading = $state(true);
+
+	let pagination: PaginationState = $state({ pageIndex: 0, pageSize: 10 });
 
 	const fetchData = async () => {
 		isLoading = true;
@@ -52,10 +55,6 @@
 		},
 	];
 
-	// let tableState = $state({
-	// 	pagination: { pageIndex: 0, pageSize: 10 },
-	// 	sorting: [],
-	// });
 	let sorting = $state<SortingState>([]);
 
 	const table = createShadTable({
@@ -63,9 +62,33 @@
 		get data() {
 			return data;
 		},
+		state: {
+			get pagination() {
+				return pagination;
+			},
+			set pagination(v) {
+				pagination = v;
+			},
+			get sorting() {
+				return sorting;
+			},
+			set sorting(v) {
+				sorting = v;
+			},
+		},
+		get rowCount() {
+			return rowCount;
+		},
 		enableRowSelection: true,
+		manualPagination: true,
+		useURLSearchParams: true,
 		// enableGlobalFilter: true,
 		// useURLSearchParams: true,
+		onPaginationChange: (updater) => {
+			if (updater instanceof Function) {
+				pagination = updater(pagination);
+			} else pagination = updater;
+		},
 		onSortingChange: (updater) => {
 			if (typeof updater === "function") {
 				sorting = updater(sorting);
@@ -73,28 +96,7 @@
 				sorting = updater;
 			}
 		},
-		state: {
-			get sorting() {
-				return sorting;
-			},
-		},
 	});
-
-	// const sortingState = $derived(JSON.stringify(table.getState().sorting));
-
-	// $effect(() => {
-	// 	const s = tableState;
-	// 	untrack(() => {
-	// 		console.log("Effect2 ", s);
-	// 	});
-	// });
-
-	// $effect(() => {
-	// 	const s = table.getState();
-	// 	untrack(() => {
-	// 		console.log("Effect table.getState()", s);
-	// 	});
-	// });
 
 	const fff = $derived(JSON.stringify(table.getState().globalFilter));
 </script>

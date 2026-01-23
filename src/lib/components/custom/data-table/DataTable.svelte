@@ -103,12 +103,15 @@
 	// Set url search params
 	$effect(() => {
 		if (table.options.useURLSearchParams) {
-			const tableState = table.getState();
+			const search = table.getState().globalFilter;
+			const page = table.getState().pagination.pageIndex;
+			const sort = encodeSorting(table.getState());
+			const filter = encodeColumnFilters(table.getState());
 			untrack(() => {
-				params.search = tableState.globalFilter;
-				params.page = tableState.pagination.pageIndex;
-				params.sort = encodeSorting(tableState);
-				params.filter = encodeColumnFilters(tableState);
+				params.search = search;
+				params.page = page;
+				params.sort = sort;
+				params.filter = filter;
 			});
 		}
 	});
