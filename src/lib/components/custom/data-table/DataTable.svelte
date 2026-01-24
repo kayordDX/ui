@@ -90,9 +90,8 @@
 			if (Number(navigation.to?.url.searchParams.get("page") ?? "0") > 0) {
 				if (
 					navigation.from?.url.searchParams.get("sort") != navigation.to?.url.searchParams.get("sort") ||
-					navigation.from?.url.searchParams.get("globalFilter") !=
-						navigation.to?.url.searchParams.get("globalFilter") ||
-					navigation.from?.url.searchParams.get("columnFilters") != navigation.to?.url.searchParams.get("columnFilters")
+					navigation.from?.url.searchParams.get("search") != navigation.to?.url.searchParams.get("search") ||
+					navigation.from?.url.searchParams.get("filter") != navigation.to?.url.searchParams.get("filter")
 				) {
 					table.resetPageIndex();
 				}
