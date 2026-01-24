@@ -24,7 +24,7 @@ export const encodeGlobalFilter = (state: Partial<TableState>) => {
 };
 
 export const decodeGlobalFilter = (): string | undefined => {
-	const globalFilter = page.url.searchParams.get("globalFilter");
+	const globalFilter = page.url.searchParams.get("search");
 	return globalFilter != null ? globalFilter : undefined;
 };
 
@@ -45,7 +45,7 @@ export const encodeColumnFilters = (state: Partial<TableState>) => {
 
 export const decodeColumnFilters = () => {
 	return page.url.searchParams
-		.get("columnFilters")
+		.get("filter")
 		?.split(",")
 		.map((v) => {
 			const [id, stringValue] = v.split(".");
@@ -95,13 +95,13 @@ export const encodeTableState = (state: Partial<TableState>, options?: Options, 
 		searchParams.set("page", encodePageIndex(state));
 	}
 	if (options.globalFilter && state.globalFilter?.length > 0) {
-		searchParams.set("globalFilter", encodeGlobalFilter(state));
+		searchParams.set("search", encodeGlobalFilter(state));
 	}
 	if (options.sorting && (state.sorting?.length ?? 0) > 0) {
 		searchParams.set("sort", encodeSorting(state));
 	}
 	if (options.columnFilter && (state.columnFilters?.length ?? 0) > 0) {
-		searchParams.set("columnFilters", encodeColumnFilters(state));
+		searchParams.set("filter", encodeColumnFilters(state));
 	}
 	return `?${searchParams.toString()}`;
 };

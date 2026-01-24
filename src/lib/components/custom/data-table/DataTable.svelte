@@ -11,16 +11,8 @@
 	import { TableStore } from "./table.svelte";
 	import DataTableHeader from "./DataTableHeader.svelte";
 	import DataTableFooter from "./DataTableFooter.svelte";
-	import { beforeNavigate, goto } from "$app/navigation";
-	import {
-		decodeColumnFilters,
-		decodeGlobalFilter,
-		decodePageIndex,
-		decodeSorting,
-		encodeColumnFilters,
-		encodeSorting,
-		encodeTableState,
-	} from "./table-search-params";
+	import { beforeNavigate } from "$app/navigation";
+	import { decodeColumnFilters, decodeSorting, encodeColumnFilters, encodeSorting } from "./table-search-params";
 	import { useSearchParams } from "runed/kit";
 	import { defaultSearchParamSchema } from "./types";
 	import DataTableView from "./DataTableView.svelte";
@@ -63,16 +55,6 @@
 	// svelte-ignore state_referenced_locally
 	const isPaginationEnabled = table.options.getPaginationRowModel !== undefined;
 
-	// Load Default Values from Page Params
-	// onMount(() => {
-	// 	if (table.options.useURLSearchParams) {
-	// 		table.setPageIndex(decodePageIndex());
-	// 		table.setSorting(decodeSorting() ?? []);
-	// 		table.setGlobalFilter(decodeGlobalFilter());
-	// 		table.setColumnFilters(decodeColumnFilters() ?? []);
-	// 	}
-	// });
-
 	const params = useSearchParams(defaultSearchParamSchema, { pushHistory: false });
 	// Load current url search params
 	onMount(() => {
@@ -114,20 +96,6 @@
 			});
 		}
 	});
-
-	// Set URL Page Params
-	// $effect(() => {
-	// 	if (table.options.useURLSearchParams) {
-	// 		const params = encodeTableState(table.getState());
-	// 		goto(params, {
-	// 			replaceState: true,
-	// 			keepFocus: true,
-	// 			noScroll: true,
-	// 		}).catch(() => {
-	// 			// Ignore navigation errors in test environments
-	// 		});
-	// 	}
-	// });
 
 	let end: HTMLElement | undefined = $state();
 </script>

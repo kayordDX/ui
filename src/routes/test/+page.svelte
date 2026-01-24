@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { DataTable, createShadTable } from "$lib/data-table";
 	import Input from "$lib/components/ui/input/input.svelte";
-	import type { ColumnDef, PaginationState, SortingState, Updater } from "@tanstack/table-core";
+	import type { ColumnDef, ColumnFiltersState, PaginationState, SortingState } from "@tanstack/table-core";
 	import { Button } from "$lib";
 
 	interface Todo {
@@ -16,6 +16,7 @@
 	let isLoading = $state(true);
 
 	let pagination: PaginationState = $state({ pageIndex: 0, pageSize: 10 });
+	let columnFilters = $state<ColumnFiltersState>([]);
 
 	const fetchData = async () => {
 		isLoading = true;
@@ -75,12 +76,16 @@
 			set sorting(v) {
 				sorting = v;
 			},
+			get columnFilters() {
+				return columnFilters;
+			},
 		},
 		get rowCount() {
 			return rowCount;
 		},
 		enableRowSelection: true,
 		manualPagination: true,
+		manualFiltering: true,
 		useURLSearchParams: true,
 		// enableGlobalFilter: true,
 		// useURLSearchParams: true,
@@ -96,6 +101,13 @@
 				sorting = updater;
 			}
 		},
+		onColumnFiltersChange: (updater) => {
+			if (typeof updater === "function") {
+				columnFilters = updater(columnFilters);
+			} else {
+				columnFilters = updater;
+			}
+		},
 	});
 
 	const fff = $derived(JSON.stringify(table.getState().globalFilter));
@@ -109,6 +121,7 @@
 </div>
 <div class="m-2">
 	<Button onclick={() => table.setGlobalFilter("b")}>Set</Button>
+	<Button onclick={() => table.setColumnFilters([{ id: "test", value: "test" }])}>Set Column Filter</Button>
 	<Input bind:value={() => String(table.getState().globalFilter ?? ""), (v) => table.setGlobalFilter(v)} />
 	<DataTable {table} headerClass="mt-2" {isLoading} />
 </div>
