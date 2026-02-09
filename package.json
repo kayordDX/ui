@@ -18,6 +18,10 @@
 		"lib": "pnpm dlx shadcn-svelte@latest add -a -y -o --no-deps && pnpm format && pnpm version --no-git-tag-version patch",
 		"next": "./next.sh"
 	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/kayordDX/ui"
+	},
 	"exports": {
 		".": {
 			"types": "./dist/index.d.ts",
