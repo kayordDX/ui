@@ -45,3 +45,6 @@ export { Textarea } from "./textarea/index.js";
 export { Toggle } from "./toggle/index.js";
 export * as ToggleGroup from "./toggle-group/index.js";
 export * as Tooltip from "./tooltip/index.js";
+
+// More
+export * as Chip from "./chip";
