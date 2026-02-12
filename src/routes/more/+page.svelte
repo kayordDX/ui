@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Card, Chip, ColorPicker, DateStrip, DynamicSelect, Timeline } from "$lib";
+	import AudioWave from "$lib/components/ui/audio-wave/audio-wave.svelte";
 
 	const frameworks = [
 		{ label: "react", value: "React" },
@@ -65,6 +66,11 @@
 					</DynamicSelect.Group>
 				</DynamicSelect.Content>
 			</DynamicSelect.Root>
+		</div>
+		<div>
+			<div class="text-muted-foreground mb-2 text-xs">Dynamic Select</div>
+			<AudioWave />
+			<AudioWave bars={3} class="h-4" barColor="bg-green-500" />
 		</div>
 	</Card.Content>
 </Card.Root>

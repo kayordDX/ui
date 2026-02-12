@@ -54,3 +54,4 @@ export { Root as ColorPicker } from "./color-picker";
 export * as DateStrip from "./date-strip";
 export * as Timeline from "./timeline";
 export * as DynamicSelect from "./dynamic-select";
+export { AudioWave } from "./audio-wave";
