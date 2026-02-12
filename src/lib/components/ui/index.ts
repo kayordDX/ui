@@ -1,3 +1,5 @@
+import type DateStrip from "./date-strip/date-strip.svelte";
+
 export * as Accordion from "./accordion/index.js";
 export * as Alert from "./alert/index.js";
 export * as AlertDialog from "./alert-dialog/index.js";
@@ -49,3 +51,4 @@ export * as Tooltip from "./tooltip/index.js";
 // More
 export * as Chip from "./chip";
 export { Root as ColorPicker } from "./color-picker";
+export * as DateStrip from "./date-strip";
