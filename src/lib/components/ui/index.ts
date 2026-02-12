@@ -52,3 +52,4 @@ export * as Tooltip from "./tooltip/index.js";
 export * as Chip from "./chip";
 export { Root as ColorPicker } from "./color-picker";
 export * as DateStrip from "./date-strip";
+export * as Timeline from "./timeline";

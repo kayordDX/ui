@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Card, Chip, ColorPicker, DateStrip } from "$lib";
+	import { Card, Chip, ColorPicker, DateStrip, Timeline } from "$lib";
 </script>
 
 <Card.Root class="m-5">
@@ -24,6 +24,27 @@
 					<DateStrip.Item {date} />
 				{/snippet}
 			</DateStrip.Root>
+		</div>
+		<div>
+			<div class="text-muted-foreground mb-2 text-xs">Timeline</div>
+			<Timeline.Root>
+				<Timeline.Item>
+					<Timeline.Separator />
+					<Timeline.Content>
+						<Timeline.Date>Aug 2024</Timeline.Date>
+						<Timeline.Title>First Event</Timeline.Title>
+						<Timeline.Description>Details...</Timeline.Description>
+					</Timeline.Content>
+				</Timeline.Item>
+				<Timeline.Item>
+					<Timeline.Separator />
+					<Timeline.Content>
+						<Timeline.Date>Aug 2024</Timeline.Date>
+						<Timeline.Title>Latest</Timeline.Title>
+						<Timeline.Description>Details...</Timeline.Description>
+					</Timeline.Content>
+				</Timeline.Item>
+			</Timeline.Root>
 		</div>
 	</Card.Content>
 </Card.Root>
