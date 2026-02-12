@@ -1,5 +1,12 @@
 <script lang="ts">
-	import { Card, Chip, ColorPicker, DateStrip, Timeline } from "$lib";
+	import { Card, Chip, ColorPicker, DateStrip, DynamicSelect, Timeline } from "$lib";
+
+	const frameworks = [
+		{ label: "react", value: "React" },
+		{ label: "svelte", value: "Svelte" },
+		{ label: "vue", value: "Vue" },
+	];
+	let framework = $state(frameworks[0].value);
 </script>
 
 <Card.Root class="m-5">
@@ -45,6 +52,19 @@
 					</Timeline.Content>
 				</Timeline.Item>
 			</Timeline.Root>
+		</div>
+		<div>
+			<div class="text-muted-foreground mb-2 text-xs">Dynamic Select</div>
+			<DynamicSelect.Root bind:value={framework}>
+				<DynamicSelect.Trigger>Select framework...</DynamicSelect.Trigger>
+				<DynamicSelect.Content>
+					<DynamicSelect.Group>
+						{#each frameworks as f}
+							<DynamicSelect.Item value={f.label}>{f.value}</DynamicSelect.Item>
+						{/each}
+					</DynamicSelect.Group>
+				</DynamicSelect.Content>
+			</DynamicSelect.Root>
 		</div>
 	</Card.Content>
 </Card.Root>
