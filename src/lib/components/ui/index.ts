@@ -48,3 +48,4 @@ export * as Tooltip from "./tooltip/index.js";
 
 // More
 export * as Chip from "./chip";
+export { Root as ColorPicker } from "./color-picker";
