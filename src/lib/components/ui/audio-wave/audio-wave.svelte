@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { cn } from '$lib/utils';
+	import { cn } from "$lib/utils";
 
 	let {
 		playing = true,
 		bars = 4,
 		class: className,
-		barColor = 'bg-primary',
+		barColor = "bg-primary",
 		...rest
 	}: {
 		playing?: boolean;
@@ -51,8 +51,8 @@
 	});
 </script>
 
-<div class={cn('flex items-end justify-center gap-0.5 h-8', className)} {...rest}>
+<div class={cn("flex h-8 items-end justify-center gap-0.5", className)} {...rest}>
 	{#each heights as height, i}
-		<div class={cn('w-1 rounded-sm', barColor)} style="height: {height * 100}%;"></div>
+		<div class={cn("w-1 rounded-sm", barColor)} style="height: {height * 100}%;"></div>
 	{/each}
 </div>

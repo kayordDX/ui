@@ -1,19 +1,19 @@
 <script lang="ts">
-	import * as Popover from '$lib/components/ui/popover';
-	import { setDynamicSelectContext } from './ctx';
-	import type { Snippet } from 'svelte';
+	import * as Popover from "$lib/components/ui/popover";
+	import { setDynamicSelectContext } from "./ctx";
+	import type { Snippet } from "svelte";
 
 	let {
-		value = $bindable(''),
+		value = $bindable(""),
 		open = $bindable(false),
-		children
+		children,
 	}: {
 		value?: string;
 		open?: boolean;
 		children: Snippet;
 	} = $props();
 
-	let inputValue = $state('');
+	let inputValue = $state("");
 
 	setDynamicSelectContext({
 		get value() {
@@ -28,7 +28,7 @@
 		setValue: (v: string) => {
 			value = v;
 			open = false;
-		}
+		},
 	});
 </script>
 

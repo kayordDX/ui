@@ -1,20 +1,20 @@
 <script lang="ts">
-	import { cn } from '$lib/utils';
-	import { Button } from '$lib/components/ui/button';
-	import { ChevronDown } from 'lucide-svelte';
-	import * as Popover from '$lib/components/ui/popover';
-	import * as Command from '$lib/components/ui/command';
-	import * as ButtonGroup from '$lib/components/ui/button-group';
-	import { Input } from '$lib/components/ui/input';
+	import { cn } from "$lib/utils";
+	import { Button } from "$lib/components/ui/button";
+	import { ChevronDown } from "lucide-svelte";
+	import * as Popover from "$lib/components/ui/popover";
+	import * as Command from "$lib/components/ui/command";
+	import * as ButtonGroup from "$lib/components/ui/button-group";
+	import { Input } from "$lib/components/ui/input";
 
-	type ColorFormat = 'hex' | 'rgb' | 'hsl' | 'oklch';
+	type ColorFormat = "hex" | "rgb" | "hsl" | "oklch";
 
 	let {
-		value = $bindable('#000000'),
+		value = $bindable("#000000"),
 		class: className,
 		allowOpacity = false,
-		defaultFormat = 'hex',
-		formats = ['hex', 'rgb', 'hsl', 'oklch']
+		defaultFormat = "hex",
+		formats = ["hex", "rgb", "hsl", "oklch"],
 	}: {
 		value?: string;
 		class?: string;
@@ -47,10 +47,10 @@
 					s = parsed.s;
 					v = parsed.v;
 					a = parsed.a;
-					if (value.startsWith('rgb')) activeFormat = 'rgb';
-					else if (value.startsWith('hsl')) activeFormat = 'hsl';
-					else if (value.startsWith('oklch')) activeFormat = 'oklch';
-					else activeFormat = 'hex';
+					if (value.startsWith("rgb")) activeFormat = "rgb";
+					else if (value.startsWith("hsl")) activeFormat = "hsl";
+					else if (value.startsWith("oklch")) activeFormat = "oklch";
+					else activeFormat = "hex";
 				}
 			}
 		}
@@ -68,8 +68,8 @@
 
 	function parseColor(str: string) {
 		str = str.trim().toLowerCase();
-		if (str.startsWith('#')) {
-			let hex = str.replace('#', '');
+		if (str.startsWith("#")) {
+			let hex = str.replace("#", "");
 			let r = 0,
 				g = 0,
 				b = 0,
@@ -90,12 +90,11 @@
 			}
 			return { ...rgbToHsv(r, g, b), a: alpha };
 		}
-		if (str.startsWith('rgb')) {
+		if (str.startsWith("rgb")) {
 			const values = str.match(/[\d.]+/g)?.map(Number);
-			if (values && values.length >= 3)
-				return { ...rgbToHsv(values[0], values[1], values[2]), a: values[3] ?? 1 };
+			if (values && values.length >= 3) return { ...rgbToHsv(values[0], values[1], values[2]), a: values[3] ?? 1 };
 		}
-		if (str.startsWith('hsl')) {
+		if (str.startsWith("hsl")) {
 			const values = str.match(/[\d.]+/g)?.map(Number);
 			if (values && values.length >= 3) {
 				const sNorm = values[1] / 100,
@@ -105,10 +104,8 @@
 				return { h: values[0], s: sHsv * 100, v: vNorm * 100, a: values[3] ?? 1 };
 			}
 		}
-		if (str.startsWith('oklch')) {
-			const values = str
-				.match(/[\d.%]+/g)
-				?.map((s) => (s.includes('%') ? parseFloat(s) / 100 : parseFloat(s)));
+		if (str.startsWith("oklch")) {
+			const values = str.match(/[\d.%]+/g)?.map((s) => (s.includes("%") ? parseFloat(s) / 100 : parseFloat(s)));
 			if (values && values.length >= 3) {
 				const rgb = oklchToRgb(values[0], values[1], values[2]);
 				return { ...rgbToHsv(rgb.r, rgb.g, rgb.b), a: values[3] ?? 1 };
@@ -118,11 +115,11 @@
 	}
 
 	function formatOutput(h: number, s: number, v: number, a: number, format: ColorFormat): string {
-		if (format === 'hex') return hsvToHex(h, s, v, a);
-		if (format === 'rgb') return hsvToRgbString(h, s, v, a);
-		if (format === 'hsl') return hsvToHslString(h, s, v, a);
-		if (format === 'oklch') return hsvToOklchString(h, s, v, a);
-		return '';
+		if (format === "hex") return hsvToHex(h, s, v, a);
+		if (format === "rgb") return hsvToRgbString(h, s, v, a);
+		if (format === "hsl") return hsvToHslString(h, s, v, a);
+		if (format === "oklch") return hsvToOklchString(h, s, v, a);
+		return "";
 	}
 
 	function rgbToHsv(r: number, g: number, b: number) {
@@ -202,7 +199,7 @@
 	function hsvToOklchString(h: number, s: number, v: number, a: number) {
 		const rgb = hsvToRgb(h, s, v);
 		const oklch = rgbToOklch(rgb.r, rgb.g, rgb.b);
-		const L = (oklch.l * 100).toFixed(1) + '%';
+		const L = (oklch.l * 100).toFixed(1) + "%";
 		const C = oklch.c.toFixed(3);
 		const H = (oklch.h || 0).toFixed(1);
 
@@ -269,7 +266,7 @@
 		const { r, g, b } = hsvToRgb(h, s, v);
 		const toHex = (x: number) => {
 			const hex = x.toString(16);
-			return hex.length === 1 ? '0' + hex : hex;
+			return hex.length === 1 ? "0" + hex : hex;
 		};
 		let hex = `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 		if (allowOpacity && a < 1) hex += toHex(Math.round(a * 255));
@@ -298,22 +295,22 @@
 		const move = (e: MouseEvent | TouchEvent) => fn(e);
 		const stop = () => {
 			isDragging = false;
-			window.removeEventListener('mousemove', move);
-			window.removeEventListener('touchmove', move);
-			window.removeEventListener('mouseup', stop);
-			window.removeEventListener('touchend', stop);
+			window.removeEventListener("mousemove", move);
+			window.removeEventListener("touchmove", move);
+			window.removeEventListener("mouseup", stop);
+			window.removeEventListener("touchend", stop);
 		};
-		window.addEventListener('mousemove', move);
-		window.addEventListener('touchmove', move);
-		window.addEventListener('mouseup', stop);
-		window.addEventListener('touchend', stop);
+		window.addEventListener("mousemove", move);
+		window.addEventListener("touchmove", move);
+		window.addEventListener("mouseup", stop);
+		window.addEventListener("touchend", stop);
 	}
 
 	function handleSbChange(e: MouseEvent | TouchEvent) {
 		if (!sbRef) return;
 		const rect = sbRef.getBoundingClientRect();
-		const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-		const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+		const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
+		const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
 		const x = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
 		const y = Math.max(0, Math.min(1, (clientY - rect.top) / rect.height));
 		s = x * 100;
@@ -324,7 +321,7 @@
 	function handleHueChange(e: MouseEvent | TouchEvent) {
 		if (!hueRef) return;
 		const rect = hueRef.getBoundingClientRect();
-		const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+		const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
 		const x = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
 		h = x * 360;
 		updateExternal();
@@ -333,7 +330,7 @@
 	function handleAlphaChange(e: MouseEvent | TouchEvent) {
 		if (!alphaRef) return;
 		const rect = alphaRef.getBoundingClientRect();
-		const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+		const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
 		const x = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
 		a = Math.round(x * 100) / 100;
 		updateExternal();
@@ -348,12 +345,10 @@
 	}
 </script>
 
-<div
-	class={cn('flex w-[350px] flex-col gap-3 p-3 border rounded-lg shadow-sm bg-popover', className)}
->
+<div class={cn("bg-popover flex w-[350px] flex-col gap-3 rounded-lg border p-3 shadow-sm", className)}>
 	<div
 		bind:this={sbRef}
-		class="relative h-56 w-full cursor-crosshair rounded-md shadow-sm overflow-hidden touch-none"
+		class="relative h-56 w-full cursor-crosshair touch-none overflow-hidden rounded-md shadow-sm"
 		style:background-color={`hsl(${h}, 100%, 50%)`}
 		role="slider"
 		aria-label="Saturation and Brightness"
@@ -362,28 +357,27 @@
 		onmousedown={(e) => handleDragStart(e, handleSbChange)}
 		ontouchstart={(e) => handleDragStart(e, handleSbChange)}
 	>
-		<div class="absolute inset-0 bg-gradient-to-r from-white to-transparent pointer-events-none" />
-		<div class="absolute inset-0 bg-gradient-to-t from-black to-transparent pointer-events-none" />
+		<div class="pointer-events-none absolute inset-0 bg-gradient-to-r from-white to-transparent" />
+		<div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black to-transparent" />
 		<div
-			class="absolute h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white shadow-sm ring-1 ring-black/20 pointer-events-none"
+			class="pointer-events-none absolute h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white shadow-sm ring-1 ring-black/20"
 			style:left={`${s}%`}
 			style:top={`${100 - v}%`}
 		/>
 	</div>
 
-	<div class="flex gap-3 items-center">
+	<div class="flex items-center gap-3">
 		<div
-			class="h-8 w-8 shrink-0 rounded-md border shadow-sm relative overflow-hidden mt-1 bg-[url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMUlEQVQ4T2NkYGAQYcAP3uCTZhw1gGGYhAGBZIA/nYDCgBDAm9BGDWAAJyRCgLaBCAAgXwixzAS0pgAAAABJRU5ErkJggg==')]"
+			class="relative mt-1 h-8 w-8 shrink-0 overflow-hidden rounded-md border bg-[url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMUlEQVQ4T2NkYGAQYcAP3uCTZhw1gGGYhAGBZIA/nYDCgBDAm9BGDWAAJyRCgLaBCAAgXwixzAS0pgAAAABJRU5ErkJggg==')] shadow-sm"
 		>
 			<div class="absolute inset-0" style:background-color={hsvToHex(h, s, v, a)} />
 		</div>
 
-		<div class="flex flex-1 flex-col gap-3 justify-center">
+		<div class="flex flex-1 flex-col justify-center gap-3">
 			<div
 				bind:this={hueRef}
-				class="relative h-3 w-full cursor-pointer rounded-full shadow-sm ring-1 ring-black/5 touch-none"
-				style:background="linear-gradient(to right, #f00 0%, #ff0 17%, #0f0 33%, #0ff 50%, #00f 67%,
-				#f0f 83%, #f00 100%)"
+				class="relative h-3 w-full cursor-pointer touch-none rounded-full shadow-sm ring-1 ring-black/5"
+				style:background={"linear-gradient(to right, #f00 0%, #ff0 17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%)"}
 				role="slider"
 				aria-valuenow={h}
 				tabindex="0"
@@ -391,7 +385,7 @@
 				ontouchstart={(e) => handleDragStart(e, handleHueChange)}
 			>
 				<div
-					class="absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white pointer-events-none"
+					class="pointer-events-none absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white"
 					style:left={`${(h / 360) * 100}%`}
 				/>
 			</div>
@@ -399,7 +393,7 @@
 			{#if allowOpacity}
 				<div
 					bind:this={alphaRef}
-					class="relative h-3 w-full cursor-pointer rounded-full shadow-sm ring-1 ring-black/5 touch-none bg-[url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMUlEQVQ4T2NkYGAQYcAP3uCTZhw1gGGYhAGBZIA/nYDCgBDAm9BGDWAAJyRCgLaBCAAgXwixzAS0pgAAAABJRU5ErkJggg==')]"
+					class="relative h-3 w-full cursor-pointer touch-none rounded-full bg-[url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMUlEQVQ4T2NkYGAQYcAP3uCTZhw1gGGYhAGBZIA/nYDCgBDAm9BGDWAAJyRCgLaBCAAgXwixzAS0pgAAAABJRU5ErkJggg==')] shadow-sm ring-1 ring-black/5"
 					role="slider"
 					aria-valuenow={a}
 					tabindex="0"
@@ -411,7 +405,7 @@
 						style:background={`linear-gradient(to right, transparent, ${hsvToHex(h, s, v, 1)})`}
 					/>
 					<div
-						class="absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white pointer-events-none"
+						class="pointer-events-none absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white"
 						style:left={`${a * 100}%`}
 					/>
 				</div>
@@ -424,11 +418,7 @@
 			<Popover.Root bind:open={formatOpen}>
 				<Popover.Trigger>
 					{#snippet child({ props })}
-						<Button
-							{...props}
-							variant="outline"
-							class="max-w-[5rem] px-2 text-[10px] justify-between h-9"
-						>
+						<Button {...props} variant="outline" class="h-9 max-w-[5rem] justify-between px-2 text-[10px]">
 							{activeFormat.toUpperCase()}
 							<ChevronDown class="h-3 w-3 opacity-50" />
 						</Button>
@@ -438,11 +428,11 @@
 					<Command.Root>
 						<Command.List>
 							<Command.Group>
-								{#each ['hex', 'rgb', 'hsl', 'oklch'] as fmt}
+								{#each ["hex", "rgb", "hsl", "oklch"] as fmt}
 									<Command.Item
 										value={fmt}
 										onSelect={() => setFormat(fmt as ColorFormat)}
-										class="text-[10px] h-7 flex justify-center"
+										class="flex h-7 justify-center text-[10px]"
 									>
 										{fmt.toUpperCase()}
 									</Command.Item>
@@ -453,12 +443,12 @@
 				</Popover.Content>
 			</Popover.Root>
 		{:else}
-			<Button variant="outline" class="max-w-[5rem] px-2 text-[10px] justify-between h-9">
+			<Button variant="outline" class="h-9 max-w-[5rem] justify-between px-2 text-[10px]">
 				{activeFormat.toUpperCase()}
 			</Button>
 		{/if}
 		<Input
-			class="h-9 font-mono text-[10px] uppercase flex-1"
+			class="h-9 flex-1 font-mono text-[10px] uppercase"
 			{value}
 			oninput={(e) => {
 				const parsed = parseColor(e.currentTarget.value);
@@ -474,8 +464,8 @@
 
 		{#if allowOpacity}
 			<Input
-				class="h-9 font-mono text-[10px] text-right max-w-[4.2rem]"
-				value={Math.round(a * 100) + '%'}
+				class="h-9 max-w-[4.2rem] text-right font-mono text-[10px]"
+				value={Math.round(a * 100) + "%"}
 				oninput={handleAlphaInput}
 				maxlength={3}
 			/>

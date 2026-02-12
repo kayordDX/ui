@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { cn } from '$lib/utils';
-	import { setDateStripContext } from './ctx';
-	import { Button } from '$lib/components/ui/button';
-	import { ChevronLeft, ChevronRight } from 'lucide-svelte';
-	import type { Snippet } from 'svelte';
-	import { type DateValue, getLocalTimeZone, today, startOfWeek } from '@internationalized/date';
+	import { cn } from "$lib/utils";
+	import { setDateStripContext } from "./ctx";
+	import { Button } from "$lib/components/ui/button";
+	import { ChevronLeft, ChevronRight } from "lucide-svelte";
+	import type { Snippet } from "svelte";
+	import { type DateValue, getLocalTimeZone, today, startOfWeek } from "@internationalized/date";
 
 	let {
 		value = $bindable(),
@@ -12,7 +12,7 @@
 		daysToShow = 5,
 		isDateDisabled = () => false,
 		onDateChange,
-		children
+		children,
 	}: {
 		value?: DateValue | undefined;
 		class?: string;
@@ -22,20 +22,18 @@
 		children: Snippet<[{ date: DateValue }]>;
 	} = $props();
 
-	let startDate = $state(startOfWeek(today(getLocalTimeZone()), 'en-US'));
-	let slideDirection = $state<'start' | 'end'>('end');
+	let startDate = $state(startOfWeek(today(getLocalTimeZone()), "en-US"));
+	let slideDirection = $state<"start" | "end">("end");
 
-	const displayedDates = $derived(
-		Array.from({ length: daysToShow }, (_, i) => startDate.add({ days: i }))
-	);
+	const displayedDates = $derived(Array.from({ length: daysToShow }, (_, i) => startDate.add({ days: i })));
 
 	function handlePrev() {
-		slideDirection = 'start';
+		slideDirection = "start";
 		startDate = startDate.add({ days: -daysToShow });
 	}
 
 	function handleNext() {
-		slideDirection = 'end';
+		slideDirection = "end";
 		startDate = startDate.add({ days: daysToShow });
 	}
 
@@ -46,11 +44,11 @@
 			onDateChange?.(d);
 		},
 		isDateDisabled,
-		direction: () => slideDirection
+		direction: () => slideDirection,
 	});
 </script>
 
-<div class={cn('flex items-center gap-2 rounded-xl border bg-card p-1 shadow-sm', className)}>
+<div class={cn("bg-card flex items-center gap-2 rounded-xl border p-1 shadow-sm", className)}>
 	<Button variant="ghost" size="icon" class="h-7 w-7 shrink-0" onclick={handlePrev}>
 		<ChevronLeft class="h-4 w-4" />
 	</Button>

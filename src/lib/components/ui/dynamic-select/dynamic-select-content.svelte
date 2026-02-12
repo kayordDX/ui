@@ -1,18 +1,18 @@
 <script lang="ts">
-	import * as Popover from '$lib/components/ui/popover';
-	import * as Command from '$lib/components/ui/command';
-	import { getDynamicSelectContext } from './ctx';
-	import type { Snippet } from 'svelte';
+	import * as Popover from "$lib/components/ui/popover";
+	import * as Command from "$lib/components/ui/command";
+	import { getDynamicSelectContext } from "./ctx";
+	import type { Snippet } from "svelte";
 
 	let { children }: { children: Snippet } = $props();
 	const ctx = getDynamicSelectContext();
 
-	let internalInput = $state('');
+	let internalInput = $state("");
 
 	function handleKeyDown(e: KeyboardEvent) {
-		if (e.key === 'Enter' && internalInput.trim() !== '') {
+		if (e.key === "Enter" && internalInput.trim() !== "") {
 			ctx.setValue(internalInput);
-			internalInput = '';
+			internalInput = "";
 		}
 	}
 </script>
@@ -22,16 +22,12 @@
 	align="start"
 >
 	<Command.Root>
-		<Command.Input
-			placeholder="Search or type custom..."
-			bind:value={internalInput}
-			onkeydown={handleKeyDown}
-		/>
+		<Command.Input placeholder="Search or type custom..." bind:value={internalInput} onkeydown={handleKeyDown} />
 		<Command.List>
 			<Command.Empty>
-				{#if internalInput.trim() !== ''}
+				{#if internalInput.trim() !== ""}
 					<button
-						class="flex w-full cursor-pointer items-center px-2 py-1.5 text-sm outline-none hover:bg-accent hover:text-accent-foreground"
+						class="hover:bg-accent hover:text-accent-foreground flex w-full cursor-pointer items-center px-2 py-1.5 text-sm outline-none"
 						onclick={() => ctx.setValue(internalInput)}
 					>
 						Add "{internalInput}"

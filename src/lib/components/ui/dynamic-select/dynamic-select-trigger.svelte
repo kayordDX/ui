@@ -1,22 +1,16 @@
 <script lang="ts">
-	import { cn } from '$lib/utils';
-	import * as Popover from '$lib/components/ui/popover';
-	import { buttonVariants } from '$lib/components/ui/button';
-	import { ChevronDown } from 'lucide-svelte';
-	import { getDynamicSelectContext } from './ctx';
-	import type { Snippet } from 'svelte';
+	import { cn } from "$lib/utils";
+	import * as Popover from "$lib/components/ui/popover";
+	import { buttonVariants } from "$lib/components/ui/button";
+	import { ChevronDown } from "lucide-svelte";
+	import { getDynamicSelectContext } from "./ctx";
+	import type { Snippet } from "svelte";
 
 	let { class: className, children }: { class?: string; children: Snippet } = $props();
 	const ctx = getDynamicSelectContext();
 </script>
 
-<Popover.Trigger
-	class={cn(
-		buttonVariants({ variant: 'outline' }),
-		'w-full justify-between font-normal',
-		className
-	)}
->
+<Popover.Trigger class={cn(buttonVariants({ variant: "outline" }), "w-full justify-between font-normal", className)}>
 	{#if ctx.value.value}
 		{ctx.value.value}
 	{:else}

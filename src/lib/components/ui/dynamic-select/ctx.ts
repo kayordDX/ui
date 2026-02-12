@@ -1,6 +1,6 @@
-import { getContext, setContext } from 'svelte';
+import { getContext, setContext } from "svelte";
 
-const DYNAMIC_SELECT_KEY = Symbol('dynamic-select');
+const DYNAMIC_SELECT_KEY = Symbol("dynamic-select");
 
 type DynamicSelectContext = {
 	value: { value: string };

@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { cn } from '$lib/utils';
-	import type { Snippet } from 'svelte';
+	import { cn } from "$lib/utils";
+	import type { Snippet } from "svelte";
 
 	let { class: className, children }: { class?: string; children: Snippet } = $props();
 </script>
 
-<p class={cn('text-sm text-muted-foreground mt-1', className)}>
+<p class={cn("text-muted-foreground mt-1 text-sm", className)}>
 	{@render children()}
 </p>
