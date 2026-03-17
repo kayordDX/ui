@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Card, Chip, ColorPicker, DateStrip, DynamicSelect, StatusDot, Timeline } from "$lib";
+	import { Card, Chip, ColorPicker, DateStrip, DynamicSelect, StatusDot, Stepper, Timeline } from "$lib";
 	import AudioWave from "$lib/components/ui/audio-wave/audio-wave.svelte";
 
 	const frameworks = [
@@ -8,6 +8,9 @@
 		{ label: "vue", value: "Vue" },
 	];
 	let framework = $state(frameworks[0].value);
+
+	const steps = [{ label: "Test" }, { label: "Another" }];
+	let currentStep = $state(0);
 </script>
 
 <Card.Root class="m-5">
@@ -81,6 +84,23 @@
 				<StatusDot.Root variant="error" pulse />
 				<StatusDot.Root size="lg" />
 			</div>
+		</div>
+
+		<div>
+			<div class="text-muted-foreground mb-2 text-xs">Stepper</div>
+			<Stepper.Root bind:value={currentStep}>
+				{#each steps as step, i}
+					<Stepper.Item step={i}>
+						<Stepper.Trigger step={i}>
+							<Stepper.Indicator step={i} />
+							<Stepper.Title>{step.label}</Stepper.Title>
+						</Stepper.Trigger>
+						{#if i !== steps.length - 1}
+							<Stepper.Separator />
+						{/if}
+					</Stepper.Item>
+				{/each}
+			</Stepper.Root>
 		</div>
 	</Card.Content>
 </Card.Root>

@@ -40,6 +40,7 @@ export * as Sidebar from "./sidebar/index.js";
 export { Skeleton } from "./skeleton/index.js";
 export { Slider } from "./slider/index.js";
 export { Spinner } from "./spinner/index.js";
+export * as Stepper from "./stepper/index.js";
 export { Switch } from "./switch/index.js";
 export * as Table from "./table/index.js";
 export * as Tabs from "./tabs/index.js";
