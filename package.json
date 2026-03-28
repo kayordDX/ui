@@ -1,7 +1,7 @@
 {
 	"name": "@kayord/ui",
 	"private": false,
-	"version": "3.0.0",
+	"version": "3.0.1",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && pnpm package",
@@ -75,7 +75,7 @@
 	],
 	"peerDependencies": {
 		"@internationalized/date": "^3.10.0",
-		"@lucide/svelte": ">= 0.482.0 < 1.0.0",
+		"@lucide/svelte": ">= 1.0.0 < 2.0.0",
 		"@tanstack/table-core": "^8.20.5",
 		"embla-carousel-svelte": "^8.6.0",
 		"formsnap": "^2.0.1",
