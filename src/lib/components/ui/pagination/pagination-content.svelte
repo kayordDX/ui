@@ -10,11 +10,6 @@
 	}: WithElementRef<HTMLAttributes<HTMLUListElement>> = $props();
 </script>
 
-<ul
-	bind:this={ref}
-	data-slot="pagination-content"
-	class={cn("flex flex-row items-center gap-1", className)}
-	{...restProps}
->
+<ul bind:this={ref} data-slot="pagination-content" class={cn("flex items-center gap-0.5", className)} {...restProps}>
 	{@render children?.()}
 </ul>

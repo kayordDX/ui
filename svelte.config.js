@@ -10,6 +10,11 @@ const config = {
 		},
 		adapter: adapter(),
 	},
+	vitePlugin: {
+		inspector: {
+			showToggleButton: "never",
+		},
+	},
 };
 
 export default config;
