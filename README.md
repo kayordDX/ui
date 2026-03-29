@@ -194,45 +194,16 @@ pnpm add -D svelte-sonner
  --color-sidebar-border: hsl(var(--sidebar-border));
  --color-sidebar-ring: hsl(var(--sidebar-ring));
 
- /* Border */
- --radius-xl: calc(var(--radius) + 4px);
- --radius-lg: var(--radius);
- --radius-md: calc(var(--radius) - 2px);
- --radius-sm: calc(var(--radius) - 4px);
+	/* Custom Colors */
+	--color-info: var(--chart-1);
+	--color-success: var(--chart-2);
+	--color-warning: var(--chart-3);
 
- /* Animations */
- --animate-accordion-down: 0.2s ease-out accordion-down;
- --animate-accordion-up: 0.2s ease-out accordion-up;
- --animate-caret-blink: 1.25s ease-out infinite caret-blink;
-
- /* Keyframes */
- @keyframes accordion-down {
-  from: {
-   height: 0;
-  }
-  to: {
-   height: var(--bits-accordion-content-height);
-  }
- }
- @keyframes accordion-up {
-  from: {
-   height: var(--bits-accordion-content-height);
-  }
-  to: {
-   height: 0;
-  }
- }
- @keyframes caret-blink {
-  0%,
-  70%,
-  100% {
-   opacity: 1;
-  }
-  20%,
-  50% {
-   opacity: 0;
-  }
- }
+	/* Radius */
+	--radius-sm: calc(var(--radius) - 4px);
+	--radius-md: calc(var(--radius) - 2px);
+	--radius-lg: var(--radius);
+	--radius-xl: calc(var(--radius) + 4px);
 }
 
 @layer base {
@@ -242,6 +213,74 @@ pnpm add -D svelte-sonner
  body {
   @apply bg-background text-foreground;
  }
+}
+
+@custom-variant data-open {
+	&:where([data-state="open"]),
+	&:where([data-open]:not([data-open="false"])) {
+		@slot;
+	}
+}
+
+@custom-variant data-closed {
+	&:where([data-state="closed"]),
+	&:where([data-closed]:not([data-closed="false"])) {
+		@slot;
+	}
+}
+
+@custom-variant data-checked {
+	&:where([data-state="checked"]),
+	&:where([data-checked]:not([data-checked="false"])) {
+		@slot;
+	}
+}
+
+@custom-variant data-unchecked {
+	&:where([data-state="unchecked"]),
+	&:where([data-unchecked]:not([data-unchecked="false"])) {
+		@slot;
+	}
+}
+
+@custom-variant data-selected {
+	&:where([data-selected]) {
+		@slot;
+	}
+}
+
+@custom-variant data-disabled {
+	&:where([data-disabled="true"]),
+	&:where([data-disabled]:not([data-disabled="false"])) {
+		@slot;
+	}
+}
+
+@custom-variant data-active {
+	&:where([data-state="active"]),
+	&:where([data-active]:not([data-active="false"])) {
+		@slot;
+	}
+}
+
+@custom-variant data-horizontal {
+	&:where([data-orientation="horizontal"]) {
+		@slot;
+	}
+}
+
+@custom-variant data-vertical {
+	&:where([data-orientation="vertical"]) {
+		@slot;
+	}
+}
+
+@utility no-scrollbar {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+	&::-webkit-scrollbar {
+		display: none;
+	}
 }
 ```
 
