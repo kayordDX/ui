@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { scaleBand } from "d3-scale";
-	import { BarChart, Highlight, type ChartContextValue } from "layerchart";
+	import { BarChart, Highlight } from "layerchart";
 	import TrendingUpIcon from "@lucide/svelte/icons/trending-up";
 	import { cubicInOut } from "svelte/easing";
 	import { Card } from "$lib";
@@ -18,8 +18,6 @@
 	const chartConfig = {
 		desktop: { label: "Desktop", color: "var(--color-primary)" },
 	} satisfies Chart.ChartConfig;
-
-	let context = $state<ChartContextValue>();
 </script>
 
 <Card.Root>
@@ -30,7 +28,6 @@
 	<Card.Content>
 		<Chart.Container config={chartConfig} class="mx-auto max-h-[250px]">
 			<BarChart
-				bind:context
 				data={chartData}
 				xScale={scaleBand().padding(0.25)}
 				x="month"
@@ -41,9 +38,6 @@
 						stroke: "none",
 						rounded: "all",
 						radius: 12,
-						// use the height of the chart to animate the bars
-						initialY: context?.height,
-						initialHeight: 0,
 						motion: {
 							x: { type: "tween", duration: 500, easing: cubicInOut },
 							width: { type: "tween", duration: 500, easing: cubicInOut },
