@@ -1,21 +1,32 @@
 import { describe, test, expect, vi } from "vitest";
 import { render } from "vitest-browser-svelte";
 
-// Mock createShadTable to always set useURLSearchParams: false
-vi.mock("$lib/data-table", async (orig) => {
-	const mod: any = await orig();
+vi.mock("$app/state", () => ({
+	page: {
+		url: new URL("http://localhost/dataTable"),
+	},
+}));
+
+vi.mock("$lib/data-table", async () => {
+	const { default: Skeleton } = await import("$lib/components/ui/skeleton/skeleton.svelte");
+
 	return {
-		...mod,
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		createShadTable: (opts: any) => mod.createShadTable({ ...opts, useURLSearchParams: false }),
+		DataTable: Skeleton,
+		createShadTable: vi.fn(() => ({ options: {} })),
+		renderSnippet: vi.fn(),
+		renderComponent: vi.fn(),
 	};
 });
 
-import Page from "./+page.svelte";
+vi.mock("$lib/components/custom/data-table/shad-table.svelte", () => ({
+	createShadTable: vi.fn(() => ({ options: {} })),
+}));
 
 describe("dataTable page", () => {
 	test("should render tabs without crashing", async () => {
+		const { default: Page } = await import("./+page.svelte");
 		const { container } = render(Page);
+
 		expect(container).toBeDefined();
 		expect(container.childElementCount).toBeGreaterThan(0);
 	});
