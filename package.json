@@ -1,7 +1,7 @@
 {
 	"name": "@kayord/ui",
 	"private": false,
-	"version": "3.0.8",
+	"version": "3.0.9",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && pnpm package",
@@ -15,7 +15,7 @@
 		"format": "prettier --write .",
 		"test:unit": "vitest run",
 		"test:coverage": "vitest run --coverage",
-		"lib": "pnpm dlx shadcn-svelte@latest add -a -y -o --no-deps && pnpm format && pnpm version --no-git-tag-version patch",
+		"lib": "pnpm dlx shadcn-svelte@latest add -a -y -o --no-deps && pnpm format && pnpm version --no-git-checks --no-git-tag-version patch",
 		"next": "./next.sh"
 	},
 	"repository": {
