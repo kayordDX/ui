@@ -1,6 +1,6 @@
 minimumReleaseAgeExclude:
-  - '@internationalized/date@3.12.2'
-  - '@lucide/svelte@1.17.0'
+  - "@internationalized/date@3.12.2"
+  - "@lucide/svelte@1.17.0"
 onlyBuiltDependencies:
   - "@tailwindcss/oxide"
   - "esbuild"

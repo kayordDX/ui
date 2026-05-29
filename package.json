@@ -152,7 +152,7 @@
 		"mode-watcher": "^1.1.0",
 		"paneforge": "^1.0.2",
 		"prettier": "^3.8.3",
-		"prettier-plugin-svelte": "^4.0.1",
+		"prettier-plugin-svelte": "3.5.2",
 		"prettier-plugin-tailwindcss": "^0.8.0",
 		"publint": "^0.3.21",
 		"runed": "^0.37.1",
