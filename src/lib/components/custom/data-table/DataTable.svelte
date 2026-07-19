@@ -139,7 +139,7 @@
 		{/if}
 	</div>
 
-	<div class="rounded-md border">
+	<div class="overflow-hidden rounded-md border">
 		{#if isLoading}
 			<span in:fade={{ duration: 300 }}>
 				<ProgressLoading class="h-1" />
