@@ -5,7 +5,7 @@ import Page from "./+page.svelte";
 
 describe("no initial dialog", () => {
 	test("should not have default dialog", async () => {
-		const screen = render(Page);
+		const screen = await render(Page);
 		expect(screen.container.childElementCount).toBeGreaterThan(0);
 
 		const button = screen.getByRole("button", { name: "Show Dialog" }).first();
@@ -20,7 +20,7 @@ describe("no initial dialog", () => {
 
 describe("show dialog", () => {
 	test("should have dialog shown", async () => {
-		const screen = render(Page);
+		const screen = await render(Page);
 
 		const button = screen.getByRole("button", { name: "Show Dialog" }).first();
 		await button.click();

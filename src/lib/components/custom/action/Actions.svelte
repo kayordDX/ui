@@ -23,7 +23,7 @@
 		{text}
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content>
-		{#each actions as action}
+		{#each actions as action, i (i)}
 			{#if isActionType(action)}
 				<Action {...action} />
 			{:else if isActionGroup(action)}

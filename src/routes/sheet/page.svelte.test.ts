@@ -3,8 +3,8 @@ import { render } from "vitest-browser-svelte";
 import Page from "./+page.svelte";
 
 describe("/sheet/+page.svelte", () => {
-	test("should render without crashing", () => {
-		const { container } = render(Page);
+	test("should render without crashing", async () => {
+		const { container } = await render(Page);
 		expect(container.childElementCount).toBeGreaterThan(0);
 	});
 });

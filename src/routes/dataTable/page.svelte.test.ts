@@ -25,7 +25,7 @@ vi.mock("$lib/components/custom/data-table/shad-table.svelte", () => ({
 describe("dataTable page", () => {
 	test("should render tabs without crashing", async () => {
 		const { default: Page } = await import("./+page.svelte");
-		const { container } = render(Page);
+		const { container } = await render(Page);
 
 		expect(container).toBeDefined();
 		expect(container.childElementCount).toBeGreaterThan(0);

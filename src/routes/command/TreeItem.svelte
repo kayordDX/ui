@@ -21,7 +21,7 @@
 </Command.Item>
 {#if children}
 	<Command.Group heading={name}>
-		{#each children as child}
+		{#each children as child (child.id)}
 			<TreeItem {...child} />
 		{/each}
 	</Command.Group>

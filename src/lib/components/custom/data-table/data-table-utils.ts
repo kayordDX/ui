@@ -36,7 +36,7 @@ export const uniqueCount = <T>(data: T[], columnId: keyof T) => {
 	return new Set(data.map((d) => d[columnId])).size;
 };
 
-export const count = <T>(data: T[], columnId: keyof T) => {
+export const count = <T>(data: T[], _columnId: keyof T) => {
 	return data.length;
 };
 
@@ -47,7 +47,8 @@ export const mean = <T>(data: T[], columnId: keyof T) => {
 	data.forEach((row) => {
 		let value = Number(row[columnId]);
 		if (value != null && (value = +value) >= value) {
-			(++count, (sum += value));
+			++count;
+			sum += value;
 		}
 	});
 

@@ -1,5 +1,3 @@
-/// <reference types="vitest" />
-
 import { describe, it, expect } from "vitest";
 import { sum, min, max, uniqueCount, count, mean } from "./data-table-utils";
 

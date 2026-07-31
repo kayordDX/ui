@@ -63,7 +63,7 @@
 				<DynamicSelect.Trigger>Select framework...</DynamicSelect.Trigger>
 				<DynamicSelect.Content>
 					<DynamicSelect.Group>
-						{#each frameworks as f}
+						{#each frameworks as f (f.label)}
 							<DynamicSelect.Item value={f.label}>{f.value}</DynamicSelect.Item>
 						{/each}
 					</DynamicSelect.Group>
@@ -89,7 +89,7 @@
 		<div>
 			<div class="text-muted-foreground mb-2 text-xs">Stepper</div>
 			<Stepper.Root bind:value={currentStep}>
-				{#each steps as step, i}
+				{#each steps as step, i (i)}
 					<Stepper.Item step={i}>
 						<Stepper.Trigger step={i}>
 							<Stepper.Indicator step={i} />

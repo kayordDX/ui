@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { cn } from "$lib/utils";
 	import { X } from "@lucide/svelte";
+	import type { HTMLAnchorAttributes, HTMLButtonAttributes } from "svelte/elements";
 	import type { Snippet } from "svelte";
 	import { tv, type VariantProps } from "tailwind-variants";
 
@@ -72,8 +73,7 @@
 		children?: Snippet;
 		avatar?: Snippet;
 		icon?: Snippet;
-		[key: string]: any;
-	} = $props();
+	} & Omit<HTMLButtonAttributes & HTMLAnchorAttributes, "class" | "onclick" | "href" | "disabled"> = $props();
 
 	const isInteractive = !!onclick || !!href || active !== undefined;
 	const Element = href ? "a" : isInteractive ? "button" : "div";

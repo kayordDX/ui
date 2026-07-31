@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { HTMLAttributes } from "svelte/elements";
 	import { cn } from "$lib/utils";
 
 	let {
@@ -12,8 +13,7 @@
 		bars?: number;
 		class?: string;
 		barColor?: string;
-		[key: string]: any;
-	} = $props();
+	} & Omit<HTMLAttributes<HTMLDivElement>, "class"> = $props();
 
 	let heights = $state(Array(bars).fill(0.25));
 	let frame: number;
@@ -52,7 +52,7 @@
 </script>
 
 <div class={cn("flex h-8 items-end justify-center gap-0.5", className)} {...rest}>
-	{#each heights as height, i}
+	{#each heights as height, i (i)}
 		<div class={cn("w-1 rounded-sm", barColor)} style="height: {height * 100}%;"></div>
 	{/each}
 </div>
