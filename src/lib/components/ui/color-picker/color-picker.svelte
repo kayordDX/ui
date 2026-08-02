@@ -129,7 +129,7 @@
 		const max = Math.max(r, g, b),
 			min = Math.min(r, g, b);
 		let h = 0,
-			s: number,
+			s = 0,
 			v = max;
 		const d = max - min;
 		s = max === 0 ? 0 : d / max;
@@ -377,8 +377,7 @@
 			<div
 				bind:this={hueRef}
 				class="relative h-3 w-full cursor-pointer touch-none rounded-full shadow-sm ring-1 ring-black/5"
-				style:background="linear-gradient(to right, #f00 0%, #ff0 17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00
-				100%)"
+				style:background={"linear-gradient(to right, #f00 0%, #ff0 17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%)"}
 				role="slider"
 				aria-valuenow={h}
 				tabindex="0"
@@ -429,7 +428,7 @@
 					<Command.Root>
 						<Command.List>
 							<Command.Group>
-								{#each ["hex", "rgb", "hsl", "oklch"] as fmt (fmt)}
+								{#each ["hex", "rgb", "hsl", "oklch"] as fmt}
 									<Command.Item
 										value={fmt}
 										onSelect={() => setFormat(fmt as ColorFormat)}

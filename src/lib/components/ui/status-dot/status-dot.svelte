@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type { HTMLAttributes } from "svelte/elements";
 	import { cn } from "$lib/utils";
 	import { tv, type VariantProps } from "tailwind-variants";
 
@@ -40,7 +39,8 @@
 		variant?: Variant;
 		size?: Size;
 		pulse?: boolean;
-	} & Omit<HTMLAttributes<HTMLSpanElement>, "class"> = $props();
+		[key: string]: any;
+	} = $props();
 </script>
 
 <span class={cn("relative flex items-center justify-center", dotVariants({ size }), className)} {...rest}>
