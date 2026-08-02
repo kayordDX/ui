@@ -40,7 +40,7 @@ describe("/test/+page.svelte", () => {
 		);
 
 		const { default: Page } = await import("./+page.svelte");
-		const { container } = render(Page);
+		const { container } = await render(Page);
 		expect(container.childElementCount).toBeGreaterThan(0);
 	});
 });

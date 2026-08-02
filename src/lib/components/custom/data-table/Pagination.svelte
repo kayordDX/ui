@@ -37,7 +37,7 @@
 				>
 					<Select.Trigger class="h-8 w-[70px]">Select page size</Select.Trigger>
 					<Select.Content side="top">
-						{#each [10, 20, 30, 40, 50] as pageSize}
+						{#each [10, 20, 30, 40, 50] as pageSize (pageSize)}
 							<Select.Item value={pageSize.toString()}>
 								{pageSize}
 							</Select.Item>

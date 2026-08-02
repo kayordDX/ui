@@ -17,7 +17,7 @@ import { renderComponent } from "$lib/data-table";
 import { mergeObjects } from "$lib/components/ui/data-table/data-table.svelte";
 
 interface ShadTableOptions<TData extends RowData> extends Omit<TableOptions<TData>, "getCoreRowModel"> {
-	getCoreRowModel?: (table: Table<any>) => () => RowModel<any>;
+	getCoreRowModel?: (table: Table<TData>) => () => RowModel<TData>;
 	enablePaging?: boolean;
 	enableVisibility?: boolean;
 	enableRowSelectionUI?: boolean;
@@ -198,7 +198,7 @@ export function createShadTableOld<TData extends RowData>(shadOptions: ShadTable
 	);
 
 	const table = createTable(resolvedOptions);
-	let state = $state<Partial<TableState>>(table.initialState);
+	const state = $state<Partial<TableState>>(table.initialState);
 
 	const updateOptions = (table: Table<TData>, state: Partial<TableState>) => {
 		table.setOptions((prev) => {

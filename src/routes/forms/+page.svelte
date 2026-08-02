@@ -122,7 +122,7 @@
 	<Card.Content>
 		<NativeSelect.Root>
 			<NativeSelect.Option value="">Select option</NativeSelect.Option>
-			{#each items as item}
+			{#each items as item (item.value)}
 				<NativeSelect.Option value={item.value}>{item.label}</NativeSelect.Option>
 			{/each}
 		</NativeSelect.Root>

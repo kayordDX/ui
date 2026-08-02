@@ -68,7 +68,7 @@
 			<Command.Input placeholder="Type a command or search..." />
 			<Command.List>
 				<Command.Empty>No results found.</Command.Empty>
-				{#each nestedData as item}
+				{#each nestedData as item (item.id)}
 					<TreeItem {...item} />
 				{/each}
 			</Command.List>

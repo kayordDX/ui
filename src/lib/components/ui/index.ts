@@ -1,5 +1,3 @@
-import type DateStrip from "./date-strip/date-strip.svelte";
-
 export * as Accordion from "./accordion/index.js";
 export * as Alert from "./alert/index.js";
 export * as AlertDialog from "./alert-dialog/index.js";

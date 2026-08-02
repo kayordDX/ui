@@ -21,7 +21,7 @@ const mockData = {
 
 describe("/forms/+page.svelte", () => {
 	test("should render without crashing", async () => {
-		const screen = render(Page, mockData);
+		const screen = await render(Page, mockData);
 		await screen.getByRole("form");
 		expect(screen.container.childElementCount).toBeGreaterThan(0);
 	});
