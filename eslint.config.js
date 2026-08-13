@@ -11,6 +11,10 @@ import svelteConfig from "./svelte.config.js";
 const gitignorePath = fileURLToPath(new URL("./.gitignore", import.meta.url));
 
 export default defineConfig(
+	{
+		// shadcn-svelte generated components are not authored by hand; skip linting them
+		ignores: ["src/lib/components/ui/**"],
+	},
 	includeIgnoreFile(gitignorePath),
 	js.configs.recommended,
 	...ts.configs.recommended,
