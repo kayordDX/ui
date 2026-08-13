@@ -20,7 +20,7 @@
 		<LightSwitch />
 	</div>
 
-	<div class="flex flex-grow">
+	<div class="flex grow">
 		<Menu />
 		<div class="w-full">{@render children?.()}</div>
 	</div>
