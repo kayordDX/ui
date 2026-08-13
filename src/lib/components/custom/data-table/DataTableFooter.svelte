@@ -1,11 +1,11 @@
 <script lang="ts" generics="T extends RowData">
 	import { Table } from "$lib";
 	import { FlexRender } from "$lib/data-table";
-	import type { RowData } from "@tanstack/svelte-table";
-	import type { ShadTable } from "$lib/data-table";
+	import type { RowData, Table as TanstackTable } from "@tanstack/svelte-table";
+	import type { DataTableFeatures } from "$lib/data-table";
 
 	interface Props<T extends RowData> {
-		table: ShadTable<T>;
+		table: TanstackTable<DataTableFeatures, T>;
 	}
 
 	let { table }: Props<T> = $props();

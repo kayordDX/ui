@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { DataTable, createShadTable, type ShadColumnDef } from "$lib/data-table";
+	import { DataTable, createShadTable, type ColumnDef, type DataTableFeatures } from "$lib/data-table";
 	import Input from "$lib/components/ui/input/input.svelte";
 	import type { ColumnFiltersState, PaginationState, SortingState } from "@tanstack/svelte-table";
 	import { Button } from "$lib";
@@ -30,7 +30,7 @@
 		fetchData();
 	});
 
-	const columns: ShadColumnDef<Todo>[] = [
+	const columns: ColumnDef<DataTableFeatures, Todo>[] = [
 		{
 			accessorKey: "userId",
 			header: "UserId",

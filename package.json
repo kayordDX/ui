@@ -76,7 +76,6 @@
 	"peerDependencies": {
 		"@internationalized/date": "^3.10.0",
 		"@lucide/svelte": ">= 1.0.0 < 2.0.0",
-		"@tanstack/table-core": ">= 9.0.0 < 10.0.0",
 		"@tanstack/svelte-table": ">= 9.0.0 < 10.0.0",
 		"embla-carousel-svelte": "^8.6.0",
 		"formsnap": "^2.0.1",
@@ -101,9 +100,6 @@
 			"optional": true
 		},
 		"embla-carousel-svelte": {
-			"optional": true
-		},
-		"@tanstack/table-core": {
 			"optional": true
 		},
 		"@tanstack/svelte-table": {
@@ -145,7 +141,6 @@
 		"@sveltejs/vite-plugin-svelte": "7.3.0",
 		"@tailwindcss/vite": "^4.3.3",
 		"@tanstack/svelte-table": "^9.1.2",
-		"@tanstack/table-core": "^9.1.2",
 		"@types/d3-scale": "^4.0.9",
 		"@types/d3-shape": "^3.1.8",
 		"@vitest/browser": "^4.1.10",

@@ -8,9 +8,9 @@
 
 	import { data } from "./data.svelte";
 	import { Button } from "$lib";
-	import { DataTable, createShadTable, type ShadColumnDef } from "$lib/data-table";
+	import { DataTable, createShadTable, type ColumnDef, type DataTableFeatures } from "$lib/data-table";
 
-	const columns: ShadColumnDef<DataType>[] = [
+	const columns: ColumnDef<DataTableFeatures, DataType>[] = [
 		{
 			accessorKey: "id",
 			header: "Id",

@@ -1,4 +1,4 @@
-import { createTable, type ColumnDef, type RowData, type Table, type Updater } from "@tanstack/svelte-table";
+import { createTable, type ColumnDef, type RowData, type Table } from "@tanstack/svelte-table";
 import DataTableCheckbox from "./DataTableCheckbox.svelte";
 import { renderComponent } from "$lib/data-table";
 import { features, type DataTableFeatures } from "./features";
@@ -76,4 +76,3 @@ export function createShadTable<TData extends RowData>(
 }
 
 export { features };
-export type { Updater };

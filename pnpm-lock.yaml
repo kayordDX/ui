@@ -51,9 +51,6 @@ importers:
       '@tanstack/svelte-table':
         specifier: ^9.1.2
         version: 9.1.2(svelte@5.56.8(@typescript-eslint/types@8.67.0))
-      '@tanstack/table-core':
-        specifier: ^9.1.2
-        version: 9.1.2
       '@types/d3-scale':
         specifier: ^4.0.9
         version: 4.0.9

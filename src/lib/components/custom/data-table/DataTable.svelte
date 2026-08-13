@@ -1,6 +1,6 @@
 <script lang="ts" generics="T extends RowData">
-	import type { RowData } from "@tanstack/svelte-table";
-	import type { ShadTable } from "./types-aliases";
+	import type { RowData, Table as TableType } from "@tanstack/svelte-table";
+	import type { DataTableFeatures } from "$lib/data-table";
 	import { FlexRender } from "$lib/components/ui/data-table";
 	import { Skeleton, Table } from "$lib/components/ui";
 	import Pagination from "./Pagination.svelte";
@@ -19,7 +19,7 @@
 	import DataTableView from "./DataTableView.svelte";
 
 	interface Props<T extends RowData> {
-		table: ShadTable<T>;
+		table: TableType<DataTableFeatures, T>;
 		isLoading?: boolean;
 		header?: Snippet;
 		subHeader?: Snippet;

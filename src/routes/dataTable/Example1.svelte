@@ -10,13 +10,14 @@
 		createShadTable,
 		createTableState,
 		renderSnippet,
-		type ShadColumnDef,
+		type ColumnDef,
+		type DataTableFeatures,
 		type RowSelectionState,
 	} from "$lib/data-table";
 	import { aggregationFns } from "$lib/components/custom/data-table/data-table-utils";
 	import { CloudIcon, SunIcon } from "@lucide/svelte";
 
-	const columns: ShadColumnDef<DataType>[] = [
+	const columns: ColumnDef<DataTableFeatures, DataType>[] = [
 		{
 			accessorKey: "id",
 			header: "ID",

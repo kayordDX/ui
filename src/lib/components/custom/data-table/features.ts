@@ -1,6 +1,7 @@
 import {
 	tableFeatures,
 	stockFeatures,
+	metaHelper,
 	createSortedRowModel,
 	createFilteredRowModel,
 	createPaginatedRowModel,
@@ -13,6 +14,7 @@ import {
 	sortFns,
 	aggregationFns,
 } from "@tanstack/svelte-table";
+import type { CustomColumnMeta, CustomOptions } from "./types";
 
 /** Feature set type used by {@link createShadTable}. */
 export type DataTableFeatures = typeof features;
@@ -25,8 +27,9 @@ export type DataTableFeatures = typeof features;
  * behaviour so any string filter/sort/aggregation fn (including the default
  * `"auto"`) resolves instead of silently no-op'ing.
  *
- * Re-export this (and its `typeof`) so consumers can build typed column
- * helpers: `createColumnHelper<typeof features, TData>()`.
+ * The `columnMeta` / `tableMeta` slots type `columnDef.meta` and
+ * `table.options.meta` per-table (e.g. `meta.className`, `meta.useURLSearchParams`)
+ * without any global declaration merging.
  */
 export const features = tableFeatures({
 	...stockFeatures,
@@ -41,4 +44,6 @@ export const features = tableFeatures({
 	filterFns,
 	sortFns,
 	aggregationFns,
+	columnMeta: metaHelper<CustomColumnMeta>(),
+	tableMeta: metaHelper<CustomOptions>(),
 });

@@ -8,7 +8,8 @@
 		DataTable,
 		createShadTable,
 		createTableState,
-		type ShadColumnDef,
+		type ColumnDef,
+		type DataTableFeatures,
 		type RowSelectionState,
 	} from "$lib/data-table";
 
@@ -27,7 +28,7 @@
 		},
 	];
 
-	const columns: ShadColumnDef<DataType>[] = [
+	const columns: ColumnDef<DataTableFeatures, DataType>[] = [
 		{
 			accessorKey: "id",
 			header: "ID",

@@ -2,11 +2,11 @@
 // FlexRender, renderComponent/renderSnippet, createTableState, and all types).
 export * from "../components/ui/data-table/index.js";
 
-// Convenience aliases bound to the library's feature set, so consumers don't
-// have to thread `typeof features` through every generic.
+// The feature set (value + type) used by createShadTable. Consumers type
+// columns/tables with the standard TanStack types, e.g.
+// `ColumnDef<DataTableFeatures, TData>` / `Table<DataTableFeatures, TData>`.
 export { features } from "../components/custom/data-table/features";
 export type { DataTableFeatures } from "../components/custom/data-table/features";
-export type { ShadColumnDef, ShadTable, ShadUpdater } from "../components/custom/data-table/types-aliases.js";
 
 export * from "../components/custom/data-table/index.js";
 
