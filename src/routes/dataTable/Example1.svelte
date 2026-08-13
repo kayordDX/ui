@@ -36,8 +36,8 @@
 			minSize: 150,
 		},
 		{
+			id: "weather",
 			header: "Weather",
-			accessorKey: "",
 			size: 100,
 			minSize: 150,
 			cell: () => renderSnippet(weatherSnippet, { weather: Math.round(Math.random()) }),
