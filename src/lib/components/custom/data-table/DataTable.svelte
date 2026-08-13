@@ -1,5 +1,6 @@
-<script lang="ts" generics="T">
-	import { type Table as TableType } from "@tanstack/table-core";
+<script lang="ts" generics="T extends RowData">
+	import type { RowData } from "@tanstack/svelte-table";
+	import type { ShadTable } from "./types-aliases";
 	import { FlexRender } from "$lib/components/ui/data-table";
 	import { Skeleton, Table } from "$lib/components/ui";
 	import Pagination from "./Pagination.svelte";
@@ -17,8 +18,8 @@
 	import { defaultSearchParamSchema } from "./types";
 	import DataTableView from "./DataTableView.svelte";
 
-	interface Props<T> {
-		table: TableType<T>;
+	interface Props<T extends RowData> {
+		table: ShadTable<T>;
 		isLoading?: boolean;
 		header?: Snippet;
 		subHeader?: Snippet;
@@ -52,13 +53,14 @@
 	}: Props<T> = $props();
 
 	const tableStore = new TableStore();
-	// svelte-ignore state_referenced_locally
-	const isPaginationEnabled = table.options.getPaginationRowModel !== undefined;
+	// Pagination bar is shown unless a table explicitly disables paging
+	// (createShadTable sets `enablePaging: false` via table.options.meta).
+	const isPaginationEnabled = $derived(table.options.meta?.enablePaging !== false);
 
 	const params = useSearchParams(defaultSearchParamSchema, { pushHistory: false });
 	// Load current url search params
 	onMount(() => {
-		if (table.options.useURLSearchParams) {
+		if (table.options.meta?.useURLSearchParams) {
 			table.setGlobalFilter(params.search);
 			table.setSorting(decodeSorting() ?? []);
 			table.setPageIndex(params.page);
@@ -68,7 +70,7 @@
 
 	// Reset pageIndex
 	beforeNavigate((navigation) => {
-		if (table.options.useURLSearchParams) {
+		if (table.options.meta?.useURLSearchParams) {
 			if (Number(navigation.to?.url.searchParams.get("page") ?? "0") > 0) {
 				if (
 					navigation.from?.url.searchParams.get("sort") != navigation.to?.url.searchParams.get("sort") ||
@@ -81,13 +83,14 @@
 		}
 	});
 
-	// Set url search params
+	// Set url search params. v9: read state via the rune-aware store.
 	$effect(() => {
-		if (table.options.useURLSearchParams) {
-			const search = table.getState().globalFilter;
-			const page = table.getState().pagination.pageIndex;
-			const sort = encodeSorting(table.getState());
-			const filter = encodeColumnFilters(table.getState());
+		if (table.options.meta?.useURLSearchParams) {
+			const state = table.store.get();
+			const search = state.globalFilter;
+			const page = state.pagination?.pageIndex ?? 0;
+			const sort = encodeSorting(state);
+			const filter = encodeColumnFilters(state);
 			untrack(() => {
 				params.search = search;
 				params.page = page;
@@ -156,7 +159,7 @@
 					{#each table.getHeaderGroups() as headerGroup (headerGroup)}
 						<Table.Row>
 							{#each headerGroup.headers as header (header)}
-								<DataTableHeader {header} {table} {disableUISorting} />
+								<DataTableHeader {header} {disableUISorting} />
 							{/each}
 						</Table.Row>
 					{/each}
@@ -189,7 +192,7 @@
 									class={cell.column.columnDef.meta?.className}
 									style={`width: ${cell.column.getSize()}px; min-width:${cell.column.columnDef.minSize}px; max-width:${cell.column.columnDef.maxSize}px`}
 								>
-									<FlexRender content={cell.column.columnDef.cell} context={cell.getContext()} />
+									<FlexRender {cell} />
 								</Table.Cell>
 							{/each}
 						</Table.Row>

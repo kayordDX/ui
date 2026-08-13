@@ -4,16 +4,16 @@
 		name: string;
 	}
 
-	import { type ColumnDef, type ColumnFiltersState } from "@tanstack/table-core";
+	import { type ColumnFiltersState } from "@tanstack/svelte-table";
 	import { data } from "./data.svelte";
-	import { DataTable, createShadTable } from "$lib/data-table";
+	import { DataTable, createShadTable, type ShadColumnDef } from "$lib/data-table";
 	import Input from "$lib/components/ui/input/input.svelte";
 	import { decodeColumnFilters } from "$lib/components/custom/data-table/table-search-params";
 
 	let search = $state(decodeColumnFilters()?.find((x) => x.id == "name")?.value ?? "");
 	let columnFilters = $state<ColumnFiltersState>(decodeColumnFilters() ?? []);
 
-	const columns: ColumnDef<DataType>[] = [
+	const columns: ShadColumnDef<DataType>[] = [
 		{
 			accessorKey: "id",
 			header: "ID",

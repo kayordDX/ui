@@ -5,20 +5,12 @@
 	}
 
 	import {
-		type ColumnDef,
-		getCoreRowModel,
-		type VisibilityState,
-		type Updater,
-		type PaginationState,
-		type SortingState,
+		DataTable,
+		createShadTable,
+		createTableState,
+		type ShadColumnDef,
 		type RowSelectionState,
-		type ColumnFiltersState,
-		getPaginationRowModel,
-		getSortedRowModel,
-		getFilteredRowModel,
-	} from "@tanstack/table-core";
-
-	import { DataTable, createShadTable } from "$lib/data-table";
+	} from "$lib/data-table";
 
 	const data: Array<DataType> = [
 		{
@@ -35,7 +27,7 @@
 		},
 	];
 
-	const columns: ColumnDef<DataType>[] = [
+	const columns: ShadColumnDef<DataType>[] = [
 		{
 			accessorKey: "id",
 			header: "ID",
@@ -57,72 +49,18 @@
 		},
 	];
 
-	let columnVisibility: VisibilityState = $state({});
-	const setVisibility = (updater: Updater<VisibilityState>) => {
-		if (updater instanceof Function) {
-			columnVisibility = updater(columnVisibility);
-		} else columnVisibility = updater;
-	};
-
-	let rowSelection: RowSelectionState = $state({});
-	const setRowSelection = (updater: Updater<RowSelectionState>) => {
-		if (updater instanceof Function) {
-			rowSelection = updater(rowSelection);
-		} else rowSelection = updater;
-	};
-
-	let pagination: PaginationState = $state({ pageIndex: 0, pageSize: 10 });
-	let sorting = $state<SortingState>([]);
-	let columnFilters = $state<ColumnFiltersState>([]);
+	const [rowSelection, onRowSelectionChange] = createTableState<RowSelectionState>({});
 
 	const table = createShadTable({
 		columns,
 		data: data,
-		getCoreRowModel: getCoreRowModel(),
-		getPaginationRowModel: getPaginationRowModel(),
-		onPaginationChange: (updater) => {
-			if (typeof updater === "function") {
-				pagination = updater(pagination);
-			} else {
-				pagination = updater;
-			}
-		},
-		getSortedRowModel: getSortedRowModel(),
-		onSortingChange: (updater) => {
-			if (typeof updater === "function") {
-				sorting = updater(sorting);
-			} else {
-				sorting = updater;
-			}
-		},
-		getFilteredRowModel: getFilteredRowModel(),
-		onColumnFiltersChange: (updater) => {
-			if (typeof updater === "function") {
-				columnFilters = updater(columnFilters);
-			} else {
-				columnFilters = updater;
-			}
-		},
-		state: {
-			get pagination() {
-				return pagination;
-			},
-			get sorting() {
-				return sorting;
-			},
-			get rowSelection() {
-				return rowSelection;
-			},
-			get columnVisibility() {
-				return columnVisibility;
-			},
-			get columnFilters() {
-				return columnFilters;
-			},
-		},
-		onColumnVisibilityChange: setVisibility,
-		onRowSelectionChange: setRowSelection,
 		enableRowSelection: true,
+		state: {
+			get rowSelection() {
+				return rowSelection();
+			},
+		},
+		onRowSelectionChange,
 	});
 </script>
 

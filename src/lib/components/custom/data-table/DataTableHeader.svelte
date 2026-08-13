@@ -1,18 +1,18 @@
-<script lang="ts" generics="T">
+<script lang="ts" generics="T extends RowData">
 	import { Table } from "$lib";
 	import { FlexRender } from "$lib/data-table";
-	import { type Header, type Table as TypeType } from "@tanstack/table-core";
+	import type { Header, RowData } from "@tanstack/svelte-table";
 	import { ArrowUpDownIcon, ArrowDownIcon, ArrowUpIcon } from "@lucide/svelte";
+	import type { DataTableFeatures } from "$lib/data-table";
 
-	interface Props<T> {
-		header: Header<T, unknown>;
-		table: TypeType<T>;
+	interface Props<T extends RowData> {
+		header: Header<DataTableFeatures, T, unknown>;
 		disableUISorting?: boolean;
 	}
 
-	let { header, table, disableUISorting = false }: Props<T> = $props();
+	let { header, disableUISorting = false }: Props<T> = $props();
 
-	const isSortingEnabled = $derived(table.options.getSortedRowModel !== undefined && disableUISorting !== true);
+	const isSortingEnabled = $derived(disableUISorting !== true);
 </script>
 
 <Table.Head
@@ -22,7 +22,7 @@
 >
 	{#if !header.isPlaceholder}
 		<div class="flex items-center gap-1">
-			<FlexRender content={header.column.columnDef.header} context={header.getContext()} />
+			<FlexRender {header} />
 			{#if isSortingEnabled && header.column.getCanSort()}
 				<button onclick={header.column.getToggleSortingHandler()}>
 					{#if header.column.getIsSorted() == "asc"}

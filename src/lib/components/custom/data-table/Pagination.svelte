@@ -1,20 +1,21 @@
-<script lang="ts" generics="T">
-	import type { Table } from "@tanstack/table-core";
+<script lang="ts" generics="T extends RowData">
+	import type { RowData, Table } from "@tanstack/svelte-table";
 	import ChevronLeft from "@lucide/svelte/icons/chevron-left";
 	import ChevronRight from "@lucide/svelte/icons/chevron-right";
 	import DoubleArrowLeft from "@lucide/svelte/icons/arrow-left";
 	import DoubleArrowRight from "@lucide/svelte/icons/arrow-right";
 	import { Select, Button } from "$lib";
+	import type { DataTableFeatures } from "$lib/data-table";
 
-	interface Props<T> {
-		table: Table<T>;
+	interface Props<T extends RowData> {
+		table: Table<DataTableFeatures, T>;
 		canChangePageSize?: boolean;
 	}
 
 	let { table, canChangePageSize = false }: Props<T> = $props();
 
 	// svelte-ignore state_referenced_locally
-	let value = $state(table.getState().pagination.pageSize.toString());
+	let value = $state(String(table.atoms.pagination.get().pageSize));
 </script>
 
 <div class="flex items-center justify-between py-2">
@@ -47,7 +48,7 @@
 			{/if}
 		</div>
 		<div class="flex w-[100px] items-center justify-center text-sm font-medium">
-			Page {table.getState().pagination.pageIndex + 1} of
+			Page {table.atoms.pagination.get().pageIndex + 1} of
 			{table.getPageCount()}
 		</div>
 		<div class="flex items-center space-x-2">

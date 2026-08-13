@@ -1,5 +1,8 @@
 import { page } from "$app/state";
-import type { TableState } from "@tanstack/table-core";
+import type { TableState } from "@tanstack/svelte-table";
+import type { DataTableFeatures } from "./features";
+
+type State = Partial<TableState<DataTableFeatures>>;
 
 /*
   sort
@@ -8,7 +11,7 @@ import type { TableState } from "@tanstack/table-core";
   columnFilters
 */
 
-export const encodeSorting = (state: Partial<TableState>) => {
+export const encodeSorting = (state: State) => {
 	return state.sorting?.map((s) => `${s.desc ? "-" : ""}${s.id}`).join(",") ?? "";
 };
 
@@ -19,7 +22,7 @@ export const decodeSorting = () => {
 		.map((s) => ({ id: s[0] === "-" ? s.slice(1) : s.slice(0), desc: s[0] === "-" }));
 };
 
-export const encodeGlobalFilter = (state: Partial<TableState>) => {
+export const encodeGlobalFilter = (state: State) => {
 	return state.globalFilter;
 };
 
@@ -28,14 +31,14 @@ export const decodeGlobalFilter = (): string | undefined => {
 	return globalFilter != null ? globalFilter : undefined;
 };
 
-export const encodePageIndex = (state: Partial<TableState>) => {
+export const encodePageIndex = (state: State) => {
 	return state.pagination?.pageIndex?.toString() ?? "";
 };
 export const decodePageIndex = () => {
 	return Number(page.url.searchParams.get("page") ?? "0");
 };
 
-export const encodeColumnFilters = (state: Partial<TableState>) => {
+export const encodeColumnFilters = (state: State) => {
 	return (
 		state.columnFilters
 			?.map(({ id, value }) => `${id}.${encodeURIComponent(JSON.stringify(value).replaceAll(".", "%2E"))}`)
@@ -66,7 +69,7 @@ interface Options {
 	columnFilter?: boolean;
 }
 
-export const decodeTableState = (): Partial<TableState> => {
+export const decodeTableState = (): State => {
 	return {
 		pagination: {
 			pageIndex: decodePageIndex(),
@@ -78,7 +81,7 @@ export const decodeTableState = (): Partial<TableState> => {
 	};
 };
 
-export const encodeTableState = (state: Partial<TableState>, options?: Options, searchParams?: URLSearchParams) => {
+export const encodeTableState = (state: State, options?: Options, searchParams?: URLSearchParams) => {
 	if (searchParams === undefined) {
 		searchParams = new URLSearchParams();
 	}

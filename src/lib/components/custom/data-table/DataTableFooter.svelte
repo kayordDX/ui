@@ -1,10 +1,11 @@
-<script lang="ts" generics="T">
+<script lang="ts" generics="T extends RowData">
 	import { Table } from "$lib";
 	import { FlexRender } from "$lib/data-table";
-	import { type Table as TypeType } from "@tanstack/table-core";
+	import type { RowData } from "@tanstack/svelte-table";
+	import type { ShadTable } from "$lib/data-table";
 
-	interface Props<T> {
-		table: TypeType<T>;
+	interface Props<T extends RowData> {
+		table: ShadTable<T>;
 	}
 
 	let { table }: Props<T> = $props();
@@ -25,7 +26,7 @@
 				{#each footerGroup.headers as header (header.id)}
 					<Table.Cell colspan={header.colSpan}>
 						{#if !header.isPlaceholder}
-							<FlexRender content={header.column.columnDef.footer} context={header.getContext()} />
+							<FlexRender footer={header} />
 						{/if}
 					</Table.Cell>
 				{/each}
