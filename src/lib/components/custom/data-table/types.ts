@@ -15,7 +15,6 @@ export interface CustomOptions {
 	useURLSearchParams?: boolean;
 	enablePaging?: boolean;
 	enableRowSelectionUI?: boolean;
-	enableVisibility?: boolean;
 }
 
 export const defaultSearchParamSchema = z.object({

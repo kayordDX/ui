@@ -1,9 +1,9 @@
 <script lang="ts" generics="T extends RowData">
 	import { Table } from "$lib";
-	import { FlexRender } from "$lib/data-table";
+	import { FlexRender } from "$lib/components/ui/data-table";
 	import type { Header, RowData } from "@tanstack/svelte-table";
 	import { ArrowUpDownIcon, ArrowDownIcon, ArrowUpIcon } from "@lucide/svelte";
-	import type { DataTableFeatures } from "$lib/data-table";
+	import type { DataTableFeatures } from "./features";
 
 	interface Props<T extends RowData> {
 		header: Header<DataTableFeatures, T, unknown>;

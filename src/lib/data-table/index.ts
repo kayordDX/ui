@@ -10,6 +10,6 @@ export type { DataTableFeatures } from "../components/custom/data-table/features
 
 export * from "../components/custom/data-table/index.js";
 
-// Disambiguate the library's `aggregationFns` (sum/min/max/...) from the
-// TanStack registry re-exported by the adapter above.
+// Disambiguate the library's `aggregationFns` (sum/min/max/...) helper from
+// the TanStack registry re-exported (as a type) by the adapter above.
 export { aggregationFns } from "../components/custom/data-table/data-table-utils.js";

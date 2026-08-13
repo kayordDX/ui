@@ -11,7 +11,7 @@
 		CommandItem,
 		CommandList,
 	} from "$lib/components/ui/command/index.js";
-	import type { DataTableFeatures } from "$lib/data-table";
+	import type { DataTableFeatures } from "./features";
 
 	// Icons
 	import Settings2 from "@lucide/svelte/icons/settings-2";

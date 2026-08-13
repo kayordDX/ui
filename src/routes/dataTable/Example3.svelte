@@ -49,7 +49,6 @@
 		},
 		onGlobalFilterChange: setGlobalFilter,
 		enableRowSelection: false,
-		enableVisibility: true,
 		enableGlobalFilter: true,
 	});
 </script>

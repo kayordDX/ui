@@ -40,7 +40,6 @@
 		},
 		state: sss,
 		enableRowSelection: false,
-		enableVisibility: true,
 		enablePaging: false,
 	});
 

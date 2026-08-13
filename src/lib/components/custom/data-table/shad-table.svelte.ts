@@ -8,7 +8,7 @@ import {
 	type Table,
 } from "@tanstack/svelte-table";
 import DataTableCheckbox from "./DataTableCheckbox.svelte";
-import { renderComponent } from "$lib/data-table";
+import { renderComponent } from "$lib/components/ui/data-table";
 import { features, type DataTableFeatures } from "./features";
 import type { BaseOptions, CustomOptions } from "./types";
 
@@ -33,18 +33,7 @@ export type ShadTableOptions<TData extends RowData> = BaseOptions<TData> & Custo
 export function createShadTable<TData extends RowData>(
 	shadOptions: ShadTableOptions<TData>
 ): Table<DataTableFeatures, TData> {
-	const {
-		useURLSearchParams,
-		enablePaging = true,
-		enableRowSelectionUI = true,
-		enableVisibility,
-		columns = [],
-		...rest
-	} = shadOptions;
-
-	// `enableVisibility` is accepted for API compatibility but the column
-	// visibility feature is always registered, so it is intentionally unused.
-	void enableVisibility;
+	const { useURLSearchParams, enablePaging = true, enableRowSelectionUI = true, columns = [], ...rest } = shadOptions;
 
 	// Row-model factories are included on demand. `enableSorting` /
 	// `enableFilters` are native table options (default true); `enablePaging`
@@ -56,36 +45,34 @@ export function createShadTable<TData extends RowData>(
 		...(enablePaging ? { paginatedRowModel: createPaginatedRowModel() } : {}),
 	};
 
-	// Prepend the row-selection column up front. v9's createTable re-applies
-	// the options it receives in `$effect.pre`, so the selection column must be
-	// part of the initial options (a post-hoc setOptions would be overwritten).
-	// The header/cell closures reference `table` (assigned below); that is safe
-	// because they only run during render, after `table` exists.
+	// Row-selection column. The header/cell closures reference `table` (assigned
+	// below); that is safe because they only run during render, after `table`
+	// exists. It has to be part of the initial options because v9's createTable
+	// re-applies them in `$effect.pre` (a post-hoc setOptions would be reverted).
+	const selectColumn: ColumnDef<DataTableFeatures, TData> = {
+		id: "select",
+		header: () =>
+			renderComponent(DataTableCheckbox, {
+				checked: table.getIsAllPageRowsSelected(),
+				indeterminate: table.getIsSomePageRowsSelected() && !table.getIsAllRowsSelected(),
+				onCheckedChange: () => table.toggleAllPageRowsSelected(),
+			}),
+		cell: (r) =>
+			renderComponent(DataTableCheckbox, {
+				checked: r.row.getIsSelected(),
+				onCheckedChange: () => r.row.toggleSelected(),
+			}),
+		enableResizing: false,
+		enableSorting: false,
+	};
 	const finalColumns: readonly ColumnDef<DataTableFeatures, TData>[] =
-		rest.enableRowSelection && enableRowSelectionUI
-			? [
-					{
-						id: "select",
-						header: () =>
-							renderComponent(DataTableCheckbox, {
-								checked: table.getIsAllPageRowsSelected(),
-								indeterminate: table.getIsSomePageRowsSelected() && !table.getIsAllRowsSelected(),
-								onCheckedChange: () => table.toggleAllPageRowsSelected(),
-							}),
-						cell: (r) =>
-							renderComponent(DataTableCheckbox, {
-								checked: r.row.getIsSelected(),
-								onCheckedChange: () => r.row.toggleSelected(),
-							}),
-						enableResizing: false,
-						enableSorting: false,
-					},
-					...columns,
-				]
-			: columns;
+		rest.enableRowSelection && enableRowSelectionUI ? [selectColumn, ...columns] : columns;
 
 	const table = createTable<DataTableFeatures, TData>({
 		...rest,
+		// Keep `data` reactive. Spreading `...rest` would snapshot a consumer
+		// getter (`get data()`), so re-expose it as a getter that reads the
+		// original options object each time v9 syncs options in `$effect.pre`.
 		get data() {
 			return shadOptions.data;
 		},

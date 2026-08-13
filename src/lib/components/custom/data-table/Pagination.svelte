@@ -5,7 +5,7 @@
 	import DoubleArrowLeft from "@lucide/svelte/icons/arrow-left";
 	import DoubleArrowRight from "@lucide/svelte/icons/arrow-right";
 	import { Select, Button } from "$lib";
-	import type { DataTableFeatures } from "$lib/data-table";
+	import type { DataTableFeatures } from "./features";
 
 	interface Props<T extends RowData> {
 		table: Table<DataTableFeatures, T>;

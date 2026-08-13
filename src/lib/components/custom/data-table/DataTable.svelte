@@ -1,6 +1,6 @@
 <script lang="ts" generics="T extends RowData">
 	import type { RowData, Table as TableType } from "@tanstack/svelte-table";
-	import type { DataTableFeatures } from "$lib/data-table";
+	import type { DataTableFeatures } from "./features";
 	import { FlexRender } from "$lib/components/ui/data-table";
 	import { Skeleton, Table } from "$lib/components/ui";
 	import Pagination from "./Pagination.svelte";
