@@ -9,7 +9,7 @@ importers:
   .:
     dependencies:
       '@tanstack/table-core':
-        specifier: ^8.20.5
+        specifier: '>= 8.20.5 < 9.0.0'
         version: 8.21.3
       bits-ui:
         specifier: 2.18.1
