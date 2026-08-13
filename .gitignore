@@ -12,3 +12,4 @@ vite.config.ts.timestamp-*
 coverage/
 ./vitest-attachments/
 __screenshots__/
+.pnpm-store/

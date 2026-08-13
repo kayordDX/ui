@@ -86,6 +86,9 @@ export function createShadTable<TData extends RowData>(
 
 	const table = createTable<DataTableFeatures, TData>({
 		...rest,
+		get data() {
+			return shadOptions.data;
+		},
 		features: runtimeFeatures,
 		columns: finalColumns,
 		meta: { useURLSearchParams, enablePaging },
