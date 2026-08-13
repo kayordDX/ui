@@ -1,5 +1,5 @@
 <script lang="ts">
-	import "../app.css";
+	import "../layout.css";
 	import { LightSwitch } from "$lib";
 	import { ModeWatcher } from "mode-watcher";
 	import { Toaster } from "$lib/components/ui/sonner";

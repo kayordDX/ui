@@ -10,7 +10,7 @@ Pnpm command to install ui library.
 # create a new project in the current directory
 pnpm add -D @kayord/ui
 # install minimal dependencies
-pnpm add -D @lucide/svelte tw-animate-css
+pnpm add -D @lucide/svelte tw-animate-css shadcn-svelte
 # install other dependencies as required
 pnpm add -D zod sveltekit-superforms
 # include charts
@@ -46,7 +46,7 @@ Kayord UI exports components individually. Some components require additional pe
 
 ```bash
 # Core dependencies
-pnpm add -D svelte @lucide/svelte tailwindcss-animate mode-watcher
+pnpm add -D svelte @lucide/svelte tailwindcss-animate mode-watcher shadcn-svelte
 
 # Most likely dependencies
 pnpm add -D svelte @lucide/svelte tailwindcss-animate mode-watcher formsnap zod sveltekit-superforms @internationalized/date svelte-sonner
@@ -82,6 +82,7 @@ pnpm add -D svelte-sonner
 @import "tailwindcss";
 @source "../node_modules/@kayord/ui";
 @import "tw-animate-css";
+@import "shadcn-svelte/tailwind.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -91,6 +92,46 @@ pnpm add -D svelte-sonner
  [role="button"]:not(:disabled) {
   cursor: pointer;
  }
+}
+
+@theme inline {
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--font-sans: "Inter Variable", sans-serif;
+	--font-mono: var(--font-geist-mono);
+	--color-sidebar-ring: var(--sidebar-ring);
+	--color-sidebar-border: var(--sidebar-border);
+	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+	--color-sidebar-accent: var(--sidebar-accent);
+	--color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+	--color-sidebar-primary: var(--sidebar-primary);
+	--color-sidebar-foreground: var(--sidebar-foreground);
+	--color-sidebar: var(--sidebar);
+	--color-chart-5: var(--chart-5);
+	--color-chart-4: var(--chart-4);
+	--color-chart-3: var(--chart-3);
+	--color-chart-2: var(--chart-2);
+	--color-chart-1: var(--chart-1);
+	--color-ring: var(--ring);
+	--color-input: var(--input);
+	--color-border: var(--border);
+	--color-destructive: var(--destructive);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-accent: var(--accent);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-muted: var(--muted);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-secondary: var(--secondary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-primary: var(--primary);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-popover: var(--popover);
+	--color-card-foreground: var(--card-foreground);
+	--color-card: var(--card);
+	--radius-sm: calc(var(--radius) - 4px);
+	--radius-md: calc(var(--radius) - 2px);
+	--radius-lg: var(--radius);
+	--radius-xl: calc(var(--radius) + 4px);
 }
 
 :root {
@@ -153,59 +194,6 @@ pnpm add -D svelte-sonner
  --sidebar-ring: 217.2 91.2% 59.8%;
 }
 
-@theme inline {
- /* Fonts */
- --font-sans:
-  "Inter Variable", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
-  "Noto Color Emoji";
- --font-mono:
-  "Source Code Pro Variable", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
-  monospace;
-
- /* Colors */
- --color-border: hsl(var(--border));
- --color-input: hsl(var(--input));
- --color-ring: hsl(var(--ring));
- --color-background: hsl(var(--background));
- --color-foreground: hsl(var(--foreground));
- --color-primary: hsl(var(--primary));
- --color-primary-foreground: hsl(var(--primary-foreground));
- --color-secondary: hsl(var(--secondary));
- --color-secondary-foreground: hsl(var(--secondary-foreground));
- --color-destructive: hsl(var(--destructive));
- --color-destructive-foreground: hsl(var(--destructive-foreground));
- --color-caution: var(--color-red-500);
- --color-warning: var(--color-amber-500);
- --color-info: var(--color-sky-500);
- --color-muted: hsl(var(--muted));
- --color-muted-foreground: hsl(var(--muted-foreground));
- --color-accent: hsl(var(--accent));
- --color-accent-foreground: hsl(var(--accent-foreground));
- --color-popover: hsl(var(--popover));
- --color-popover-foreground: hsl(var(--popover-foreground));
- --color-card: hsl(var(--card));
- --color-card-foreground: hsl(var(--card-foreground));
- --color-sidebar: hsl(var(--sidebar-background));
- --color-sidebar-foreground: hsl(var(--sidebar-foreground));
- --color-sidebar-primary: hsl(var(--sidebar-primary));
- --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
- --color-sidebar-accent: hsl(var(--sidebar-accent));
- --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
- --color-sidebar-border: hsl(var(--sidebar-border));
- --color-sidebar-ring: hsl(var(--sidebar-ring));
-
-	/* Custom Colors */
-	--color-info: var(--chart-1);
-	--color-success: var(--chart-2);
-	--color-warning: var(--chart-3);
-
-	/* Radius */
-	--radius-sm: calc(var(--radius) - 4px);
-	--radius-md: calc(var(--radius) - 2px);
-	--radius-lg: var(--radius);
-	--radius-xl: calc(var(--radius) + 4px);
-}
-
 @layer base {
  * {
   @apply border-border;
@@ -213,98 +201,6 @@ pnpm add -D svelte-sonner
  body {
   @apply bg-background text-foreground;
  }
-}
-
-@custom-variant data-open {
-	&:where([data-state="open"]),
-	&:where([data-open]:not([data-open="false"])) {
-		@slot;
-	}
-	&:where([data-state="open"]),
-	&:where([data-open]:not([data-open="false"])) {
-		@slot;
-	}
-}
-
-@custom-variant data-closed {
-	&:where([data-state="closed"]),
-	&:where([data-closed]:not([data-closed="false"])) {
-		@slot;
-	}
-	&:where([data-state="closed"]),
-	&:where([data-closed]:not([data-closed="false"])) {
-		@slot;
-	}
-}
-
-@custom-variant data-checked {
-	&:where([data-state="checked"]),
-	&:where([data-checked]:not([data-checked="false"])) {
-		@slot;
-	}
-	&:where([data-state="checked"]),
-	&:where([data-checked]:not([data-checked="false"])) {
-		@slot;
-	}
-}
-
-@custom-variant data-unchecked {
-	&:where([data-state="unchecked"]),
-	&:where([data-unchecked]:not([data-unchecked="false"])) {
-		@slot;
-	}
-	&:where([data-state="unchecked"]),
-	&:where([data-unchecked]:not([data-unchecked="false"])) {
-		@slot;
-	}
-}
-
-@custom-variant data-selected {
-	&:where([data-selected]) {
-		@slot;
-	}
-}
-
-@custom-variant data-disabled {
-	&:where([data-disabled="true"]),
-	&:where([data-disabled]:not([data-disabled="false"])) {
-		@slot;
-	}
-	&:where([data-disabled="true"]),
-	&:where([data-disabled]:not([data-disabled="false"])) {
-		@slot;
-	}
-}
-
-@custom-variant data-active {
-	&:where([data-state="active"]),
-	&:where([data-active]:not([data-active="false"])) {
-		@slot;
-	}
-	&:where([data-state="active"]),
-	&:where([data-active]:not([data-active="false"])) {
-		@slot;
-	}
-}
-
-@custom-variant data-horizontal {
-	&:where([data-orientation="horizontal"]) {
-		@slot;
-	}
-}
-
-@custom-variant data-vertical {
-	&:where([data-orientation="vertical"]) {
-		@slot;
-	}
-}
-
-@utility no-scrollbar {
-	-ms-overflow-style: none;
-	scrollbar-width: none;
-	&::-webkit-scrollbar {
-		display: none;
-	}
 }
 ```
 
