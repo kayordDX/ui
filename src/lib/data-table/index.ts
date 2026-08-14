@@ -1,5 +1,6 @@
 // Re-export the official TanStack Svelte v9 adapter surface (createTable,
 // FlexRender, renderComponent/renderSnippet, createTableState, and all types).
+// Plus the library's extras: useTableUrlSync, createColumnHelperFor, etc.
 export * from "../components/ui/data-table/index.js";
 
 // The feature set (value + type) used by createShadTable. Consumers type

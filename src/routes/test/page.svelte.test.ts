@@ -16,10 +16,12 @@ vi.mock("$lib/data-table", async () => {
 			options: {},
 			atoms: {
 				globalFilter: { get: () => "" },
+				sorting: { get: () => [] },
+				pagination: { get: () => ({ pageIndex: 0, pageSize: 10 }) },
+				columnFilters: { get: () => [] },
 			},
-			setGlobalFilter: vi.fn(),
-			setColumnFilters: vi.fn(),
 		})),
+		useTableUrlSync: vi.fn(),
 	};
 });
 

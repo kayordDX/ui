@@ -1,56 +1,30 @@
-import {
-	createTable,
-	createFilteredRowModel,
-	createPaginatedRowModel,
-	createSortedRowModel,
-	type ColumnDef,
-	type RowData,
-	type Table,
-} from "@tanstack/svelte-table";
+import { createTable, type ColumnDef, type RowData, type Table } from "@tanstack/svelte-table";
 import DataTableCheckbox from "./DataTableCheckbox.svelte";
 import { renderComponent } from "$lib/components/ui/data-table";
 import { features, type DataTableFeatures } from "./features";
-import type { BaseOptions, CustomOptions } from "./types";
+import type { BaseOptions } from "./types";
 
-export type ShadTableOptions<TData extends RowData> = BaseOptions<TData> &
-	CustomOptions & {
-		/**
-		 * When `true` (default) and `enableRowSelection` is on, {@link createShadTable}
-		 * prepends a checkbox column. Not mirrored into `table.options.meta`.
-		 */
-		enableRowSelectionUI?: boolean;
-	};
+export type ShadTableOptions<TData extends RowData> = BaseOptions<TData> & {
+	/**
+	 * When `true` (default) and `enableRowSelection` is on, {@link createShadTable}
+	 * prepends a checkbox column.
+	 */
+	enableRowSelectionUI?: boolean;
+};
 
 /**
  * Creates a fully reactive TanStack Table v9 instance preconfigured for the
  * `<DataTable>` component.
  *
- * The **feature modules + function registries** come from the shared, static
- * {@link features} object (so the type surface and string fn resolution stay
- * stable). The **row-model factories are added dynamically** based on the
- * relevant `enable*` options — matching the v8 design — so only the
- * row-processing pipelines that are actually needed are wired up. Row models
- * are runtime-only (NonFeatureKeys), so omitting them does not change the
- * `Table` type; the unused stage simply falls through to the previous one.
- *
- * v9's `createTable` is atom-backed, so the returned table updates the UI
- * directly — no manual reactivity wrapper is needed. The custom flags
- * (`useURLSearchParams`, `enablePaging`) are exposed via `table.options.meta`.
+ * All features and row models come from the shared, static {@link features}
+ * object. v9's `createTable` is atom-backed, so the returned table updates the
+ * UI directly — no manual reactivity wrapper or `state`/`onXxxChange` plumbing
+ * is needed. Use the `table.atoms.*` API to read/write state externally.
  */
 export function createShadTable<TData extends RowData>(
 	shadOptions: ShadTableOptions<TData>
 ): Table<DataTableFeatures, TData> {
-	const { useURLSearchParams, enablePaging = true, enableRowSelectionUI = true, ...rest } = shadOptions;
-
-	// Row-model factories are included on demand. `enableSorting` /
-	// `enableFilters` are native table options (default true); `enablePaging`
-	// is the library's own flag (default true).
-	const runtimeFeatures = {
-		...features,
-		...(rest.enableSorting !== false ? { sortedRowModel: createSortedRowModel() } : {}),
-		...(rest.enableFilters !== false ? { filteredRowModel: createFilteredRowModel() } : {}),
-		...(enablePaging ? { paginatedRowModel: createPaginatedRowModel() } : {}),
-	};
+	const { enableRowSelectionUI = true, ...rest } = shadOptions;
 
 	// Row-selection column. The header/cell closures reference `table` (assigned
 	// below); that is safe because they only run during render, after `table`
@@ -92,9 +66,7 @@ export function createShadTable<TData extends RowData>(
 		get rowCount() {
 			return shadOptions.rowCount;
 		},
-		features: runtimeFeatures,
-		meta: { useURLSearchParams, enablePaging },
-		...(useURLSearchParams ? { autoResetPageIndex: false } : {}),
+		features,
 	});
 
 	return table;

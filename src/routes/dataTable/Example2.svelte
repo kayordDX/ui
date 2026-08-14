@@ -31,16 +31,12 @@
 		},
 	];
 
-	let sss = $state({});
-
 	const table = createShadTable({
 		columns,
 		get data() {
 			return data.value;
 		},
-		state: sss,
 		enableRowSelection: false,
-		enablePaging: false,
 	});
 
 	const addRecord = () => {
@@ -48,6 +44,6 @@
 	};
 </script>
 
-<DataTable {table} headerClass="mt-2" enableVisibility enableFullscreen />
+<DataTable {table} headerClass="mt-2" enableVisibility enableFullscreen pagination={false} />
 
 <Button onclick={addRecord}>Add Record</Button>

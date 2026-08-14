@@ -4,8 +4,6 @@
 		name: string;
 	}
 
-	import { type Updater } from "@tanstack/svelte-table";
-
 	import { data } from "./data.svelte";
 	import { Button } from "$lib";
 	import { DataTable, createShadTable, type ColumnDef, type DataTableFeatures } from "$lib/data-table";
@@ -30,24 +28,11 @@
 		},
 	];
 
-	let globalFilter = $state<string | undefined>(undefined);
-	const setGlobalFilter = (updater: Updater<string | undefined>) => {
-		if (updater instanceof Function) {
-			globalFilter = updater(globalFilter);
-		} else globalFilter = updater;
-	};
-
 	const table = createShadTable({
 		columns,
 		get data() {
 			return data.value;
 		},
-		state: {
-			get globalFilter() {
-				return globalFilter;
-			},
-		},
-		onGlobalFilterChange: setGlobalFilter,
 		enableRowSelection: false,
 		enableGlobalFilter: true,
 	});

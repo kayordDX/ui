@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { ColumnDef, ColumnFiltersState, PaginationState, SortingState, Updater } from "@tanstack/svelte-table";
+	import type { ColumnDef } from "@tanstack/svelte-table";
 	import { DataTable, createShadTable, type DataTableFeatures } from "$lib/data-table";
 	import Input from "$lib/components/ui/input/input.svelte";
 
@@ -30,25 +30,48 @@
 	let total = $state(0);
 	let isLoading = $state(true);
 
-	// Controlled table state — every change triggers a server fetch.
-	let globalFilter = $state("");
-	let columnFilters = $state<ColumnFiltersState>([]);
-	let sorting = $state<SortingState>([]);
-	let pagination = $state<PaginationState>({ pageIndex: 0, pageSize: 10 });
-
-	const apply = <T,>(updater: Updater<T>, prev: T): T =>
-		typeof updater === "function" ? (updater as (old: T) => T)(prev) : updater;
-
-	const resetPage = () => (pagination = { ...pagination, pageIndex: 0 });
+	// Uncontrolled table: sorting / filtering / pagination live in the table's
+	// atoms, and every change triggers a server fetch (below).
+	const table = createShadTable({
+		columns,
+		// Use getters so the table re-reads these as the server responds — `data`
+		// is the current page and `rowCount` is the server's total (drives the
+		// page count). Plain values would be snapshotted once.
+		get data() {
+			return rows;
+		},
+		get rowCount() {
+			return total;
+		},
+		// Everything is resolved server-side, so disable the client-side pipelines.
+		manualPagination: true,
+		manualSorting: true,
+		manualFiltering: true,
+		// New data arriving must not reset the page (that would fight the server).
+		autoResetPageIndex: false,
+		enableRowSelection: false,
+	});
 
 	// Re-fetch whenever search / sort / filter / page changes. All dependency
 	// reads happen synchronously (before the await), so $effect tracks them.
 	let lastRequestId = 0;
+	let lastQueryKey: string | undefined;
 	$effect(() => {
-		const q = globalFilter;
-		const { pageIndex, pageSize } = pagination;
-		const sort = sorting.map((s) => `${s.desc ? "-" : ""}${s.id}`).join(",") || "-id";
-		const filters = JSON.stringify(columnFilters);
+		const q = table.atoms.globalFilter.get() ?? "";
+		const { pageIndex, pageSize } = table.atoms.pagination.get();
+		const sort =
+			table.atoms.sorting
+				.get()
+				.map((s) => `${s.desc ? "-" : ""}${s.id}`)
+				.join(",") || "-id";
+		const filters = JSON.stringify(table.atoms.columnFilters.get());
+
+		// Reset to page 1 when the query changes (but not on the initial run).
+		const queryKey = `${q}|${filters}|${sort}`;
+		if (lastQueryKey !== undefined && queryKey !== lastQueryKey) {
+			table.setPageIndex(0);
+		}
+		lastQueryKey = queryKey;
 
 		const requestId = ++lastRequestId;
 		isLoading = true;
@@ -71,56 +94,11 @@
 			});
 	});
 
-	const table = createShadTable({
-		columns,
-		// Use getters so the table re-reads these as the server responds — `data`
-		// is the current page and `rowCount` is the server's total (drives the
-		// page count). Plain values would be snapshotted once.
-		get data() {
-			return rows;
-		},
-		get rowCount() {
-			return total;
-		},
-		// Everything is resolved server-side, so disable the client-side pipelines.
-		manualPagination: true,
-		manualSorting: true,
-		manualFiltering: true,
-		enableRowSelection: false,
-		state: {
-			get globalFilter() {
-				return globalFilter;
-			},
-			get columnFilters() {
-				return columnFilters;
-			},
-			get sorting() {
-				return sorting;
-			},
-			get pagination() {
-				return pagination;
-			},
-		},
-		onGlobalFilterChange: (u) => {
-			globalFilter = apply(u, globalFilter);
-			resetPage();
-		},
-		onColumnFiltersChange: (u) => {
-			columnFilters = apply(u, columnFilters);
-			resetPage();
-		},
-		onSortingChange: (u) => {
-			sorting = apply(u, sorting);
-			resetPage();
-		},
-		onPaginationChange: (u) => {
-			pagination = apply(u, pagination);
-		},
-	});
-
-	const deptFilter = $derived(String(columnFilters.find((f) => f.id === "department")?.value ?? ""));
+	const globalFilter = $derived(table.atoms.globalFilter.get() ?? "");
+	const deptFilter = $derived(String(table.atoms.columnFilters.get().find((f) => f.id === "department")?.value ?? ""));
 	function filterDepartment(value: string) {
 		table.setColumnFilters(value ? [{ id: "department", value }] : []);
+		table.setPageIndex(0);
 	}
 </script>
 

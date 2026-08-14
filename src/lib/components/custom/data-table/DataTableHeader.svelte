@@ -1,5 +1,5 @@
 <script lang="ts" generics="T extends RowData">
-	import { Table } from "$lib";
+	import { Button, Table } from "$lib";
 	import { FlexRender } from "$lib/components/ui/data-table";
 	import type { Header, RowData } from "@tanstack/svelte-table";
 	import { ArrowUpDownIcon, ArrowDownIcon, ArrowUpIcon } from "@lucide/svelte";
@@ -7,33 +7,33 @@
 
 	interface Props<T extends RowData> {
 		header: Header<DataTableFeatures, T, unknown>;
-		disableUISorting?: boolean;
 	}
 
-	let { header, disableUISorting = false }: Props<T> = $props();
+	let { header }: Props<T> = $props();
 
-	const isSortingEnabled = $derived(disableUISorting !== true);
+	const sorted = $derived(header.column.getIsSorted());
+	const SortIcon = $derived(sorted === "asc" ? ArrowUpIcon : sorted === "desc" ? ArrowDownIcon : ArrowUpDownIcon);
 </script>
 
 <Table.Head
 	colspan={header.colSpan}
-	class="bg-muted/20"
 	style={`width: ${header.getSize()}px; min-width:${header.column.columnDef.minSize}px; max-width:${header.column.columnDef.maxSize}px`}
 >
 	{#if !header.isPlaceholder}
-		<div class="flex items-center gap-1">
-			<FlexRender {header} />
-			{#if isSortingEnabled && header.column.getCanSort()}
-				<button onclick={header.column.getToggleSortingHandler()}>
-					{#if header.column.getIsSorted() == "asc"}
-						<ArrowDownIcon class="size-4" />
-					{:else if header.column.getIsSorted() == "desc"}
-						<ArrowUpIcon class="size-4" />
-					{:else}
-						<ArrowUpDownIcon class="text-muted size-4" />
-					{/if}
-				</button>
-			{/if}
-		</div>
+		{#if header.column.getCanSort()}
+			<Button
+				variant="ghost"
+				size="sm"
+				class="data-[state=open]:bg-accent -ml-3 h-8"
+				onclick={header.column.getToggleSortingHandler()}
+			>
+				<FlexRender {header} />
+				<SortIcon class="ml-2" />
+			</Button>
+		{:else}
+			<span class="text-sm font-medium">
+				<FlexRender {header} />
+			</span>
+		{/if}
 	{/if}
 </Table.Head>

@@ -4,14 +4,9 @@
 		name: string;
 	}
 
-	import { type ColumnFiltersState } from "@tanstack/svelte-table";
 	import { data } from "./data.svelte";
-	import { DataTable, createShadTable, type ColumnDef, type DataTableFeatures } from "$lib/data-table";
+	import { DataTable, createShadTable, useTableUrlSync, type ColumnDef, type DataTableFeatures } from "$lib/data-table";
 	import Input from "$lib/components/ui/input/input.svelte";
-	import { decodeColumnFilters } from "$lib/components/custom/data-table/table-search-params";
-
-	let search = $state(decodeColumnFilters()?.find((x) => x.id == "name")?.value ?? "");
-	let columnFilters = $state<ColumnFiltersState>(decodeColumnFilters() ?? []);
 
 	const columns: ColumnDef<DataTableFeatures, DataType>[] = [
 		{
@@ -36,32 +31,19 @@
 		columns,
 		data: data.value,
 		enableRowSelection: false,
-		useURLSearchParams: true,
-		onColumnFiltersChange: (updater) => {
-			if (typeof updater === "function") {
-				columnFilters = updater(columnFilters);
-			} else {
-				columnFilters = updater;
-			}
-		},
-		state: {
-			// get globalFilter() {
-			// 	return search;
-			// },
-			get columnFilters() {
-				return columnFilters;
-			},
-		},
 	});
 
-	$effect(() => {
-		if (search) {
-			columnFilters = [{ id: "name", value: search }];
-		} else {
-			columnFilters = [];
-		}
-	});
+	// Keep search / sort / filter / page in sync with the URL.
+	useTableUrlSync(table);
+
+	function filterName(value: string) {
+		table.setColumnFilters(value ? [{ id: "name", value }] : []);
+	}
 </script>
 
-<Input bind:value={search} />
+<Input
+	placeholder="search"
+	value={String(table.atoms.columnFilters.get().find((f) => f.id === "name")?.value ?? "")}
+	oninput={(e) => filterName(e.currentTarget.value)}
+/>
 <DataTable {table} enableFullscreen headerClass="mt-2" />

@@ -4,14 +4,7 @@
 		name: string;
 	}
 
-	import {
-		DataTable,
-		createShadTable,
-		createTableState,
-		type ColumnDef,
-		type DataTableFeatures,
-		type RowSelectionState,
-	} from "$lib/data-table";
+	import { DataTable, createShadTable, type ColumnDef, type DataTableFeatures } from "$lib/data-table";
 
 	const data: Array<DataType> = [
 		{
@@ -50,18 +43,11 @@
 		},
 	];
 
-	const [rowSelection, onRowSelectionChange] = createTableState<RowSelectionState>({});
-
+	// v9 owns row-selection state internally — no lift needed.
 	const table = createShadTable({
 		columns,
 		data: data,
 		enableRowSelection: true,
-		state: {
-			get rowSelection() {
-				return rowSelection();
-			},
-		},
-		onRowSelectionChange,
 	});
 </script>
 

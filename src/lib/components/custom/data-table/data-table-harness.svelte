@@ -1,11 +1,5 @@
 <script lang="ts">
-	import {
-		DataTable,
-		createShadTable,
-		type ColumnDef,
-		type ColumnFiltersState,
-		type DataTableFeatures,
-	} from "$lib/data-table";
+	import { DataTable, createShadTable, type ColumnDef, type DataTableFeatures } from "$lib/data-table";
 	import Input from "$lib/components/ui/input/input.svelte";
 	import { Button } from "$lib";
 
@@ -18,36 +12,23 @@
 	const base = ["charlie", "alice", "eve", "bob", "dave", "frank"];
 	let data = $state<HarnessRow[]>(Array.from({ length: 12 }, (_, i) => ({ id: i + 1, name: base[i % base.length] })));
 
-	let globalFilter = $state("");
-	let nameFilter = $state("");
-	const columnFilters = $derived<ColumnFiltersState>(nameFilter ? [{ id: "name", value: nameFilter }] : []);
-
 	const columns: ColumnDef<DataTableFeatures, HarnessRow>[] = [
 		{ accessorKey: "id", header: "ID" },
 		{ accessorKey: "name", header: "Name" },
 	];
 
+	// Uncontrolled table: filtering state lives in the table's atoms and the
+	// inputs write to it via the setter APIs.
 	const table = createShadTable({
 		columns,
 		get data() {
 			return data;
 		},
-		state: {
-			get globalFilter() {
-				return globalFilter;
-			},
-			get columnFilters() {
-				return columnFilters;
-			},
-		},
-		onGlobalFilterChange: (u) => {
-			globalFilter = typeof u === "function" ? u(globalFilter) : u;
-		},
-		onColumnFiltersChange: (u) => {
-			const next = typeof u === "function" ? u(columnFilters) : u;
-			nameFilter = (next.find((f) => f.id === "name")?.value ?? "") as string;
-		},
 	});
+
+	function filterName(value: string) {
+		table.setColumnFilters(value ? [{ id: "name", value }] : []);
+	}
 
 	function addRecord() {
 		// Prepend so the new row lands on the first page without re-sorting.
@@ -55,7 +36,15 @@
 	}
 </script>
 
-<Input placeholder="search-name" bind:value={nameFilter} />
-<Input placeholder="global-filter" bind:value={globalFilter} />
+<Input
+	placeholder="search-name"
+	value={String(table.atoms.columnFilters.get().find((f) => f.id === "name")?.value ?? "")}
+	oninput={(e) => filterName(e.currentTarget.value)}
+/>
+<Input
+	placeholder="global-filter"
+	value={String(table.atoms.globalFilter.get() ?? "")}
+	oninput={(e) => table.setGlobalFilter(e.currentTarget.value)}
+/>
 <Button onclick={addRecord}>Add Record</Button>
 <DataTable {table} />
