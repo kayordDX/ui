@@ -26,15 +26,21 @@
 		{ accessorKey: "status", header: "Status" },
 	];
 
-	// External, controlled state — a single reactive object. The server query
-	// below derives from it (mirroring a TanStack Query queryKey), and
-	// createShadTable wires it into the table via `state` getters + `on*Change`
-	// handlers, so no boilerplate is needed here.
 	const tableState = $state({
 		sorting: [] as SortingState,
 		globalFilter: "",
 		pagination: { pageIndex: 0, pageSize: 10 } as PaginationState,
 	});
+
+	const employees = $derived(
+		await getEmployees({
+			q: tableState.globalFilter,
+			page: tableState.pagination.pageIndex,
+			size: tableState.pagination.pageSize,
+			sort: tableState.sorting.map((s) => `${s.desc ? "-" : ""}${s.id}`).join(",") || undefined,
+			filters: [],
+		})
+	);
 
 	const table = createShadTable({
 		columns,
@@ -54,18 +60,6 @@
 		autoResetPageIndex: false,
 		enableRowSelection: false,
 	});
-
-	// Query derived from the controlled state — re-runs on any change, and the
-	// async derived discards stale responses automatically.
-	const employees: Awaited<ReturnType<typeof getEmployees>> = $derived(
-		await getEmployees({
-			q: tableState.globalFilter,
-			page: tableState.pagination.pageIndex,
-			size: tableState.pagination.pageSize,
-			sort: tableState.sorting.map((s) => `${s.desc ? "-" : ""}${s.id}`).join(",") || undefined,
-			filters: [],
-		})
-	);
 </script>
 
 <div class="m-4 flex flex-col gap-2">
