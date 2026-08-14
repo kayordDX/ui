@@ -39,6 +39,9 @@
 	function filterName(value: string) {
 		table.setColumnFilters(value ? [{ id: "name", value }] : []);
 	}
+
+	const pagination = $derived(table.atoms.pagination.get());
+	const sorting = $derived(table.atoms.sorting.get());
 </script>
 
 <Input
@@ -47,3 +50,6 @@
 	oninput={(e) => filterName(e.currentTarget.value)}
 />
 <DataTable {table} enableFullscreen headerClass="mt-2" />
+
+<pre>Pagination: {JSON.stringify(pagination)}</pre>
+<pre>Sorting: {JSON.stringify(sorting)}</pre>
