@@ -12,6 +12,8 @@ export default defineConfig({
 		maxWorkers: 1,
 		fileParallelism: false,
 		watch: false,
+		// Memory: cache transformed modules on disk instead of keeping them in RAM.
+		experimental: { fsModuleCache: true },
 		projects: [
 			{
 				extends: "./vite.config.ts",
@@ -39,7 +41,8 @@ export default defineConfig({
 					include: ["src/**/*.svelte.{test,spec}.{js,ts}"],
 					exclude: ["src/lib/server/**"],
 					setupFiles: ["./vitest-setup.ts"],
-					css: true,
+					// Memory: skip injecting the (huge) Tailwind CSS bundle into the browser.
+					css: false,
 				},
 			},
 			{
