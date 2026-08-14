@@ -30,6 +30,7 @@
 		enableFullscreen?: boolean;
 		/** Show the pagination bar (default `true`). */
 		pagination?: boolean;
+		disableUISorting?: boolean;
 		class?: string;
 		headerClass?: string;
 	}
@@ -48,6 +49,7 @@
 		enableVisibility = false,
 		enableFullscreen = false,
 		pagination = true,
+		disableUISorting = false,
 		class: className,
 		headerClass,
 	}: Props<T> = $props();
@@ -112,7 +114,7 @@
 					{#each table.getHeaderGroups() as headerGroup (headerGroup)}
 						<Table.Row>
 							{#each headerGroup.headers as header (header)}
-								<DataTableHeader {header} />
+								<DataTableHeader {header} {disableUISorting} />
 							{/each}
 						</Table.Row>
 					{/each}
