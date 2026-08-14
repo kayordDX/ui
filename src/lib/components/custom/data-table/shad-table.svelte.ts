@@ -12,7 +12,14 @@ import { renderComponent } from "$lib/components/ui/data-table";
 import { features, type DataTableFeatures } from "./features";
 import type { BaseOptions, CustomOptions } from "./types";
 
-export type ShadTableOptions<TData extends RowData> = BaseOptions<TData> & CustomOptions;
+export type ShadTableOptions<TData extends RowData> = BaseOptions<TData> &
+	CustomOptions & {
+		/**
+		 * When `true` (default) and `enableRowSelection` is on, {@link createShadTable}
+		 * prepends a checkbox column. Not mirrored into `table.options.meta`.
+		 */
+		enableRowSelectionUI?: boolean;
+	};
 
 /**
  * Creates a fully reactive TanStack Table v9 instance preconfigured for the
@@ -33,7 +40,7 @@ export type ShadTableOptions<TData extends RowData> = BaseOptions<TData> & Custo
 export function createShadTable<TData extends RowData>(
 	shadOptions: ShadTableOptions<TData>
 ): Table<DataTableFeatures, TData> {
-	const { useURLSearchParams, enablePaging = true, enableRowSelectionUI = true, columns = [], ...rest } = shadOptions;
+	const { useURLSearchParams, enablePaging = true, enableRowSelectionUI = true, ...rest } = shadOptions;
 
 	// Row-model factories are included on demand. `enableSorting` /
 	// `enableFilters` are native table options (default true); `enablePaging`
@@ -65,9 +72,6 @@ export function createShadTable<TData extends RowData>(
 		enableResizing: false,
 		enableSorting: false,
 	};
-	const finalColumns: readonly ColumnDef<DataTableFeatures, TData>[] =
-		rest.enableRowSelection && enableRowSelectionUI ? [selectColumn, ...columns] : columns;
-
 	const table = createTable<DataTableFeatures, TData>({
 		...rest,
 		// Keep `data` reactive. Spreading `...rest` would snapshot a consumer
@@ -76,8 +80,19 @@ export function createShadTable<TData extends RowData>(
 		get data() {
 			return shadOptions.data;
 		},
+		// Same idea for `columns` — re-read on each v9 option sync so a consumer
+		// getter (`get columns()`) stays reactive. The selection column is
+		// prepended on the fly when row selection + its UI are enabled.
+		get columns() {
+			const cols = shadOptions.columns ?? [];
+			return rest.enableRowSelection && enableRowSelectionUI ? [selectColumn, ...cols] : cols;
+		},
+		// Server-side pagination: `rowCount` (the total row count) arrives from the
+		// server and changes with each response, so re-read it like `data`/`columns`.
+		get rowCount() {
+			return shadOptions.rowCount;
+		},
 		features: runtimeFeatures,
-		columns: finalColumns,
 		meta: { useURLSearchParams, enablePaging },
 		...(useURLSearchParams ? { autoResetPageIndex: false } : {}),
 	});

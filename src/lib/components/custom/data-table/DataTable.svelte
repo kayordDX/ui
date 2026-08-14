@@ -83,19 +83,19 @@
 		}
 	});
 
-	// Set url search params. v9: read state via the rune-aware store.
+	// Set url search params. v9: read only the atoms that feed the URL so the
+	// effect doesn't re-run on unrelated state (e.g. row selection).
 	$effect(() => {
 		if (table.options.meta?.useURLSearchParams) {
-			const state = table.store.get();
-			const search = state.globalFilter;
-			const page = state.pagination?.pageIndex ?? 0;
-			const sort = encodeSorting(state);
-			const filter = encodeColumnFilters(state);
+			const search = table.atoms.globalFilter.get();
+			const page = table.atoms.pagination.get().pageIndex;
+			const sorting = table.atoms.sorting.get();
+			const columnFilters = table.atoms.columnFilters.get();
 			untrack(() => {
 				params.search = search;
 				params.page = page;
-				params.sort = sort;
-				params.filter = filter;
+				params.sort = encodeSorting({ sorting });
+				params.filter = encodeColumnFilters({ columnFilters });
 			});
 		}
 	});

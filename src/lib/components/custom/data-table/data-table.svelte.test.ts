@@ -2,6 +2,9 @@ import { describe, expect, test, vi } from "vitest";
 import { render } from "vitest-browser-svelte";
 import { page, userEvent } from "vitest/browser";
 import Harness from "./data-table-harness.svelte";
+import SelectionHarness from "./data-table-selection-harness.svelte";
+import ColumnsHarness from "./data-table-columns-harness.svelte";
+import ServerHarness from "./data-table-server-harness.svelte";
 
 // DataTable.svelte pulls in SvelteKit navigation + the runed search-params
 // helper. They are not relevant to these behaviour tests, so they are stubbed.
@@ -69,5 +72,69 @@ describe("DataTable (TanStack Table v9)", () => {
 
 		// addRecord() prepends, so the new row is first on page 1.
 		await expect.poll(() => nameCells(container)[0]).toBe("zebra-new");
+	});
+});
+
+const selectedRowCount = (c: HTMLElement) => c.querySelectorAll<HTMLElement>('tbody tr[data-state="selected"]').length;
+
+describe("DataTable row selection (TanStack Table v9)", () => {
+	test("header checkbox toggles all page rows", async () => {
+		const { container } = await render(SelectionHarness);
+
+		await expect.poll(() => selectedRowCount(container)).toBe(0); // default page size 10
+
+		await page.getByRole("checkbox").first().click();
+		await expect.poll(() => selectedRowCount(container)).toBe(10);
+
+		await page.getByRole("checkbox").first().click();
+		await expect.poll(() => selectedRowCount(container)).toBe(0);
+	});
+
+	test("selecting one row marks the header indeterminate", async () => {
+		const { container } = await render(SelectionHarness);
+
+		await page.getByRole("checkbox").nth(1).click();
+
+		await expect.poll(() => selectedRowCount(container)).toBe(1);
+
+		// One of ten page rows selected (and not all rows overall) => mixed.
+		await expect
+			.poll(() =>
+				container
+					.querySelector<HTMLElement>('thead th:nth-child(1) [data-slot="checkbox"]')
+					?.getAttribute("aria-checked")
+			)
+			.toBe("mixed");
+	});
+});
+
+describe("DataTable reactive columns (TanStack Table v9)", () => {
+	test("changing columns via a getter updates the rendered headers", async () => {
+		const { container } = await render(ColumnsHarness);
+
+		const headerCellText = () =>
+			[...container.querySelectorAll<HTMLElement>("thead th")].map((th) => th.textContent?.trim() ?? "");
+
+		await expect.poll(() => headerCellText()).toEqual(["ID", "Name"]);
+
+		await page.getByRole("button", { name: "Toggle Age Column" }).click();
+
+		await expect.poll(() => headerCellText()).toEqual(["ID", "Name", "Age"]);
+	});
+});
+
+describe("DataTable server-side pagination (TanStack Table v9)", () => {
+	test("rowCount change updates getPageCount", async () => {
+		const { container } = await render(ServerHarness);
+		const text = (id: string) => container.querySelector<HTMLElement>(`[data-testid="${id}"]`)?.textContent ?? "";
+
+		// total starts at 0 => 0 pages
+		await expect.poll(() => text("page-count")).toBe("0");
+
+		await page.getByRole("button", { name: "Load" }).click();
+
+		// total 42 / pageSize 10 => 5 pages, current page has 10 rows
+		await expect.poll(() => text("page-count")).toBe("5");
+		await expect.poll(() => text("row-count")).toBe("10");
 	});
 });

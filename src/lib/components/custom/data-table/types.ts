@@ -10,11 +10,10 @@ export interface CustomColumnMeta {
 	className?: string;
 }
 
-/** Flags passed to {@link createShadTable} and exposed via `table.options.meta`. */
+/** Flags passed to {@link createShadTable} and mirrored into `table.options.meta`. */
 export interface CustomOptions {
 	useURLSearchParams?: boolean;
 	enablePaging?: boolean;
-	enableRowSelectionUI?: boolean;
 }
 
 export const defaultSearchParamSchema = z.object({
