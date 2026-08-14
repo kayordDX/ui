@@ -6,7 +6,6 @@ const config = {
 	preprocess: vitePreprocess(),
 	compilerOptions: {
 		experimental: {
-			// `await` in `$derived(await ...)` (used by the server-data table example)
 			async: true,
 		},
 	},

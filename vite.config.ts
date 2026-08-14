@@ -21,7 +21,17 @@ export default defineConfig({
 						enabled: true,
 						provider: playwright({
 							launchOptions: {
-								args: ["--disable-dev-shm-usage", "--no-sandbox", "--disable-gpu"],
+								args: [
+									"--disable-dev-shm-usage",
+									"--no-sandbox",
+									"--disable-gpu",
+									"--single-process",
+									"--disable-extensions",
+									"--disable-background-networking",
+									"--disable-sync",
+									"--no-first-run",
+									"--disable-breakpad",
+								],
 							},
 						}),
 						instances: [{ browser: "chromium", headless: true }],

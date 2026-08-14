@@ -1,3 +1,6 @@
+import { query } from "$app/server";
+import z from "zod";
+
 export interface Employee {
 	id: number;
 	firstName: string;
@@ -80,7 +83,7 @@ function mulberry32(seed: number): () => number {
 	};
 }
 
-export const DATASET: Employee[] = (() => {
+const DATASET: Employee[] = (() => {
 	const rand = mulberry32(42);
 	const pick = <T>(arr: T[]) => arr[Math.floor(rand() * arr.length)];
 	const rows: Employee[] = [];
@@ -121,7 +124,7 @@ export interface EmployeeResult {
 	size: number;
 }
 
-export function queryEmployees(query: EmployeeQuery): EmployeeResult {
+function queryEmployees(query: EmployeeQuery): EmployeeResult {
 	const q = (query.q ?? "").trim().toLowerCase();
 	const page = Math.max(0, query.page ?? 0);
 	const size = Math.max(1, query.size ?? 10);
@@ -168,3 +171,19 @@ export function queryEmployees(query: EmployeeQuery): EmployeeResult {
 
 	return { data, total, page, size };
 }
+
+const getEmployeesSchema = z.object({
+	q: z.string().optional(),
+	page: z.number().int().min(0).optional(),
+	size: z.number().int().min(1).optional(),
+	/** Comma-separated `{id}` / `-{id}` tokens, e.g. `name` or `-salary,id`. */
+	sort: z.string().optional(),
+	filters: z.array(z.object({ id: z.string(), value: z.unknown() })).optional(),
+});
+
+/**
+ * Remote query: runs on the server when called from the browser (SvelteKit
+ * serializes the args and fetches the generated endpoint under the hood).
+ * Args are validated against `getEmployeesSchema` before the handler runs.
+ */
+export const getEmployees = query(getEmployeesSchema, (args) => queryEmployees(args));
