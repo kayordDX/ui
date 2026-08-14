@@ -142,10 +142,10 @@
 		{/if}
 	</div>
 
-	<div class="overflow-hidden rounded-md border">
+	<div class="relative overflow-hidden rounded-md border">
 		{#if isLoading}
-			<span in:fade={{ duration: 300 }}>
-				<ProgressLoading class="h-1" />
+			<span class="absolute inset-x-0 top-0 z-10" in:fade={{ duration: 300 }}>
+				<ProgressLoading class="h-1 rounded-none" />
 			</span>
 		{/if}
 
@@ -202,8 +202,8 @@
 			<DataTableFooter {table} />
 		</Table.Root>
 		{#if isLoading}
-			<span in:fade={{ duration: 300 }}>
-				<ProgressLoading class="h-1" />
+			<span class="absolute inset-x-0 bottom-0 z-10" in:fade={{ duration: 300 }}>
+				<ProgressLoading class="h-1 rounded-none" />
 			</span>
 		{/if}
 	</div>
