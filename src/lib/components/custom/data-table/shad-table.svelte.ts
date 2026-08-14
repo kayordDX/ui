@@ -24,15 +24,10 @@ export function createShadTable<TData extends RowData>(
 ): Table<DataTableFeatures, TData> {
 	const { enableRowSelectionUI = true, controlledState, resetPageIndexOn = [], ...rest } = shadOptions;
 
-	const externalState: Record<string, unknown> = {};
 	const externalHandlers: Record<string, (updater: unknown) => void> = {};
 
 	if (controlledState) {
 		for (const key of Object.keys(controlledState)) {
-			Object.defineProperty(externalState, key, {
-				enumerable: true,
-				get: () => controlledState[key as keyof ControlledState],
-			});
 			const resetPage = resetPageIndexOn.includes(key as keyof ControlledState);
 			externalHandlers[`on${key.charAt(0).toUpperCase()}${key.slice(1)}Change`] = (updater) => {
 				const record = controlledState as Record<string, unknown>;
