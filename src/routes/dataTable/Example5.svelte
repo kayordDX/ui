@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { ColumnDef, PaginationState, SortingState } from "@tanstack/svelte-table";
-	import { DataTable, createShadTable, type DataTableFeatures } from "$lib/data-table";
+	import { DataTable, createShadTable, useTableUrlSync, type DataTableFeatures } from "$lib/data-table";
 	import { getEmployees } from "./employees.remote";
 	import Input from "$lib/components/ui/input/input.svelte";
 
@@ -60,6 +60,7 @@
 		autoResetPageIndex: false,
 		enableRowSelection: false,
 	});
+	useTableUrlSync(table);
 </script>
 
 <div class="m-4 flex flex-col gap-2">

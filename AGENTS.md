@@ -14,7 +14,7 @@ TODO: Add skills and svelte skills specifically.
 
 ## General Guidelines
 
-- Do not add comments to explain everything. Add comments only where it will add real value.
+- Do not add comments. Comments only where it is absolutely necessary.
 
 ## Quality Gates (mandatory — run after every change)
 
