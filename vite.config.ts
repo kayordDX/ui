@@ -8,6 +8,10 @@ export default defineConfig({
 	plugins: [tailwindcss(), sveltekit()],
 	test: {
 		expect: { requireAssertions: true },
+		// VM/CI-friendly execution: one worker, one test file at a time
+		maxWorkers: 1,
+		fileParallelism: false,
+		watch: false,
 		projects: [
 			{
 				extends: "./vite.config.ts",
@@ -15,9 +19,22 @@ export default defineConfig({
 					name: "client",
 					browser: {
 						enabled: true,
-						provider: playwright(),
+						provider: playwright({
+							launchOptions: {
+								args: [
+									"--disable-dev-shm-usage",
+									"--no-sandbox",
+									"--disable-gpu",
+									"--single-process",
+									"--disable-extensions",
+									"--disable-background-networking",
+									"--disable-sync",
+									"--no-first-run",
+									"--disable-breakpad",
+								],
+							},
+						}),
 						instances: [{ browser: "chromium", headless: true }],
-						headless: false,
 					},
 					include: ["src/**/*.svelte.{test,spec}.{js,ts}"],
 					exclude: ["src/lib/server/**"],

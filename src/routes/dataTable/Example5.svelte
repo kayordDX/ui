@@ -1,6 +1,7 @@
 <script lang="ts">
-	import type { ColumnDef, ColumnFiltersState, PaginationState, SortingState, Updater } from "@tanstack/svelte-table";
+	import type { ColumnDef, PaginationState, SortingState } from "@tanstack/svelte-table";
 	import { DataTable, createShadTable, type DataTableFeatures } from "$lib/data-table";
+	import { getEmployees } from "./employees.remote";
 	import Input from "$lib/components/ui/input/input.svelte";
 
 	interface Employee {
@@ -25,120 +26,58 @@
 		{ accessorKey: "status", header: "Status" },
 	];
 
-	// Server response (the current page + the total row count).
-	let rows = $state<Employee[]>([]);
-	let total = $state(0);
-	let isLoading = $state(true);
-
-	// Controlled table state — every change triggers a server fetch.
-	let globalFilter = $state("");
-	let columnFilters = $state<ColumnFiltersState>([]);
-	let sorting = $state<SortingState>([]);
-	let pagination = $state<PaginationState>({ pageIndex: 0, pageSize: 10 });
-
-	const apply = <T,>(updater: Updater<T>, prev: T): T =>
-		typeof updater === "function" ? (updater as (old: T) => T)(prev) : updater;
-
-	const resetPage = () => (pagination = { ...pagination, pageIndex: 0 });
-
-	// Re-fetch whenever search / sort / filter / page changes. All dependency
-	// reads happen synchronously (before the await), so $effect tracks them.
-	let lastRequestId = 0;
-	$effect(() => {
-		const q = globalFilter;
-		const { pageIndex, pageSize } = pagination;
-		const sort = sorting.map((s) => `${s.desc ? "-" : ""}${s.id}`).join(",") || "-id";
-		const filters = JSON.stringify(columnFilters);
-
-		const requestId = ++lastRequestId;
-		isLoading = true;
-		const params = new URLSearchParams({
-			q,
-			page: String(pageIndex),
-			size: String(pageSize),
-			sort,
-			filters,
-		});
-		fetch(`/api/employees?${params}`)
-			.then((r) => r.json())
-			.then((res: { data: Employee[]; total: number }) => {
-				if (requestId !== lastRequestId) return; // a newer request superseded this one
-				rows = res.data;
-				total = res.total;
-			})
-			.finally(() => {
-				if (requestId === lastRequestId) isLoading = false;
-			});
+	const tableState = $state({
+		sorting: [] as SortingState,
+		globalFilter: "",
+		pagination: { pageIndex: 0, pageSize: 10 } as PaginationState,
 	});
+
+	const employees = $derived(
+		await getEmployees({
+			q: tableState.globalFilter,
+			page: tableState.pagination.pageIndex,
+			size: tableState.pagination.pageSize,
+			sort: tableState.sorting.map((s) => `${s.desc ? "-" : ""}${s.id}`).join(",") || undefined,
+			filters: [],
+		})
+	);
 
 	const table = createShadTable({
 		columns,
-		// Use getters so the table re-reads these as the server responds — `data`
-		// is the current page and `rowCount` is the server's total (drives the
-		// page count). Plain values would be snapshotted once.
+		controlledState: tableState,
+		// New search/sort snap back to page 1.
+		resetPageIndexOn: ["sorting", "globalFilter"],
+		// Server-side: current page + total come from the remote function.
 		get data() {
-			return rows;
+			return employees?.data ?? [];
 		},
 		get rowCount() {
-			return total;
+			return employees?.total ?? 0;
 		},
-		// Everything is resolved server-side, so disable the client-side pipelines.
 		manualPagination: true,
 		manualSorting: true,
 		manualFiltering: true,
+		autoResetPageIndex: false,
 		enableRowSelection: false,
-		state: {
-			get globalFilter() {
-				return globalFilter;
-			},
-			get columnFilters() {
-				return columnFilters;
-			},
-			get sorting() {
-				return sorting;
-			},
-			get pagination() {
-				return pagination;
-			},
-		},
-		onGlobalFilterChange: (u) => {
-			globalFilter = apply(u, globalFilter);
-			resetPage();
-		},
-		onColumnFiltersChange: (u) => {
-			columnFilters = apply(u, columnFilters);
-			resetPage();
-		},
-		onSortingChange: (u) => {
-			sorting = apply(u, sorting);
-			resetPage();
-		},
-		onPaginationChange: (u) => {
-			pagination = apply(u, pagination);
-		},
 	});
-
-	const deptFilter = $derived(String(columnFilters.find((f) => f.id === "department")?.value ?? ""));
-	function filterDepartment(value: string) {
-		table.setColumnFilters(value ? [{ id: "department", value }] : []);
-	}
 </script>
 
 <div class="m-4 flex flex-col gap-2">
-	<div class="flex flex-wrap gap-2">
-		<Input
-			placeholder="Search all fields…"
-			value={globalFilter}
-			oninput={(e) => table.setGlobalFilter(e.currentTarget.value)}
-		/>
-		<Input
-			placeholder="Filter by department…"
-			value={deptFilter}
-			oninput={(e) => filterDepartment(e.currentTarget.value)}
-		/>
-	</div>
+	<Input
+		placeholder="Search all fields…"
+		value={tableState.globalFilter}
+		oninput={(e) => table.setGlobalFilter(e.currentTarget.value)}
+	/>
 
-	<p class="text-muted-foreground text-sm">{total} matching records (server-side)</p>
+	<svelte:boundary>
+		{#snippet pending()}
+			<p class="text-muted-foreground text-sm">Loading…</p>
+		{/snippet}
+		{#snippet failed(error)}
+			<p class="text-destructive text-sm">{(error as Error).message}</p>
+		{/snippet}
 
-	<DataTable {table} {isLoading} headerClass="mt-2" enableFullscreen />
+		<p class="text-muted-foreground text-sm">{employees.total} matching records (server-side)</p>
+		<DataTable {table} headerClass="mt-2" enableFullscreen />
+	</svelte:boundary>
 </div>

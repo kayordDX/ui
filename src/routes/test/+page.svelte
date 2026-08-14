@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { DataTable, createShadTable, type ColumnDef, type DataTableFeatures } from "$lib/data-table";
+	import { DataTable, createShadTable, useTableUrlSync, type ColumnDef, type DataTableFeatures } from "$lib/data-table";
 	import Input from "$lib/components/ui/input/input.svelte";
-	import type { ColumnFiltersState, PaginationState, SortingState } from "@tanstack/svelte-table";
 	import { Button } from "$lib";
 
 	interface Todo {
@@ -14,9 +13,6 @@
 	let data = $state<Todo[]>([]);
 	let rowCount = $derived(data.length ?? 0);
 	let isLoading = $state(true);
-
-	let pagination: PaginationState = $state({ pageIndex: 0, pageSize: 10 });
-	let columnFilters = $state<ColumnFiltersState>([]);
 
 	const fetchData = async () => {
 		isLoading = true;
@@ -47,7 +43,6 @@
 			cell: (info) => info.getValue(),
 			size: 100000,
 		},
-
 		{
 			header: "completed",
 			accessorKey: "completed",
@@ -56,29 +51,11 @@
 		},
 	];
 
-	let sorting = $state<SortingState>([]);
-
+	// Uncontrolled table — state lives in the table's atoms.
 	const table = createShadTable({
 		columns,
 		get data() {
 			return data;
-		},
-		state: {
-			get pagination() {
-				return pagination;
-			},
-			set pagination(v) {
-				pagination = v;
-			},
-			get sorting() {
-				return sorting;
-			},
-			set sorting(v) {
-				sorting = v;
-			},
-			get columnFilters() {
-				return columnFilters;
-			},
 		},
 		get rowCount() {
 			return rowCount;
@@ -86,42 +63,23 @@
 		enableRowSelection: true,
 		manualPagination: true,
 		manualFiltering: true,
-		useURLSearchParams: true,
-		// enableGlobalFilter: true,
-		// useURLSearchParams: true,
-		onPaginationChange: (updater) => {
-			if (updater instanceof Function) {
-				pagination = updater(pagination);
-			} else pagination = updater;
-		},
-		onSortingChange: (updater) => {
-			if (typeof updater === "function") {
-				sorting = updater(sorting);
-			} else {
-				sorting = updater;
-			}
-		},
-		onColumnFiltersChange: (updater) => {
-			if (typeof updater === "function") {
-				columnFilters = updater(columnFilters);
-			} else {
-				columnFilters = updater;
-			}
-		},
+		autoResetPageIndex: false,
 	});
 
-	const fff = $derived(JSON.stringify(table.atoms.globalFilter.get()));
+	useTableUrlSync(table);
+
+	const globalFilter = $derived(table.atoms.globalFilter.get() ?? "");
+	const sorting = $derived(table.atoms.sorting.get());
 </script>
 
 {JSON.stringify(sorting)}
-<!-- {sortingState} -->
 <div>
 	test:
-	{fff}
+	{globalFilter}
 </div>
 <div class="m-2">
 	<Button onclick={() => table.setGlobalFilter("b")}>Set</Button>
 	<Button onclick={() => table.setColumnFilters([{ id: "test", value: "test" }])}>Set Column Filter</Button>
-	<Input bind:value={() => String(table.atoms.globalFilter.get() ?? ""), (v) => table.setGlobalFilter(v)} />
+	<Input value={globalFilter} oninput={(e) => table.setGlobalFilter(e.currentTarget.value)} />
 	<DataTable {table} headerClass="mt-2" {isLoading} />
 </div>

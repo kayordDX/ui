@@ -5,15 +5,7 @@
 	}
 
 	import { data } from "./data.svelte";
-	import {
-		DataTable,
-		createShadTable,
-		createTableState,
-		renderSnippet,
-		type ColumnDef,
-		type DataTableFeatures,
-		type RowSelectionState,
-	} from "$lib/data-table";
+	import { DataTable, createShadTable, renderSnippet, type ColumnDef, type DataTableFeatures } from "$lib/data-table";
 	import { aggregationFns } from "$lib/components/custom/data-table/data-table-utils";
 	import { CloudIcon, SunIcon } from "@lucide/svelte";
 
@@ -44,20 +36,11 @@
 		},
 	];
 
-	// v9 owns table state internally. As a demonstration, the row-selection slice
-	// is lifted out of the table with createTableState; the rest is uncontrolled.
-	const [rowSelection, onRowSelectionChange] = createTableState<RowSelectionState>({});
-
+	// v9 owns table state internally — no `state`/`onRowSelectionChange` plumbing.
 	const table = createShadTable({
 		columns,
 		data: data.value,
 		enableRowSelection: true,
-		state: {
-			get rowSelection() {
-				return rowSelection();
-			},
-		},
-		onRowSelectionChange,
 	});
 </script>
 

@@ -4,7 +4,7 @@
 	import { FlexRender } from "$lib/components/ui/data-table";
 	import { Skeleton, Table } from "$lib/components/ui";
 	import Pagination from "./Pagination.svelte";
-	import { onMount, untrack, type Snippet } from "svelte";
+	import { type Snippet } from "svelte";
 	import { fade } from "svelte/transition";
 	import { ProgressLoading } from "../progress-loading";
 	import FullscreenModeToggle from "./FullscreenModeToggle.svelte";
@@ -12,10 +12,6 @@
 	import { TableStore } from "./table.svelte";
 	import DataTableHeader from "./DataTableHeader.svelte";
 	import DataTableFooter from "./DataTableFooter.svelte";
-	import { beforeNavigate } from "$app/navigation";
-	import { decodeColumnFilters, decodeSorting, encodeColumnFilters, encodeSorting } from "./table-search-params";
-	import { useSearchParams } from "runed/kit";
-	import { defaultSearchParamSchema } from "./types";
 	import DataTableView from "./DataTableView.svelte";
 
 	interface Props<T extends RowData> {
@@ -26,13 +22,17 @@
 		footer?: Snippet;
 		leftToolbar?: Snippet;
 		rightToolbar?: Snippet;
+		/** Rich empty state; falls back to `noDataMessage` when not provided. */
+		emptyState?: Snippet;
 		noDataMessage?: string;
 		hideHeader?: boolean;
 		enableVisibility?: boolean;
 		enableFullscreen?: boolean;
+		/** Show the pagination bar (default `true`). */
+		pagination?: boolean;
+		disableUISorting?: boolean;
 		class?: string;
 		headerClass?: string;
-		disableUISorting?: boolean;
 	}
 
 	let {
@@ -43,63 +43,18 @@
 		footer,
 		leftToolbar,
 		rightToolbar,
+		emptyState,
 		noDataMessage = "No data",
 		hideHeader = false,
 		enableVisibility = false,
 		enableFullscreen = false,
+		pagination = true,
+		disableUISorting = false,
 		class: className,
 		headerClass,
-		disableUISorting = false,
 	}: Props<T> = $props();
 
 	const tableStore = new TableStore();
-	// Pagination bar is shown unless a table explicitly disables paging
-	// (createShadTable sets `enablePaging: false` via table.options.meta).
-	const isPaginationEnabled = $derived(table.options.meta?.enablePaging !== false);
-
-	const params = useSearchParams(defaultSearchParamSchema, { pushHistory: false });
-	// Load current url search params
-	onMount(() => {
-		if (table.options.meta?.useURLSearchParams) {
-			table.setGlobalFilter(params.search);
-			table.setSorting(decodeSorting() ?? []);
-			table.setPageIndex(params.page);
-			table.setColumnFilters(decodeColumnFilters() ?? []);
-		}
-	});
-
-	// Reset pageIndex
-	beforeNavigate((navigation) => {
-		if (table.options.meta?.useURLSearchParams) {
-			if (Number(navigation.to?.url.searchParams.get("page") ?? "0") > 0) {
-				if (
-					navigation.from?.url.searchParams.get("sort") != navigation.to?.url.searchParams.get("sort") ||
-					navigation.from?.url.searchParams.get("search") != navigation.to?.url.searchParams.get("search") ||
-					navigation.from?.url.searchParams.get("filter") != navigation.to?.url.searchParams.get("filter")
-				) {
-					table.resetPageIndex();
-				}
-			}
-		}
-	});
-
-	// Set url search params. v9: read only the atoms that feed the URL so the
-	// effect doesn't re-run on unrelated state (e.g. row selection).
-	$effect(() => {
-		if (table.options.meta?.useURLSearchParams) {
-			const search = table.atoms.globalFilter.get();
-			const page = table.atoms.pagination.get().pageIndex;
-			const sorting = table.atoms.sorting.get();
-			const columnFilters = table.atoms.columnFilters.get();
-			untrack(() => {
-				params.search = search;
-				params.page = page;
-				params.sort = encodeSorting({ sorting });
-				params.filter = encodeColumnFilters({ columnFilters });
-			});
-		}
-	});
-
 	let end: HTMLElement | undefined = $state();
 </script>
 
@@ -181,7 +136,13 @@
 					{#if table.getRowModel().rows.length == 0}
 						<Table.Row>
 							<Table.Cell colspan={table.getAllColumns().length}>
-								<div class="text-center">{noDataMessage}</div>
+								<div class="text-center">
+									{#if emptyState}
+										{@render emptyState()}
+									{:else}
+										{noDataMessage}
+									{/if}
+								</div>
 							</Table.Cell>
 						</Table.Row>
 					{/if}
@@ -207,7 +168,7 @@
 			</span>
 		{/if}
 	</div>
-	{#if isPaginationEnabled}
+	{#if pagination}
 		<Pagination {table} />
 	{/if}
 
