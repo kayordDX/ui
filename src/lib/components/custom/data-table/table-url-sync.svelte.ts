@@ -4,7 +4,14 @@ import { useSearchParams } from "runed/kit";
 import type { RowData, Table } from "@tanstack/svelte-table";
 import type { DataTableFeatures } from "./features";
 import { defaultSearchParamSchema } from "./types";
-import { decodeColumnFilters, decodeSorting, encodeColumnFilters, encodeSorting } from "./table-search-params";
+import {
+	decodeColumnFilters,
+	decodeGlobalFilter,
+	decodePageIndex,
+	decodeSorting,
+	encodeColumnFilters,
+	encodeSorting,
+} from "./table-search-params";
 
 /**
  * Which URL params to sync with the table. Omitted keys default to `true`, so
@@ -56,11 +63,18 @@ export function useTableUrlSync<TData extends RowData>(
 
 	const params = useSearchParams(defaultSearchParamSchema, { pushHistory: false });
 
+	// The write-back effect below must not touch the URL (or the search-params
+	// cache) before hydration has run, or it clobbers the URL state with the
+	// table's initial defaults before they are read back. onMount and $effect
+	// ordering is not guaranteed, so gate the writes on this flag.
+	let hydrated = false;
+
 	// Hydrate table state from the current URL once on mount.
 	onMount(() => {
-		if (enabled.globalFilter) table.setGlobalFilter(params.search);
+		hydrated = true;
+		if (enabled.globalFilter) table.setGlobalFilter(decodeGlobalFilter() ?? "");
 		if (enabled.sorting) table.setSorting(decodeSorting() ?? []);
-		if (enabled.pagination) table.setPageIndex(params.page);
+		if (enabled.pagination) table.setPageIndex(decodePageIndex());
 		if (enabled.columnFilters) table.setColumnFilters(decodeColumnFilters() ?? []);
 	});
 
@@ -89,6 +103,7 @@ export function useTableUrlSync<TData extends RowData>(
 		const sorting = enabled.sorting ? table.atoms.sorting.get() : undefined;
 		const columnFilters = enabled.columnFilters ? table.atoms.columnFilters.get() : undefined;
 		untrack(() => {
+			if (!hydrated) return;
 			if (enabled.globalFilter) params.search = search;
 			if (enabled.pagination && page !== undefined) params.page = page;
 			if (enabled.sorting) params.sort = encodeSorting({ sorting });
