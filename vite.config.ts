@@ -8,12 +8,6 @@ export default defineConfig({
 	plugins: [tailwindcss(), sveltekit()],
 	test: {
 		expect: { requireAssertions: true },
-		// VM/CI-friendly execution: one worker, one test file at a time
-		maxWorkers: 1,
-		fileParallelism: false,
-		watch: false,
-		// Memory: cache transformed modules on disk instead of keeping them in RAM.
-		experimental: { fsModuleCache: true },
 		projects: [
 			{
 				extends: "./vite.config.ts",
@@ -21,28 +15,14 @@ export default defineConfig({
 					name: "client",
 					browser: {
 						enabled: true,
-						provider: playwright({
-							launchOptions: {
-								args: [
-									"--disable-dev-shm-usage",
-									"--no-sandbox",
-									"--disable-gpu",
-									"--single-process",
-									"--disable-extensions",
-									"--disable-background-networking",
-									"--disable-sync",
-									"--no-first-run",
-									"--disable-breakpad",
-								],
-							},
-						}),
+						provider: playwright(),
 						instances: [{ browser: "chromium", headless: true }],
+						headless: true,
 					},
 					include: ["src/**/*.svelte.{test,spec}.{js,ts}"],
 					exclude: ["src/lib/server/**"],
 					setupFiles: ["./vitest-setup.ts"],
-					// Memory: skip injecting the (huge) Tailwind CSS bundle into the browser.
-					css: false,
+					css: true,
 				},
 			},
 			{
