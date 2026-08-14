@@ -1,4 +1,4 @@
-import { onMount, untrack } from "svelte";
+import { untrack } from "svelte";
 import { beforeNavigate } from "$app/navigation";
 import { useSearchParams } from "runed/kit";
 import type { RowData, Table } from "@tanstack/svelte-table";
@@ -46,6 +46,10 @@ export interface TableUrlSyncOptions {
  * useTableUrlSync(table);
  * ```
  *
+ * The table is hydrated from the URL immediately, before the first render, so
+ * row-model auto-resets (which are skipped on their first run) can't clobber
+ * the URL-backed state.
+ *
  * By default all four params are synced; pass {@link TableUrlSyncOptions} to
  * enable only a subset, e.g. `useTableUrlSync(table, { pagination: true })`.
  */
@@ -63,20 +67,14 @@ export function useTableUrlSync<TData extends RowData>(
 
 	const params = useSearchParams(defaultSearchParamSchema, { pushHistory: false });
 
-	// The write-back effect below must not touch the URL (or the search-params
-	// cache) before hydration has run, or it clobbers the URL state with the
-	// table's initial defaults before they are read back. onMount and $effect
-	// ordering is not guaranteed, so gate the writes on this flag.
-	let hydrated = false;
-
-	// Hydrate table state from the current URL once on mount.
-	onMount(() => {
-		hydrated = true;
-		if (enabled.globalFilter) table.setGlobalFilter(decodeGlobalFilter() ?? "");
-		if (enabled.sorting) table.setSorting(decodeSorting() ?? []);
-		if (enabled.pagination) table.setPageIndex(decodePageIndex());
-		if (enabled.columnFilters) table.setColumnFilters(decodeColumnFilters() ?? []);
-	});
+	// Hydrate from the URL before the first render. Sorting/filter/data changes
+	// defer an autoResetPageIndex microtask via the adapter's schedule; row
+	// models skip auto-resets on their first run, so applying the URL state
+	// up-front can't be undone by them (a post-mount hydration would be).
+	if (enabled.globalFilter) table.setGlobalFilter(decodeGlobalFilter() ?? "");
+	if (enabled.sorting) table.setSorting(decodeSorting() ?? []);
+	if (enabled.pagination) table.setPageIndex(decodePageIndex());
+	if (enabled.columnFilters) table.setColumnFilters(decodeColumnFilters() ?? []);
 
 	// When navigating with new sort/search/filter params, snap back to page 1.
 	beforeNavigate((navigation) => {
@@ -103,7 +101,6 @@ export function useTableUrlSync<TData extends RowData>(
 		const sorting = enabled.sorting ? table.atoms.sorting.get() : undefined;
 		const columnFilters = enabled.columnFilters ? table.atoms.columnFilters.get() : undefined;
 		untrack(() => {
-			if (!hydrated) return;
 			if (enabled.globalFilter) params.search = search;
 			if (enabled.pagination && page !== undefined) params.page = page;
 			if (enabled.sorting) params.sort = encodeSorting({ sorting });
