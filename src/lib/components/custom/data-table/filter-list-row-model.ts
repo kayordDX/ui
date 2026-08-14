@@ -17,8 +17,11 @@ import {
 	type JoinOperator,
 } from "./filter-list-utils";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- mirrors the untyped-at-the-seam stock row-model factories
 type FilterListTable = Table<TableFeatures, any> & { autoResetPageIndex: () => void };
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type FilterListRow = Row<TableFeatures, any>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type FilterListRowModel = RowModel<TableFeatures, any>;
 
 /**
@@ -29,6 +32,16 @@ type FilterListRowModel = RowModel<TableFeatures, any>;
  * - `joinOperator` combines filters left-to-right (`and` / `or`)
  * - plain `{ id, value }` filters keep stock semantics (the column's
  *   `filterFn`), and the global filter keeps stock "matches any column" logic
+ *
+ * A custom row model (instead of custom `filterFn`s on columns) is required
+ * because the stock model ANDs every filter and stores results per column id,
+ * so a later filter on the same column overwrites the earlier one's result —
+ * `or` joins and multiple filters on one column are not expressible with
+ * `filterFn` alone. It reuses the exported `tableMemo` / `constructRow` /
+ * `makeObjectMap` / `skipFirstRun` utilities; only the unexported `filterRows`
+ * tree walk is inlined. With `manualFiltering: true` it never runs (stock
+ * behavior: the table returns the pre-filtered row model and the server owns
+ * filtering).
  */
 export function createFilterListRowModel<TData extends RowData>() {
 	return (table: FilterListTable) => {

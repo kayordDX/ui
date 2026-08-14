@@ -113,4 +113,17 @@ describe("createFilterListRowModel", () => {
 
 		expect(rowValues(table)).toEqual(["bob"]);
 	});
+
+	it("works with manualFiltering: state is readable, rows are left to the server", async () => {
+		const table = createShadTable({ columns, data, enableRowSelection: false, manualFiltering: true });
+		table.getRowModel();
+		setFilters(table, [{ id: "name", value: "bob", operator: "equals", filterId: "f1", joinOperator: "and" }]);
+		table.getRowModel();
+		await flushMicrotasks();
+
+		expect(table.atoms.columnFilters.get()).toEqual([
+			{ id: "name", value: "bob", operator: "equals", filterId: "f1", joinOperator: "and" },
+		]);
+		expect(rowValues(table)).toEqual(["alice", "bob", "charlie"]);
+	});
 });
