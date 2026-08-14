@@ -13,6 +13,7 @@ vi.mock("$lib/data-table", async () => {
 	return {
 		DataTable: Skeleton,
 		createShadTable: vi.fn(() => ({ options: {} })),
+		createTableState: vi.fn(() => [() => ({}), vi.fn()]),
 		renderSnippet: vi.fn(),
 		renderComponent: vi.fn(),
 	};

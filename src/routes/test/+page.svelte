@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { DataTable, createShadTable } from "$lib/data-table";
+	import { DataTable, createShadTable, type ColumnDef, type DataTableFeatures } from "$lib/data-table";
 	import Input from "$lib/components/ui/input/input.svelte";
-	import type { ColumnDef, ColumnFiltersState, PaginationState, SortingState } from "@tanstack/table-core";
+	import type { ColumnFiltersState, PaginationState, SortingState } from "@tanstack/svelte-table";
 	import { Button } from "$lib";
 
 	interface Todo {
@@ -30,7 +30,7 @@
 		fetchData();
 	});
 
-	const columns: ColumnDef<Todo>[] = [
+	const columns: ColumnDef<DataTableFeatures, Todo>[] = [
 		{
 			accessorKey: "userId",
 			header: "UserId",
@@ -110,7 +110,7 @@
 		},
 	});
 
-	const fff = $derived(JSON.stringify(table.getState().globalFilter));
+	const fff = $derived(JSON.stringify(table.atoms.globalFilter.get()));
 </script>
 
 {JSON.stringify(sorting)}
@@ -122,6 +122,6 @@
 <div class="m-2">
 	<Button onclick={() => table.setGlobalFilter("b")}>Set</Button>
 	<Button onclick={() => table.setColumnFilters([{ id: "test", value: "test" }])}>Set Column Filter</Button>
-	<Input bind:value={() => String(table.getState().globalFilter ?? ""), (v) => table.setGlobalFilter(v)} />
+	<Input bind:value={() => String(table.atoms.globalFilter.get() ?? ""), (v) => table.setGlobalFilter(v)} />
 	<DataTable {table} headerClass="mt-2" {isLoading} />
 </div>

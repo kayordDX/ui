@@ -14,12 +14,9 @@ vi.mock("$lib/data-table", async () => {
 		DataTable: Skeleton,
 		createShadTable: vi.fn(() => ({
 			options: {},
-			getState: () => ({
-				globalFilter: "",
-				pagination: { pageIndex: 0, pageSize: 10 },
-				sorting: [],
-				columnFilters: [],
-			}),
+			atoms: {
+				globalFilter: { get: () => "" },
+			},
 			setGlobalFilter: vi.fn(),
 			setColumnFilters: vi.fn(),
 		})),

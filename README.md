@@ -33,7 +33,7 @@ Kayord UI exports components individually. Some components require additional pe
 | ------------------------------- | -------------------------------------------------------------------------- |
 | **Charts** (`chart/`)           | `layerchart`, `d3-scale`, `d3-shape`, `@types/d3-scale`, `@types/d3-shape` |
 | **Carousel** (`carousel/`)      | `embla-carousel-svelte`                                                    |
-| **Data Table** (`data-table/`)  | `@tanstack/table-core`                                                     |
+| **Data Table** (`data-table/`)  | `@tanstack/svelte-table`                                                   |
 | **Drawer** (`drawer/`)          | `vaul-svelte`                                                              |
 | **Form** (`form/`)              | `formsnap`, `sveltekit-superforms`                                         |
 | **Date/Calendar** (`calendar/`) | `@internationalized/date`                                                  |
@@ -58,7 +58,7 @@ pnpm add -D layerchart d3-scale d3-shape @types/d3-scale @types/d3-shape
 pnpm add -D embla-carousel-svelte
 
 # For data table
-pnpm add -D @tanstack/table-core
+pnpm add -D @tanstack/svelte-table
 
 # For drawer @next for now
 pnpm add -D vaul-svelte@next
@@ -206,12 +206,29 @@ pnpm add -D svelte-sonner
 
 ## Data Table Types
 
-```ts
-// Add to app.d.ts
-import { CustomOptions, CustomColumnMeta } from "@kayord/ui/data-table";
+v9 types column/table metadata through the library's feature set, so **no
+`app.d.ts` module augmentation is needed**. Type your columns and tables with
+the exported `DataTableFeatures`:
 
-declare module "@tanstack/table-core" {
- interface ColumnMeta<TData extends RowData, TValue> extends CustomColumnMeta {}
- interface TableOptionsResolved<TData extends RowData> extends CustomOptions {}
+```ts
+import {
+	createShadTable,
+	type ColumnDef,
+	type DataTableFeatures,
+} from "@kayord/ui/data-table";
+
+interface Row {
+	id: number;
+	name: string;
 }
+
+const columns: ColumnDef<DataTableFeatures, Row>[] = [
+	{ accessorKey: "id", header: "ID" },
+	{ accessorKey: "name", header: "Name" },
+];
+
+const table = createShadTable({ columns, data });
 ```
+
+Per-column `meta.className` and the table flags (`useURLSearchParams`,
+`enablePaging`) are typed automatically through the feature set.

@@ -1,5 +1,5 @@
-<script lang="ts" generics="TData">
-	import type { Table } from "@tanstack/table-core";
+<script lang="ts" generics="TData extends RowData">
+	import type { RowData, Table } from "@tanstack/svelte-table";
 	import { cn } from "$lib/utils.js";
 	import { Button } from "$lib/components/ui/button";
 	import { Popover, PopoverContent, PopoverTrigger } from "$lib/components/ui/popover";
@@ -11,26 +11,27 @@
 		CommandItem,
 		CommandList,
 	} from "$lib/components/ui/command/index.js";
+	import type { DataTableFeatures } from "./features";
 
 	// Icons
 	import Settings2 from "@lucide/svelte/icons/settings-2";
 	import Check from "@lucide/svelte/icons/check";
 
 	interface Props {
-		table: Table<TData>;
+		table: Table<DataTableFeatures, TData>;
 		align?: "start" | "center" | "end";
 		class?: string;
 	}
 
 	let { table, align = "start", class: className }: Props = $props();
 
-	// Get columns - table.getAllColumns() is reactive via our wrapper
+	// Get columns - table.getAllColumns() is rune-reactive in v9
 	const columns = $derived(
 		table.getAllColumns().filter((column) => typeof column.accessorFn !== "undefined" && column.getCanHide())
 	);
 
-	// Get visibility state reactively
-	const columnVisibility = $derived(table.getState().columnVisibility);
+	// Get visibility state reactively via the v9 atoms API
+	const columnVisibility = $derived(table.atoms.columnVisibility.get());
 
 	// Helper to check if column is visible - reads from reactive state
 	function isColumnVisible(columnId: string): boolean {

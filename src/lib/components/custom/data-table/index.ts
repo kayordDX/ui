@@ -1,6 +1,7 @@
 export { default as DataTable } from "./DataTable.svelte";
-export { createShadTable } from "./shad-table.svelte";
-export { createShadTableOld } from "./shad-table-old.svelte";
+export { createShadTable, features } from "./shad-table.svelte";
+export type { ShadTableOptions } from "./shad-table.svelte";
+export type { DataTableFeatures } from "./features";
 export { aggregationFns } from "./data-table-utils";
 export {
 	decodeColumnFilters,

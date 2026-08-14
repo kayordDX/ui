@@ -1,14 +1,19 @@
-import type { TableOptions } from "@tanstack/table-core";
+import type { RowData, TableOptions } from "@tanstack/svelte-table";
+import type { DataTableFeatures } from "./features";
 import z from "zod";
 
-export type BaseOptions<TData> = Omit<TableOptions<TData>, "getCoreRowModel">;
+/** Table options bound to the library's feature set. `features` is set internally. */
+export type BaseOptions<TData extends RowData> = Omit<TableOptions<DataTableFeatures, TData>, "features">;
 
-export interface CustomOptions {
-	useURLSearchParams?: boolean;
-}
-
+/** Per-column metadata exposed via `columnDef.meta` (typed through the feature set). */
 export interface CustomColumnMeta {
 	className?: string;
+}
+
+/** Flags passed to {@link createShadTable} and mirrored into `table.options.meta`. */
+export interface CustomOptions {
+	useURLSearchParams?: boolean;
+	enablePaging?: boolean;
 }
 
 export const defaultSearchParamSchema = z.object({

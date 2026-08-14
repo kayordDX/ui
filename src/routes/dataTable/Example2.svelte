@@ -4,14 +4,11 @@
 		name: string;
 	}
 
-	import { type ColumnDef, type TableState } from "@tanstack/table-core";
-
 	import { data } from "./data.svelte";
-	import { DataTable } from "$lib/data-table";
+	import { DataTable, createShadTable, type ColumnDef, type DataTableFeatures } from "$lib/data-table";
 	import { Button } from "$lib";
-	import { createShadTable } from "$lib/components/custom/data-table/shad-table.svelte";
 
-	const columns: ColumnDef<DataType>[] = [
+	const columns: ColumnDef<DataTableFeatures, DataType>[] = [
 		{
 			accessorKey: "id",
 			header: "Id",
@@ -34,7 +31,7 @@
 		},
 	];
 
-	let sss = $state<Partial<TableState>>({});
+	let sss = $state({});
 
 	const table = createShadTable({
 		columns,
@@ -43,7 +40,6 @@
 		},
 		state: sss,
 		enableRowSelection: false,
-		enableVisibility: true,
 		enablePaging: false,
 	});
 

@@ -4,14 +4,13 @@
 		name: string;
 	}
 
-	import { type ColumnDef, type GlobalFilterTableState, type Updater } from "@tanstack/table-core";
+	import { type Updater } from "@tanstack/svelte-table";
 
 	import { data } from "./data.svelte";
 	import { Button } from "$lib";
-	import { DataTable } from "$lib/data-table";
-	import { createShadTable } from "$lib/components/custom/data-table/shad-table.svelte";
+	import { DataTable, createShadTable, type ColumnDef, type DataTableFeatures } from "$lib/data-table";
 
-	const columns: ColumnDef<DataType>[] = [
+	const columns: ColumnDef<DataTableFeatures, DataType>[] = [
 		{
 			accessorKey: "id",
 			header: "Id",
@@ -31,8 +30,8 @@
 		},
 	];
 
-	let globalFilter: GlobalFilterTableState = $state({ globalFilter: undefined });
-	const setGlobalFilter = (updater: Updater<GlobalFilterTableState>) => {
+	let globalFilter = $state<string | undefined>(undefined);
+	const setGlobalFilter = (updater: Updater<string | undefined>) => {
 		if (updater instanceof Function) {
 			globalFilter = updater(globalFilter);
 		} else globalFilter = updater;
@@ -50,7 +49,6 @@
 		},
 		onGlobalFilterChange: setGlobalFilter,
 		enableRowSelection: false,
-		enableVisibility: true,
 		enableGlobalFilter: true,
 	});
 </script>
