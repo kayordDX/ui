@@ -13,6 +13,7 @@
 	import DataTableHeader from "./DataTableHeader.svelte";
 	import DataTableFooter from "./DataTableFooter.svelte";
 	import DataTableView from "./DataTableView.svelte";
+	import DataTableFilterList from "./DataTableFilterList.svelte";
 
 	interface Props<T extends RowData> {
 		table: TableType<DataTableFeatures, T>;
@@ -27,6 +28,7 @@
 		noDataMessage?: string;
 		hideHeader?: boolean;
 		enableVisibility?: boolean;
+		enableFilters?: boolean;
 		enableFullscreen?: boolean;
 		/** Show the pagination bar (default `true`). */
 		pagination?: boolean;
@@ -47,6 +49,7 @@
 		noDataMessage = "No data",
 		hideHeader = false,
 		enableVisibility = false,
+		enableFilters = false,
 		enableFullscreen = false,
 		pagination = true,
 		disableUISorting = false,
@@ -81,6 +84,11 @@
 				<div class="flex items-center justify-between gap-2">
 					{#if rightToolbar}
 						{@render rightToolbar()}
+					{/if}
+					{#if enableFilters}
+						<div>
+							<DataTableFilterList {table} />
+						</div>
 					{/if}
 					{#if enableVisibility}
 						<div>

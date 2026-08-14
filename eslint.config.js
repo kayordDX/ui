@@ -36,6 +36,13 @@ export default defineConfig(
 		},
 	},
 	{
+		// mirrors TanStack's untyped-at-the-seam stock row-model factories
+		files: ["src/lib/components/custom/data-table/filter-list-row-model.ts"],
+		rules: {
+			"@typescript-eslint/no-explicit-any": "off",
+		},
+	},
+	{
 		// shadcn-svelte components may use `any` for flexibility; suppress the rule for those files
 		files: ["src/lib/components/ui/stepper/**"],
 		rules: {

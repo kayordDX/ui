@@ -17,4 +17,14 @@ export {
 	encodeSorting,
 	encodeTableState,
 } from "./table-search-params";
-export type { CustomColumnMeta, CustomOptions } from "./types";
+export type { CustomColumnMeta, CustomOptions, FilterColumnOption } from "./types";
+export { default as DataTableFilterList } from "./DataTableFilterList.svelte";
+export { applyFilterOperator, getFilterOperators, isExtendedColumnFilter, isInactiveFilter } from "./filter-list-utils";
+export { createFilterListRowModel } from "./filter-list-row-model";
+export type {
+	ExtendedColumnFilter,
+	FilterOperator,
+	FilterOperatorOption,
+	FilterVariant,
+	JoinOperator,
+} from "./filter-list-utils";

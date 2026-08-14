@@ -41,7 +41,7 @@ export const decodePageIndex = () => {
 export const encodeColumnFilters = (state: State) => {
 	return (
 		state.columnFilters
-			?.map(({ id, value }) => `${id}.${encodeURIComponent(JSON.stringify(value).replaceAll(".", "%2E"))}`)
+			?.map((filter) => `${filter.id}.${encodeURIComponent(JSON.stringify(filter).replaceAll(".", "%2E"))}`)
 			.join(",") ?? ""
 	);
 };
@@ -54,9 +54,11 @@ export const decodeColumnFilters = () => {
 			const [id, stringValue] = v.split(".");
 			if (!id) throw new Error("Invalid columnFilters");
 			if (stringValue === undefined) throw new Error("Invalid columnFilters");
+			const parsed = JSON.parse(decodeURIComponent(stringValue));
+			const entry = parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : { value: parsed };
 			return {
+				...entry,
 				id,
-				value: stringValue === "undefined" ? undefined : JSON.parse(decodeURIComponent(stringValue)),
 			};
 		})
 		.filter((x) => x !== null);

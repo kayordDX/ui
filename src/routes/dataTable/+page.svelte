@@ -6,6 +6,7 @@
 	import Example3 from "./Example3.svelte";
 	import Example4 from "./Example4.svelte";
 	import Example5 from "./Example5.svelte";
+	import Example6 from "./Example6.svelte";
 </script>
 
 <Tabs.Root value="ex0">
@@ -16,6 +17,7 @@
 		<Tabs.Trigger value="ex3">Example 3</Tabs.Trigger>
 		<Tabs.Trigger value="ex4">Example 4</Tabs.Trigger>
 		<Tabs.Trigger value="ex5">Example 5</Tabs.Trigger>
+		<Tabs.Trigger value="ex6">Example 6</Tabs.Trigger>
 	</Tabs.List>
 	<Tabs.Content value="ex0" class="w-full">
 		<div class="m-4">
@@ -51,6 +53,12 @@
 		<div class="w-full">
 			<h2>Example 5 — Server-side data (search, sort, filter, paginate)</h2>
 			<Example5 />
+		</div>
+	</Tabs.Content>
+	<Tabs.Content value="ex6" class="w-full">
+		<div class="m-4">
+			<h2>Example 6 — Filter list (any column, operators, and/or)</h2>
+			<Example6 />
 		</div>
 	</Tabs.Content>
 </Tabs.Root>

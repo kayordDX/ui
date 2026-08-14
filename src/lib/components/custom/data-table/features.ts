@@ -6,12 +6,13 @@ import {
 	sortFns,
 	aggregationFns,
 	createColumnHelper,
-	createFilteredRowModel,
+	createFacetedUniqueValues,
 	createPaginatedRowModel,
 	createSortedRowModel,
 	type RowData,
 } from "@tanstack/svelte-table";
 import type { CustomColumnMeta, CustomOptions } from "./types";
+import { createFilterListRowModel } from "./filter-list-row-model";
 
 /** Feature set type used by {@link createShadTable}. */
 export type DataTableFeatures = typeof features;
@@ -34,7 +35,8 @@ export const features = tableFeatures({
 	...stockFeatures,
 	sortedRowModel: createSortedRowModel(),
 	paginatedRowModel: createPaginatedRowModel(),
-	filteredRowModel: createFilteredRowModel(),
+	filteredRowModel: createFilterListRowModel(),
+	facetedUniqueValues: createFacetedUniqueValues(),
 	filterFns,
 	sortFns,
 	aggregationFns,
