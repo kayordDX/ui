@@ -8,8 +8,10 @@ export default defineConfig({
 	plugins: [tailwindcss(), sveltekit()],
 	test: {
 		expect: { requireAssertions: true },
-		// Playwright browser instances overwhelm machines/CI hosts. Cap to single worker.
+		// VM/CI-friendly execution: one worker, one test file at a time
 		maxWorkers: 1,
+		fileParallelism: false,
+		watch: false,
 		projects: [
 			{
 				extends: "./vite.config.ts",
@@ -17,9 +19,12 @@ export default defineConfig({
 					name: "client",
 					browser: {
 						enabled: true,
-						provider: playwright(),
+						provider: playwright({
+							launchOptions: {
+								args: ["--disable-dev-shm-usage", "--no-sandbox", "--disable-gpu"],
+							},
+						}),
 						instances: [{ browser: "chromium", headless: true }],
-						headless: false,
 					},
 					include: ["src/**/*.svelte.{test,spec}.{js,ts}"],
 					exclude: ["src/lib/server/**"],
