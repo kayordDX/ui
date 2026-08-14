@@ -26,8 +26,8 @@
 			</p>
 		{/if}
 		<p>
-			{table.getPrePaginatedRowModel().rows.length.toLocaleString()}
 			{#if !table.options.manualPagination}
+				{table.getPrePaginatedRowModel().rows.length.toLocaleString()}
 				of {table.options.data.length.toLocaleString()} rows
 			{/if}
 		</p>

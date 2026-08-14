@@ -8,6 +8,8 @@ export default defineConfig({
 	plugins: [tailwindcss(), sveltekit()],
 	test: {
 		expect: { requireAssertions: true },
+		// Playwright browser instances overwhelm machines/CI hosts. Cap to single worker.
+		maxWorkers: 1,
 		projects: [
 			{
 				extends: "./vite.config.ts",
