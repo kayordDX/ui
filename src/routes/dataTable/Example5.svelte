@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { getAbortSignal } from "svelte";
 	import type { ColumnDef } from "@tanstack/svelte-table";
 	import { DataTable, createShadTable, type DataTableFeatures } from "$lib/data-table";
 	import Input from "$lib/components/ui/input/input.svelte";
@@ -14,6 +15,11 @@
 		status: "active" | "inactive";
 	}
 
+	interface EmployeesResponse {
+		data: Employee[];
+		total: number;
+	}
+
 	const columns: ColumnDef<DataTableFeatures, Employee>[] = [
 		{ accessorKey: "id", header: "ID", maxSize: 10 },
 		{ accessorKey: "firstName", header: "First" },
@@ -25,23 +31,16 @@
 		{ accessorKey: "status", header: "Status" },
 	];
 
-	// Server response (the current page + the total row count).
-	let rows = $state<Employee[]>([]);
-	let total = $state(0);
-	let isLoading = $state(true);
-
 	// Uncontrolled table: sorting / filtering / pagination live in the table's
-	// atoms, and every change triggers a server fetch (below).
+	// atoms. Data arrives async — fed through the getters below, which read the
+	// `$derived` fetch result.
 	const table = createShadTable({
 		columns,
-		// Use getters so the table re-reads these as the server responds — `data`
-		// is the current page and `rowCount` is the server's total (drives the
-		// page count). Plain values would be snapshotted once.
 		get data() {
-			return rows;
+			return employees?.data ?? [];
 		},
 		get rowCount() {
-			return total;
+			return employees?.total ?? 0;
 		},
 		// Everything is resolved server-side, so disable the client-side pipelines.
 		manualPagination: true,
@@ -52,50 +51,35 @@
 		enableRowSelection: false,
 	});
 
-	// Re-fetch whenever search / sort / filter / page changes. All dependency
-	// reads happen synchronously (before the await), so $effect tracks them.
-	let lastRequestId = 0;
-	let lastQueryKey: string | undefined;
-	$effect(() => {
-		const q = table.atoms.globalFilter.get() ?? "";
-		const { pageIndex, pageSize } = table.atoms.pagination.get();
-		const sort =
-			table.atoms.sorting
-				.get()
-				.map((s) => `${s.desc ? "-" : ""}${s.id}`)
-				.join(",") || "-id";
-		const filters = JSON.stringify(table.atoms.columnFilters.get());
-
-		// Reset to page 1 when the query changes (but not on the initial run).
-		const queryKey = `${q}|${filters}|${sort}`;
-		if (lastQueryKey !== undefined && queryKey !== lastQueryKey) {
-			table.setPageIndex(0);
-		}
-		lastQueryKey = queryKey;
-
-		const requestId = ++lastRequestId;
-		isLoading = true;
+	// Remote fetch. Reads the table's atoms directly — each read is a dependency,
+	// so the derived re-runs whenever the query changes. `getAbortSignal()` aborts
+	// the in-flight request on re-run/destroy, and stale resolutions are discarded
+	// by the async derived, so no manual request-id bookkeeping is needed.
+	async function fetchEmployees(): Promise<EmployeesResponse> {
 		const params = new URLSearchParams({
-			q,
-			page: String(pageIndex),
-			size: String(pageSize),
-			sort,
-			filters,
+			q: table.atoms.globalFilter.get() ?? "",
+			page: String(table.atoms.pagination.get().pageIndex),
+			size: String(table.atoms.pagination.get().pageSize),
+			sort:
+				table.atoms.sorting
+					.get()
+					.map((s) => `${s.desc ? "-" : ""}${s.id}`)
+					.join(",") || "-id",
+			filters: JSON.stringify(table.atoms.columnFilters.get()),
 		});
-		fetch(`/api/employees?${params}`)
-			.then((r) => r.json())
-			.then((res: { data: Employee[]; total: number }) => {
-				if (requestId !== lastRequestId) return; // a newer request superseded this one
-				rows = res.data;
-				total = res.total;
-			})
-			.finally(() => {
-				if (requestId === lastRequestId) isLoading = false;
-			});
-	});
+		const res = await fetch(`/api/employees?${params}`, { signal: getAbortSignal() });
+		if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+		return await res.json();
+	}
+
+	// The "rest" — derived from the remote function. Suspends (the boundary below
+	// shows its `pending` snippet) while the first response is in flight, then
+	// re-resolves on every query change while keeping the previous data visible.
+	const employees = $derived(await fetchEmployees());
 
 	const globalFilter = $derived(table.atoms.globalFilter.get() ?? "");
 	const deptFilter = $derived(String(table.atoms.columnFilters.get().find((f) => f.id === "department")?.value ?? ""));
+
 	function filterDepartment(value: string) {
 		table.setColumnFilters(value ? [{ id: "department", value }] : []);
 		table.setPageIndex(0);
@@ -107,7 +91,10 @@
 		<Input
 			placeholder="Search all fields…"
 			value={globalFilter}
-			oninput={(e) => table.setGlobalFilter(e.currentTarget.value)}
+			oninput={(e) => {
+				table.setGlobalFilter(e.currentTarget.value);
+				table.setPageIndex(0);
+			}}
 		/>
 		<Input
 			placeholder="Filter by department…"
@@ -116,7 +103,15 @@
 		/>
 	</div>
 
-	<p class="text-muted-foreground text-sm">{total} matching records (server-side)</p>
+	<svelte:boundary>
+		{#snippet pending()}
+			<p class="text-muted-foreground text-sm">Loading…</p>
+		{/snippet}
+		{#snippet failed(error)}
+			<p class="text-destructive text-sm">{(error as Error).message}</p>
+		{/snippet}
 
-	<DataTable {table} {isLoading} headerClass="mt-2" enableFullscreen />
+		<p class="text-muted-foreground text-sm">{employees.total} matching records (server-side)</p>
+		<DataTable {table} headerClass="mt-2" enableFullscreen />
+	</svelte:boundary>
 </div>
