@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { getAbortSignal } from "svelte";
 	import type { ColumnDef } from "@tanstack/svelte-table";
 	import { DataTable, createShadTable, type DataTableFeatures } from "$lib/data-table";
+	import { getEmployees } from "$lib/server/employees.remote";
 	import Input from "$lib/components/ui/input/input.svelte";
 
 	interface Employee {
@@ -13,11 +13,6 @@
 		role: string;
 		salary: number;
 		status: "active" | "inactive";
-	}
-
-	interface EmployeesResponse {
-		data: Employee[];
-		total: number;
 	}
 
 	const columns: ColumnDef<DataTableFeatures, Employee>[] = [
@@ -52,30 +47,22 @@
 	});
 
 	// Remote fetch. Reads the table's atoms directly — each read is a dependency,
-	// so the derived re-runs whenever the query changes. `getAbortSignal()` aborts
-	// the in-flight request on re-run/destroy, and stale resolutions are discarded
-	// by the async derived, so no manual request-id bookkeeping is needed.
-	async function fetchEmployees(): Promise<EmployeesResponse> {
-		const params = new URLSearchParams({
+	// so the derived re-runs whenever the query changes. SvelteKit remote
+	// functions run on the server when called from the browser, and the async
+	// derived discards stale resolutions automatically.
+	const employees: Awaited<ReturnType<typeof getEmployees>> = $derived(
+		await getEmployees({
 			q: table.atoms.globalFilter.get() ?? "",
-			page: String(table.atoms.pagination.get().pageIndex),
-			size: String(table.atoms.pagination.get().pageSize),
+			page: table.atoms.pagination.get().pageIndex,
+			size: table.atoms.pagination.get().pageSize,
 			sort:
 				table.atoms.sorting
 					.get()
 					.map((s) => `${s.desc ? "-" : ""}${s.id}`)
-					.join(",") || "-id",
-			filters: JSON.stringify(table.atoms.columnFilters.get()),
-		});
-		const res = await fetch(`/api/employees?${params}`, { signal: getAbortSignal() });
-		if (!res.ok) throw new Error(`Request failed: ${res.status}`);
-		return await res.json();
-	}
-
-	// The "rest" — derived from the remote function. Suspends (the boundary below
-	// shows its `pending` snippet) while the first response is in flight, then
-	// re-resolves on every query change while keeping the previous data visible.
-	const employees = $derived(await fetchEmployees());
+					.join(",") || undefined,
+			filters: table.atoms.columnFilters.get().map((f) => ({ id: f.id, value: f.value })),
+		})
+	);
 
 	const globalFilter = $derived(table.atoms.globalFilter.get() ?? "");
 	const deptFilter = $derived(String(table.atoms.columnFilters.get().find((f) => f.id === "department")?.value ?? ""));

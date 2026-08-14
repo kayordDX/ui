@@ -15,6 +15,9 @@ const config = {
 			$lib: "./src/lib",
 		},
 		adapter: adapter(),
+		experimental: {
+			remoteFunctions: true,
+		},
 	},
 	vitePlugin: {
 		inspector: {
