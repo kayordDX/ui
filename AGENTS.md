@@ -1,27 +1,16 @@
 # AGENTS.md
 
-## Project Overview
+UI component library reused across apps. Components live in `src/lib/components/`.
 
-UI project to be reused accross applications. Manage shadcn ui from this library and then simply import in other projects.
+## Commands
 
-## Skills
+- `pnpm install` — install dependencies.
+- `pnpm verify` — run all quality gates (check, lint, test) after every change.
+- `pnpm format` — apply formatting.
+- `pnpm dev` — run the demo app.
 
-TODO: Add skills and svelte skills specifically.
+## Rules
 
-## Environment
-
-- First run `pnpm install` to install dependencies.
-
-## General Guidelines
-
-- Do not add comments. Comments only where it is absolutely necessary.
-
-## Quality Gates (mandatory — run after every change)
-
-### Frontend
-
-```sh
-pnpm check
-pnpm lint
-pnpm format
-```
+- Do not add comments unless necessary.
+- Never edit `src/lib/components/ui/`; regenerate it with `pnpm lib`.
+- Follow existing patterns and run `pnpm verify` before finishing.
