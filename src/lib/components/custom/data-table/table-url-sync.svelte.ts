@@ -7,6 +7,27 @@ import { defaultSearchParamSchema } from "./types";
 import { decodeColumnFilters, decodeSorting, encodeColumnFilters, encodeSorting } from "./table-search-params";
 
 /**
+ * Which URL params to sync with the table. Omitted keys default to `true`, so
+ * calling `useTableUrlSync(table)` syncs everything. Pass `false` to opt out
+ * of individual params, or pass only the keys you want:
+ *
+ * ```ts
+ * // sync only paging (`?page=2`)
+ * useTableUrlSync(table, { pagination: true });
+ * ```
+ */
+export interface TableUrlSyncOptions {
+	/** Syncs the global filter to `?search=` (default `true`). */
+	globalFilter?: boolean;
+	/** Syncs sorting to `?sort=` (default `true`). */
+	sorting?: boolean;
+	/** Syncs column filters to `?filter=` (default `true`). */
+	columnFilters?: boolean;
+	/** Syncs the page index to `?page=` (default `true`). */
+	pagination?: boolean;
+}
+
+/**
  * Keeps a table's global filter, sorting, column filters and page index in sync
  * with the URL search params (`search`, `sort`, `filter`, `page`).
  *
@@ -17,43 +38,61 @@ import { decodeColumnFilters, decodeSorting, encodeColumnFilters, encodeSorting 
  * const table = createShadTable({ ... });
  * useTableUrlSync(table);
  * ```
+ *
+ * By default all four params are synced; pass {@link TableUrlSyncOptions} to
+ * enable only a subset, e.g. `useTableUrlSync(table, { pagination: true })`.
  */
-export function useTableUrlSync<TData extends RowData>(table: Table<DataTableFeatures, TData>) {
+export function useTableUrlSync<TData extends RowData>(
+	table: Table<DataTableFeatures, TData>,
+	options?: TableUrlSyncOptions
+) {
+	const enabled = {
+		globalFilter: true,
+		sorting: true,
+		columnFilters: true,
+		pagination: true,
+		...options,
+	};
+
 	const params = useSearchParams(defaultSearchParamSchema, { pushHistory: false });
 
 	// Hydrate table state from the current URL once on mount.
 	onMount(() => {
-		table.setGlobalFilter(params.search);
-		table.setSorting(decodeSorting() ?? []);
-		table.setPageIndex(params.page);
-		table.setColumnFilters(decodeColumnFilters() ?? []);
+		if (enabled.globalFilter) table.setGlobalFilter(params.search);
+		if (enabled.sorting) table.setSorting(decodeSorting() ?? []);
+		if (enabled.pagination) table.setPageIndex(params.page);
+		if (enabled.columnFilters) table.setColumnFilters(decodeColumnFilters() ?? []);
 	});
 
 	// When navigating with new sort/search/filter params, snap back to page 1.
 	beforeNavigate((navigation) => {
-		if (Number(navigation.to?.url.searchParams.get("page") ?? "0") > 0) {
-			if (
-				navigation.from?.url.searchParams.get("sort") != navigation.to?.url.searchParams.get("sort") ||
-				navigation.from?.url.searchParams.get("search") != navigation.to?.url.searchParams.get("search") ||
-				navigation.from?.url.searchParams.get("filter") != navigation.to?.url.searchParams.get("filter")
-			) {
+		if (enabled.pagination && Number(navigation.to?.url.searchParams.get("page") ?? "0") > 0) {
+			const queryChanged =
+				(enabled.sorting &&
+					navigation.from?.url.searchParams.get("sort") != navigation.to?.url.searchParams.get("sort")) ||
+				(enabled.globalFilter &&
+					navigation.from?.url.searchParams.get("search") != navigation.to?.url.searchParams.get("search")) ||
+				(enabled.columnFilters &&
+					navigation.from?.url.searchParams.get("filter") != navigation.to?.url.searchParams.get("filter"));
+			if (queryChanged) {
 				table.resetPageIndex();
 			}
 		}
 	});
 
-	// Write atoms back to the URL. Only the URL-feeding atoms are read so the
-	// effect doesn't re-run on unrelated state (e.g. row selection).
+	// Write atoms back to the URL. Only the enabled atoms are read (and thus
+	// tracked) so the effect doesn't re-run on unrelated state (e.g. row
+	// selection), and disabled params are left untouched in the URL.
 	$effect(() => {
-		const search = table.atoms.globalFilter.get();
-		const page = table.atoms.pagination.get().pageIndex;
-		const sorting = table.atoms.sorting.get();
-		const columnFilters = table.atoms.columnFilters.get();
+		const search = enabled.globalFilter ? table.atoms.globalFilter.get() : undefined;
+		const page: number | undefined = enabled.pagination ? table.atoms.pagination.get().pageIndex : undefined;
+		const sorting = enabled.sorting ? table.atoms.sorting.get() : undefined;
+		const columnFilters = enabled.columnFilters ? table.atoms.columnFilters.get() : undefined;
 		untrack(() => {
-			params.search = search;
-			params.page = page;
-			params.sort = encodeSorting({ sorting });
-			params.filter = encodeColumnFilters({ columnFilters });
+			if (enabled.globalFilter) params.search = search;
+			if (enabled.pagination && page !== undefined) params.page = page;
+			if (enabled.sorting) params.sort = encodeSorting({ sorting });
+			if (enabled.columnFilters) params.filter = encodeColumnFilters({ columnFilters });
 		});
 	});
 }
