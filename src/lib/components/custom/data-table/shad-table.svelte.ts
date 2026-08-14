@@ -1,8 +1,18 @@
-import { createTable, type ColumnDef, type RowData, type Table } from "@tanstack/svelte-table";
+import {
+	createTable,
+	functionalUpdate,
+	type ColumnDef,
+	type RowData,
+	type Table,
+	type TableState,
+} from "@tanstack/svelte-table";
 import DataTableCheckbox from "./DataTableCheckbox.svelte";
 import { renderComponent } from "$lib/components/ui/data-table";
 import { features, type DataTableFeatures } from "./features";
 import type { BaseOptions } from "./types";
+
+/** External state slices that can be controlled via `controlledState`. */
+export type ControlledState = Partial<TableState<DataTableFeatures>>;
 
 export type ShadTableOptions<TData extends RowData> = BaseOptions<TData> & {
 	/**
@@ -10,21 +20,84 @@ export type ShadTableOptions<TData extends RowData> = BaseOptions<TData> & {
 	 * prepends a checkbox column.
 	 */
 	enableRowSelectionUI?: boolean;
+	/**
+	 * Controlled external state, e.g. a `$state` object owned by the consumer:
+	 *
+	 * ```svelte
+	 * const tableState = $state({
+	 *   sorting: [] as SortingState,
+	 *   globalFilter: "",
+	 *   pagination: { pageIndex: 0, pageSize: 10 } as PaginationState,
+	 * });
+	 *
+	 * const table = createShadTable({
+	 *   columns,
+	 *   controlledState: tableState,
+	 *   resetPageIndexOn: ["sorting", "globalFilter"],
+	 * });
+	 * ```
+	 *
+	 * For every provided slice, {@link createShadTable} wires the v9 `state`
+	 * getters and `on*Change` handlers for you — no `state: { get x() {...} }`
+	 * or `onXChange` boilerplate. Reads/writes go through the reactive object,
+	 * so the table and the consumer stay in sync. This is the pattern to use
+	 * with server-side data / TanStack Query, where the query key derives from
+	 * the external state.
+	 */
+	controlledState?: ControlledState;
+	/**
+	 * When one of these controlled slices changes, `pagination.pageIndex` is
+	 * reset to 0 (like TanStack's own examples). Only applies to slices present
+	 * in `controlledState` and only when `pagination` is also controlled.
+	 */
+	resetPageIndexOn?: Array<keyof ControlledState>;
 };
 
 /**
  * Creates a fully reactive TanStack Table v9 instance preconfigured for the
  * `<DataTable>` component.
  *
- * All features and row models come from the shared, static {@link features}
- * object. v9's `createTable` is atom-backed, so the returned table updates the
- * UI directly — no manual reactivity wrapper or `state`/`onXxxChange` plumbing
- * is needed. Use the `table.atoms.*` API to read/write state externally.
+ * By default the table is uncontrolled: v9 owns state internally and you read
+ * it via `table.atoms.*`. Pass `controlledState` (a reactive `$state` object)
+ * to lift slices into external state — useful for server-side data, where the
+ * query derives from the state, or TanStack Query.
  */
 export function createShadTable<TData extends RowData>(
 	shadOptions: ShadTableOptions<TData>
 ): Table<DataTableFeatures, TData> {
-	const { enableRowSelectionUI = true, ...rest } = shadOptions;
+	const { enableRowSelectionUI = true, controlledState, resetPageIndexOn = [], ...rest } = shadOptions;
+
+	// Build v9 `state` getters + `on*Change` handlers from the controlled slices.
+	// Getters are defined as accessors (not spread) so they survive into the
+	// options and read through the reactive object — v9's option sync
+	// ($effect.pre) tracks them and re-syncs when the consumer mutates state.
+	const externalState: Record<string, unknown> = {};
+	const externalHandlers: Record<string, (updater: unknown) => void> = {};
+	if (controlledState) {
+		for (const key of Object.keys(controlledState)) {
+			Object.defineProperty(externalState, key, {
+				enumerable: true,
+				get: () => controlledState[key as keyof ControlledState],
+			});
+			const resetPage = resetPageIndexOn.includes(key as keyof ControlledState);
+			externalHandlers[`on${key.charAt(0).toUpperCase()}${key.slice(1)}Change`] = (updater) => {
+				const record = controlledState as Record<string, unknown>;
+				record[key] = functionalUpdate(updater, record[key]);
+				if (resetPage && controlledState.pagination) {
+					controlledState.pagination = { ...controlledState.pagination, pageIndex: 0 };
+				}
+			};
+		}
+	}
+	const state = { ...(rest.state ?? {}) };
+	if (controlledState) {
+		for (const key of Object.keys(controlledState)) {
+			Object.defineProperty(state, key, {
+				enumerable: true,
+				get: () => controlledState[key as keyof ControlledState],
+			});
+		}
+	}
 
 	// Row-selection column. The header/cell closures reference `table` (assigned
 	// below); that is safe because they only run during render, after `table`
@@ -66,6 +139,7 @@ export function createShadTable<TData extends RowData>(
 		get rowCount() {
 			return shadOptions.rowCount;
 		},
+		...(controlledState ? { state, ...externalHandlers } : {}),
 		features,
 	});
 
