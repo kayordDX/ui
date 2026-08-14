@@ -27,6 +27,10 @@ vi.mock("$lib/data-table", async () => {
 	};
 });
 
+vi.mock("./employees.remote", () => ({
+	getEmployees: vi.fn(() => Promise.resolve({ data: [], total: 0, page: 0, size: 10 })),
+}));
+
 vi.mock("$lib/components/custom/data-table/shad-table.svelte", () => ({
 	createShadTable: vi.fn(() => ({
 		options: {},
@@ -45,6 +49,6 @@ describe("dataTable page", () => {
 		const { container } = await render(Page);
 
 		expect(container).toBeDefined();
-		expect(container.childElementCount).toBeGreaterThan(0);
+		await vi.waitFor(() => expect(container.childElementCount).toBeGreaterThan(0));
 	});
 });
