@@ -167,6 +167,24 @@ describe("fromQueryKitFilter", () => {
 		expect(toQueryKitFilter([{ id: "id", value: 5, operator: "greaterThan" }], { globalFilter: "ali" })).toBe("id > 5");
 	});
 
+	it("always ANDs the global filter, even when filters join with or", () => {
+		expect(
+			toQueryKitFilter(
+				[
+					{ id: "a", value: 1, operator: "equals", filterId: "f1", joinOperator: "and" },
+					{ id: "b", value: 2, operator: "equals", filterId: "f2", joinOperator: "or" },
+				],
+				{ globalFilter: "x", globalFilterColumns: ["name"] }
+			)
+		).toBe('(name) @=* "x" && (a == 1 || b == 2)');
+		expect(
+			toQueryKitFilter([{ id: "a", value: 1, operator: "equals", joinOperator: "or" }], {
+				globalFilter: "x",
+				globalFilterColumns: ["name"],
+			})
+		).toBe('(name) @=* "x" && a == 1');
+	});
+
 	it("serializes sorting into QueryKit sort syntax", () => {
 		expect(
 			toQueryKitSort([

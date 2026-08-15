@@ -173,16 +173,19 @@ export interface ToQueryKitFilterOptions {
  * server round-trip can never change meaning.
  */
 export function toQueryKitFilter(filters: readonly ExtendedColumnFilter[], options?: ToQueryKitFilterOptions): string {
-	const entries: FilterPart[] = [];
+	const filterString = buildFiltersString(filters);
 	const globalFilter = options?.globalFilter;
 	const globalFilterColumns = options?.globalFilterColumns ?? [];
-	if (globalFilter && globalFilterColumns.length) {
-		entries.push({
-			text: new QueryBuilder().containsCaseInsensitive(globalFilterColumns, globalFilter).build(),
-			multi: false,
-			join: "&&",
-		});
-	}
+	if (!globalFilter || !globalFilterColumns.length) return filterString;
+
+	const globalText = new QueryBuilder().containsCaseInsensitive(globalFilterColumns, globalFilter).build();
+	if (!filterString) return globalText;
+	const needsParens = filterString.includes("&&") || filterString.includes("||");
+	return `${globalText} && ${needsParens ? `(${filterString})` : filterString}`;
+}
+
+function buildFiltersString(filters: readonly ExtendedColumnFilter[]): string {
+	const entries: FilterPart[] = [];
 	for (const filter of filters) {
 		if (isInactiveFilter(filter)) continue;
 		const text = buildFilterPart(filter);

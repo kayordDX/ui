@@ -88,7 +88,7 @@
 					{#if rightToolbar}
 						{@render rightToolbar()}
 					{/if}
-					{#if enableFilters}
+					{#if enableFilters || enableQueryKitFilters}
 						<div>
 							<DataTableFilterList {table} queryKit={enableQueryKitFilters} />
 						</div>
