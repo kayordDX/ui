@@ -29,6 +29,8 @@
 		hideHeader?: boolean;
 		enableVisibility?: boolean;
 		enableFilters?: boolean;
+		/** Show the live QueryKit filter string inside the filter list (requires `querykit-builder`). */
+		enableQueryKitFilters?: boolean;
 		enableFullscreen?: boolean;
 		/** Show the pagination bar (default `true`). */
 		pagination?: boolean;
@@ -50,6 +52,7 @@
 		hideHeader = false,
 		enableVisibility = false,
 		enableFilters = false,
+		enableQueryKitFilters = false,
 		enableFullscreen = false,
 		pagination = true,
 		disableUISorting = false,
@@ -87,7 +90,7 @@
 					{/if}
 					{#if enableFilters}
 						<div>
-							<DataTableFilterList {table} />
+							<DataTableFilterList {table} queryKit={enableQueryKitFilters} />
 						</div>
 					{/if}
 					{#if enableVisibility}

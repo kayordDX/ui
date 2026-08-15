@@ -43,6 +43,10 @@
 			"types": "./dist/data-table/index.d.ts",
 			"default": "./dist/data-table/index.js"
 		},
+		"./query-kit": {
+			"types": "./dist/query-kit/index.d.ts",
+			"default": "./dist/query-kit/index.js"
+		},
 		"./drawer": {
 			"types": "./dist/drawer/index.d.ts",
 			"default": "./dist/drawer/index.js"
@@ -87,7 +91,8 @@
 		"svelte-sonner": "^1.0.5",
 		"sveltekit-superforms": "^2.27.1",
 		"vaul-svelte": "^1.0.0-next.7",
-		"zod": "^4.0.5"
+		"zod": "^4.0.5",
+		"querykit-builder": "^0.2.0"
 	},
 	"peerDependenciesMeta": {
 		"layerchart": {
@@ -121,6 +126,9 @@
 			"optional": true
 		},
 		"paneforge": {
+			"optional": true
+		},
+		"querykit-builder": {
 			"optional": true
 		}
 	},
@@ -160,6 +168,7 @@
 		"prettier-plugin-svelte": "4.1.1",
 		"prettier-plugin-tailwindcss": "^0.8.1",
 		"publint": "^0.3.23",
+		"querykit-builder": "0.2.0",
 		"runed": "^0.37.1",
 		"shadcn-svelte": "^1.5.0",
 		"svelte": "^5.56.8",

@@ -2,6 +2,7 @@
 	import CalendarIcon from "@lucide/svelte/icons/calendar";
 	import Check from "@lucide/svelte/icons/check";
 	import ChevronsUpDown from "@lucide/svelte/icons/chevrons-up-down";
+	import Copy from "@lucide/svelte/icons/copy";
 	import ListFilter from "@lucide/svelte/icons/list-filter";
 	import Trash2 from "@lucide/svelte/icons/trash-2";
 	import { getLocalTimeZone, parseAbsoluteToLocal, toCalendarDate } from "@internationalized/date";
@@ -30,10 +31,12 @@
 
 	interface Props {
 		table: Table<DataTableFeatures, TData>;
+		/** Render the live QueryKit filter string with a copy button (needs `querykit-builder` installed). */
+		queryKit?: boolean;
 		class?: string;
 	}
 
-	let { table, class: className }: Props = $props();
+	let { table, queryKit = false, class: className }: Props = $props();
 
 	const columnFilters = $derived(table.atoms.columnFilters.get() as Array<ExtendedColumnFilter>);
 	const activeFilterCount = $derived(columnFilters.filter((filter) => !isInactiveFilter(filter)).length);
@@ -170,6 +173,22 @@
 			onFilterUpdate(filterId, { value: current === optionValue ? "" : optionValue });
 		}
 	}
+
+	let queryKitFilter = $state("");
+	let copied = $state(false);
+
+	$effect(() => {
+		if (!queryKit) return;
+		import("$lib/query-kit/query-kit-filter").then(({ toQueryKitFilter }) => {
+			queryKitFilter = toQueryKitFilter(columnFilters);
+		});
+	});
+
+	async function copyQueryKitFilter() {
+		await navigator.clipboard.writeText(queryKitFilter);
+		copied = true;
+		setTimeout(() => (copied = false), 1500);
+	}
 </script>
 
 <Popover.Root bind:open>
@@ -216,6 +235,25 @@
 				</Button>
 			{/if}
 		</div>
+		{#if queryKit}
+			<div class="bg-muted/40 flex items-center gap-2 rounded-md border px-2 py-1.5">
+				<code class="min-w-0 flex-1 truncate font-mono text-xs">{queryKitFilter || "No active filters"}</code>
+				<Button
+					size="icon"
+					variant="ghost"
+					class="size-6 shrink-0 [&_svg]:size-3"
+					aria-label="Copy query"
+					disabled={!queryKitFilter}
+					onclick={copyQueryKitFilter}
+				>
+					{#if copied}
+						<Check />
+					{:else}
+						<Copy />
+					{/if}
+				</Button>
+			</div>
+		{/if}
 	</Popover.Content>
 </Popover.Root>
 

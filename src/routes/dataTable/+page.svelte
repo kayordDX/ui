@@ -7,6 +7,7 @@
 	import Example4 from "./Example4.svelte";
 	import Example5 from "./Example5.svelte";
 	import Example6 from "./Example6.svelte";
+	import Example7 from "./Example7.svelte";
 </script>
 
 <Tabs.Root value="ex0">
@@ -18,6 +19,7 @@
 		<Tabs.Trigger value="ex4">Example 4</Tabs.Trigger>
 		<Tabs.Trigger value="ex5">Example 5</Tabs.Trigger>
 		<Tabs.Trigger value="ex6">Example 6</Tabs.Trigger>
+		<Tabs.Trigger value="ex7">Example 7</Tabs.Trigger>
 	</Tabs.List>
 	<Tabs.Content value="ex0" class="w-full">
 		<div class="m-4">
@@ -59,6 +61,12 @@
 		<div class="m-4">
 			<h2>Example 6 — Filter list (any column, operators, and/or)</h2>
 			<Example6 />
+		</div>
+	</Tabs.Content>
+	<Tabs.Content value="ex7" class="w-full">
+		<div class="m-4">
+			<h2>Example 7 — Filter list with QueryKit serialization (opt-in)</h2>
+			<Example7 />
 		</div>
 	</Tabs.Content>
 </Tabs.Root>

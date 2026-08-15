@@ -6,7 +6,9 @@ export type FilterOperator =
 	| "contains"
 	| "notContains"
 	| "startsWith"
+	| "doesNotStartWith"
 	| "endsWith"
+	| "doesNotEndWith"
 	| "equals"
 	| "notEquals"
 	| "greaterThan"
@@ -18,6 +20,7 @@ export type FilterOperator =
 	| "after"
 	| "includesSome"
 	| "includesAll"
+	| "includesNone"
 	| "isEmpty"
 	| "isNotEmpty";
 
@@ -40,7 +43,9 @@ const textOperators: FilterOperatorOption[] = [
 	{ value: "contains", label: "contains" },
 	{ value: "notContains", label: "does not contain" },
 	{ value: "startsWith", label: "starts with" },
+	{ value: "doesNotStartWith", label: "does not start with" },
 	{ value: "endsWith", label: "ends with" },
+	{ value: "doesNotEndWith", label: "does not end with" },
 	{ value: "equals", label: "equals" },
 	{ value: "notEquals", label: "not equals" },
 	{ value: "isEmpty", label: "is empty" },
@@ -79,6 +84,7 @@ const selectOperators: FilterOperatorOption[] = [
 const multiSelectOperators: FilterOperatorOption[] = [
 	{ value: "includesSome", label: "includes any" },
 	{ value: "includesAll", label: "includes all" },
+	{ value: "includesNone", label: "includes none" },
 	{ value: "isEmpty", label: "is empty" },
 	{ value: "isNotEmpty", label: "is not empty" },
 ];
@@ -167,8 +173,16 @@ export function applyFilterOperator(rowValue: unknown, operator: FilterOperator,
 			return String(rowValue ?? "")
 				.toLowerCase()
 				.startsWith(String(filterValue ?? "").toLowerCase());
+		case "doesNotStartWith":
+			return !String(rowValue ?? "")
+				.toLowerCase()
+				.startsWith(String(filterValue ?? "").toLowerCase());
 		case "endsWith":
 			return String(rowValue ?? "")
+				.toLowerCase()
+				.endsWith(String(filterValue ?? "").toLowerCase());
+		case "doesNotEndWith":
+			return !String(rowValue ?? "")
 				.toLowerCase()
 				.endsWith(String(filterValue ?? "").toLowerCase());
 		case "equals": {
@@ -224,11 +238,14 @@ export function applyFilterOperator(rowValue: unknown, operator: FilterOperator,
 			return t !== undefined && (min === undefined || t >= min) && (max === undefined || t <= max);
 		}
 		case "includesSome":
-		case "includesAll": {
+		case "includesAll":
+		case "includesNone": {
 			const selected = Array.isArray(filterValue) ? filterValue : [filterValue];
 			const includes = (v: unknown) =>
 				Array.isArray(rowValue) ? rowValue.some((item) => stringEquals(item, v)) : stringEquals(rowValue, v);
-			return operator === "includesSome" ? selected.some(includes) : selected.every(includes);
+			if (operator === "includesSome") return selected.some(includes);
+			if (operator === "includesAll") return selected.every(includes);
+			return !selected.some(includes);
 		}
 		default:
 			return true;
