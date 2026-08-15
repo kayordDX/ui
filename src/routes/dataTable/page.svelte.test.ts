@@ -45,6 +45,6 @@ describe("dataTable page", () => {
 		const { container } = await render(Page);
 
 		expect(container).toBeDefined();
-		expect(container.childElementCount).toBeGreaterThan(0);
+		await vi.waitFor(() => expect(container.childElementCount).toBeGreaterThan(0));
 	});
 });
