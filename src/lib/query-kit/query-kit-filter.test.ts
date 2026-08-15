@@ -1,6 +1,12 @@
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import type { ExtendedColumnFilter } from "../components/custom/data-table/filter-list-utils";
-import { fromQueryKitFilter, toQueryKitFilter } from "./query-kit-filter";
+import {
+	fromQueryKitFilter,
+	parseQueryKitFilter,
+	parseQueryKitSort,
+	toQueryKitFilter,
+	toQueryKitSort,
+} from "./query-kit-filter";
 
 describe("toQueryKitFilter", () => {
 	it("serializes a single text contains filter", () => {
@@ -113,6 +119,28 @@ describe("fromQueryKitFilter", () => {
 		expect(chips[1]).toMatchObject({ id: "Name", operator: "isNotEmpty" });
 	});
 
+	it("extracts a property-group condition as the global filter", () => {
+		const parsed = parseQueryKitFilter('(FirstName, LastName) @=* "king" && Rating > 4');
+		expect(parsed.globalFilter).toEqual({ columns: ["FirstName", "LastName"], value: "king" });
+		expect(parsed.filters.map((c) => c.id)).toEqual(["Rating"]);
+	});
+
+	it("round-trips the global filter", () => {
+		const serialized = toQueryKitFilter([{ id: "id", value: 5, operator: "greaterThan" }], {
+			globalFilter: "ali",
+			globalFilterColumns: ["name", "email"],
+		});
+		const parsed = parseQueryKitFilter(serialized);
+		expect(parsed.globalFilter).toEqual({ columns: ["name", "email"], value: "ali" });
+		expect(parsed.filters[0]).toMatchObject({ id: "id", value: 5, operator: "greaterThan" });
+	});
+
+	it("skips unsupported operators and returns [] for empty or invalid input", () => {
+		expect(fromQueryKitFilter('Title ~~ "doon"')).toEqual([]);
+		expect(fromQueryKitFilter("")).toEqual([]);
+		expect(fromQueryKitFilter("Age == ")).toEqual([]);
+	});
+
 	it("merges consecutive has conditions into one multi-select chip", () => {
 		const chips = fromQueryKitFilter('Tags ^$* "a" || Tags ^$* "b"');
 		expect(chips).toHaveLength(1);
@@ -124,17 +152,41 @@ describe("fromQueryKitFilter", () => {
 		expect(chips[0]).toMatchObject({ id: "Status", operator: "includesNone", value: ["Closed"] });
 	});
 
-	it("skips unsupported operators and returns [] for empty or invalid input", () => {
-		expect(fromQueryKitFilter('Title ~~ "doon"')).toEqual([]);
-		expect(fromQueryKitFilter("")).toEqual([]);
-		expect(fromQueryKitFilter("Age == ")).toEqual([]);
+	it("folds the global filter in as a property group", () => {
+		expect(
+			toQueryKitFilter([{ id: "id", value: 5, operator: "greaterThan" }], {
+				globalFilter: "ali",
+				globalFilterColumns: ["firstName", "lastName"],
+			})
+		).toBe('(firstName, lastName) @=* "ali" && id > 5');
+		expect(toQueryKitFilter([], { globalFilter: "ali", globalFilterColumns: ["name"] })).toBe('(name) @=* "ali"');
 	});
 
-	it("skips property-group left-hand sides with a warning", () => {
-		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
-		expect(fromQueryKitFilter('(FirstName, LastName) @=* "king"')).toEqual([]);
-		expect(warn).toHaveBeenCalled();
-		warn.mockRestore();
+	it("ignores the global filter when it is empty or has no columns", () => {
+		expect(toQueryKitFilter([], { globalFilter: "", globalFilterColumns: ["name"] })).toBe("");
+		expect(toQueryKitFilter([{ id: "id", value: 5, operator: "greaterThan" }], { globalFilter: "ali" })).toBe("id > 5");
+	});
+
+	it("serializes sorting into QueryKit sort syntax", () => {
+		expect(
+			toQueryKitSort([
+				{ id: "Title", desc: false },
+				{ id: "Age", desc: true },
+			])
+		).toBe("Title, -Age");
+		expect(toQueryKitSort([])).toBe("");
+	});
+
+	it("parses QueryKit sort strings (Sieve and verbose)", () => {
+		expect(parseQueryKitSort("Title, -Age")).toEqual([
+			{ id: "Title", desc: false },
+			{ id: "Age", desc: true },
+		]);
+		expect(parseQueryKitSort("Title asc, Age DESC")).toEqual([
+			{ id: "Title", desc: false },
+			{ id: "Age", desc: true },
+		]);
+		expect(parseQueryKitSort("")).toEqual([]);
 	});
 
 	it("round-trips through toQueryKitFilter", () => {

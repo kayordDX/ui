@@ -1,4 +1,11 @@
-import QueryBuilder, { tryParseQuery, type ConditionExpr, type QueryExpr } from "querykit-builder";
+import QueryBuilder, {
+	SortBuilder,
+	parseSort,
+	tryParseQuery,
+	type ConditionExpr,
+	type QueryExpr,
+} from "querykit-builder";
+import type { SortingState } from "@tanstack/svelte-table";
 import {
 	isInactiveFilter,
 	type ExtendedColumnFilter,
@@ -138,6 +145,13 @@ function buildFilterPart(filter: ExtendedColumnFilter): string {
 	return qb.build();
 }
 
+export interface ToQueryKitFilterOptions {
+	/** Fold the global search into the query as a case-insensitive property group, e.g. `(Name, Email) @=* "ali"`. */
+	globalFilter?: string;
+	/** Columns the global search matches against (required for `globalFilter` to be included). */
+	globalFilterColumns?: string[];
+}
+
 /**
  * Serializes the table's extended column filters into a QueryKit filter string
  * (the input format of `ApplyQueryKitFilter` on the .NET side), e.g.
@@ -150,12 +164,25 @@ function buildFilterPart(filter: ExtendedColumnFilter): string {
  * multi-select values become `^$*` conditions joined with `&&`/`||` (`!^^*`
  * for `includesNone`) so semantics match between client and server.
  *
+ * When {@link ToQueryKitFilterOptions.globalFilter} is provided it is
+ * prepended as a property-group condition, which is QueryKit's idiomatic
+ * "search anywhere" — it combines with the column filters using `&&`.
+ *
  * The join order is preserved exactly as the table evaluates it: when the
  * filters mix `and`/`or`, the output is parenthesized left-to-right so a
  * server round-trip can never change meaning.
  */
-export function toQueryKitFilter(filters: readonly ExtendedColumnFilter[]): string {
+export function toQueryKitFilter(filters: readonly ExtendedColumnFilter[], options?: ToQueryKitFilterOptions): string {
 	const entries: FilterPart[] = [];
+	const globalFilter = options?.globalFilter;
+	const globalFilterColumns = options?.globalFilterColumns ?? [];
+	if (globalFilter && globalFilterColumns.length) {
+		entries.push({
+			text: new QueryBuilder().containsCaseInsensitive(globalFilterColumns, globalFilter).build(),
+			multi: false,
+			join: "&&",
+		});
+	}
 	for (const filter of filters) {
 		if (isInactiveFilter(filter)) continue;
 		const text = buildFilterPart(filter);
@@ -189,6 +216,25 @@ const FAMILY_JOIN: Partial<Record<FilterOperator, JoinOperator>> = {
 	includesNone: "and",
 };
 
+/**
+ * Serializes a table's sorting state into QueryKit's sort input
+ * (the format of `ApplyQueryKitSort`), e.g. `Title, -Age`.
+ */
+export function toQueryKitSort(sorting: readonly SortingState[number][]): string {
+	const builder = new SortBuilder();
+	for (const sort of sorting) {
+		if (sort.desc) builder.desc(sort.id);
+		else builder.asc(sort.id);
+	}
+	return builder.build();
+}
+
+/** Parses a QueryKit sort string (Sieve or verbose syntax) into a sorting state. */
+export function parseQueryKitSort(input: string): SortingState {
+	if (!input?.trim()) return [];
+	return parseSort(input).map(({ property, direction }) => ({ id: property, desc: direction === "desc" }));
+}
+
 function rhsValue(rhs: ConditionExpr["rhs"]): unknown {
 	if (rhs.kind === "string") return rhs.value;
 	if (rhs.kind === "number") return rhs.value;
@@ -200,7 +246,7 @@ function rhsValue(rhs: ConditionExpr["rhs"]): unknown {
 
 function conditionToChip(expr: ConditionExpr): ExtendedColumnFilter | null {
 	if (expr.lhs.kind !== "property") {
-		console.warn("[query-kit] property groups / arithmetic left-hand sides are not supported — filter skipped");
+		console.warn("[query-kit] arithmetic left-hand sides are not supported — filter skipped");
 		return null;
 	}
 	const id = expr.lhs.path;
@@ -291,36 +337,63 @@ function mergeFamilyChips(chips: ExtendedColumnFilter[]): ExtendedColumnFilter[]
 	return result;
 }
 
-function collect(expr: QueryExpr | null, out: ExtendedColumnFilter[], nextJoin: JoinOperator): void {
+function collect(
+	expr: QueryExpr | null,
+	out: ExtendedColumnFilter[],
+	nextJoin: JoinOperator,
+	global: { value?: { columns: string[]; value: string } }
+): void {
 	if (!expr) return;
 	if (expr.type === "condition") {
+		if (expr.lhs.kind === "group") {
+			if (!global.value) {
+				global.value = { columns: expr.lhs.paths, value: String(rhsValue(expr.rhs) ?? "") };
+			}
+			return;
+		}
 		const chip = conditionToChip(expr);
 		if (chip) out.push({ ...chip, filterId: crypto.randomUUID(), joinOperator: nextJoin });
 		return;
 	}
-	collect(expr.left, out, nextJoin);
-	collect(expr.right, out, expr.type);
+	collect(expr.left, out, nextJoin, global);
+	collect(expr.right, out, expr.type, global);
+}
+
+export interface ParsedQueryKitFilter {
+	filters: ExtendedColumnFilter[];
+	/** Property-group condition (QueryKit's "search anywhere"), e.g. `(Name, Email) @=* "ali"`. */
+	globalFilter?: { columns: string[]; value: string };
 }
 
 /**
  * Parses a QueryKit filter string back into the table's extended column
- * filters so the filter list can be hydrated from a URL, a saved view or a
- * server response. The AST is walked in printed order; nested groups collapse
- * into a left-to-right list (the filter list model is flat) and consecutive
- * same-column has/in conditions merge back into a single multi-select chip.
+ * filters plus the global (property-group) search, so the filter list can be
+ * hydrated from a URL, a saved view or a server response. The AST is walked in
+ * printed order; nested groups collapse into a left-to-right list (the filter
+ * list model is flat) and consecutive same-column has/in conditions merge back
+ * into a single multi-select chip.
  *
- * Unsupported operators (sounds-like, count) and property-group or
- * arithmetic left-hand sides are skipped with a warning.
+ * Unsupported operators (sounds-like, count) and arithmetic left-hand sides
+ * are skipped with a warning.
  */
-export function fromQueryKitFilter(input: string): ExtendedColumnFilter[] {
-	if (!input?.trim()) return [];
+export function parseQueryKitFilter(input: string): ParsedQueryKitFilter {
+	if (!input?.trim()) return { filters: [] };
 
 	const result = tryParseQuery(input);
-	if (!result.ok) return [];
+	if (!result.ok) return { filters: [] };
 
 	const chips: ExtendedColumnFilter[] = [];
-	collect(result.ast, chips, "and");
-	return mergeFamilyChips(chips);
+	const global: { value?: { columns: string[]; value: string } } = {};
+	collect(result.ast, chips, "and", global);
+	return {
+		filters: mergeFamilyChips(chips),
+		...(global.value ? { globalFilter: global.value } : {}),
+	};
+}
+
+/** @see {@link parseQueryKitFilter} — returns only the column filters. */
+export function fromQueryKitFilter(input: string): ExtendedColumnFilter[] {
+	return parseQueryKitFilter(input).filters;
 }
 
 export { QUERY_OPERATOR };

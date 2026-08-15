@@ -9,7 +9,7 @@
 
 	import type { ColumnFiltersState } from "@tanstack/svelte-table";
 	import { DataTable, createShadTable, type ColumnDef, type DataTableFeatures } from "$lib/data-table";
-	import { fromQueryKitFilter, toQueryKitFilter } from "$lib/query-kit";
+	import { fromQueryKitFilter, toQueryKitFilter, toQueryKitSort } from "$lib/query-kit";
 	import { Input } from "$lib/components/ui/input";
 
 	const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -60,6 +60,7 @@
 	});
 
 	const queryString = $derived(toQueryKitFilter(table.atoms.columnFilters.get()));
+	const sortString = $derived(toQueryKitSort(table.atoms.sorting.get()));
 
 	function applyQuery(input: string) {
 		table.options.onColumnFiltersChange?.(fromQueryKitFilter(input) as ColumnFiltersState);
@@ -74,4 +75,5 @@
 		oninput={(event) => applyQuery(event.currentTarget.value)}
 	/>
 	<pre class="bg-muted/40 rounded-md border p-2 font-mono text-xs">{queryString || "(no active filters)"}</pre>
+	<pre class="bg-muted/40 rounded-md border p-2 font-mono text-xs">sort: {sortString || "(none)"}</pre>
 </div>
