@@ -56,14 +56,19 @@
 
 	const tableStore = new TableStore();
 	let end: HTMLElement | undefined = $state();
+
+	function cellSizeStyle(width: number, min?: number, max?: number) {
+		const styles = [`width: ${width}px`];
+		if (min !== undefined) styles.push(`min-width: ${min}px`);
+		if (max !== undefined) styles.push(`max-width: ${max}px`);
+		return styles.join("; ");
+	}
 </script>
 
 <div
 	class={cn(
 		"w-full",
-		tableStore.isFullscreen
-			? "bg-background b-0 absolute inset-0 top-0 left-0 z-20 overflow-auto  p-2 transition-all"
-			: "w-full",
+		tableStore.isFullscreen ? "bg-background absolute inset-0 z-20 overflow-auto p-2 transition-all" : "w-full",
 		className
 	)}
 >
@@ -151,7 +156,11 @@
 							{#each row.getVisibleCells() as cell (cell)}
 								<Table.Cell
 									class={cell.column.columnDef.meta?.className}
-									style={`width: ${cell.column.getSize()}px; min-width:${cell.column.columnDef.minSize}px; max-width:${cell.column.columnDef.maxSize}px`}
+									style={cellSizeStyle(
+										cell.column.getSize(),
+										cell.column.columnDef.minSize,
+										cell.column.columnDef.maxSize
+									)}
 								>
 									<FlexRender {cell} />
 								</Table.Cell>

@@ -1,20 +1,19 @@
 export const sum = <T>(data: T[], columnId: keyof T) => {
-	return data.reduce((sum, next) => {
-		const nextValue = next[columnId];
-		return sum + (typeof nextValue === "number" ? nextValue : 0);
+	return data.reduce((total, row) => {
+		const value = row[columnId];
+		return total + (typeof value === "number" && Number.isFinite(value) ? value : 0);
 	}, 0);
 };
 
 export const min = <T>(data: T[], columnId: keyof T) => {
 	let min: number | undefined;
 
-	data.forEach((row) => {
-		const value = Number(row[columnId]);
-
-		if (value != null && (min! > value || (min === undefined && value >= value))) {
+	for (const row of data) {
+		const value = row[columnId];
+		if (typeof value === "number" && Number.isFinite(value) && (min === undefined || value < min)) {
 			min = value;
 		}
-	});
+	}
 
 	return min;
 };
@@ -22,12 +21,12 @@ export const min = <T>(data: T[], columnId: keyof T) => {
 export const max = <T>(data: T[], columnId: keyof T) => {
 	let max: number | undefined;
 
-	data.forEach((row) => {
-		const value = Number(row[columnId]);
-		if (value != null && (max! < value || (max === undefined && value >= value))) {
+	for (const row of data) {
+		const value = row[columnId];
+		if (typeof value === "number" && Number.isFinite(value) && (max === undefined || value > max)) {
 			max = value;
 		}
-	});
+	}
 
 	return max;
 };
@@ -42,19 +41,17 @@ export const count = <T>(data: T[], _columnId: keyof T) => {
 
 export const mean = <T>(data: T[], columnId: keyof T) => {
 	let count = 0;
-	let sum = 0;
+	let total = 0;
 
-	data.forEach((row) => {
-		let value = Number(row[columnId]);
-		if (value != null && (value = +value) >= value) {
-			++count;
-			sum += value;
+	for (const row of data) {
+		const value = row[columnId];
+		if (typeof value === "number" && Number.isFinite(value)) {
+			count += 1;
+			total += value;
 		}
-	});
+	}
 
-	if (count) return sum / count;
-
-	return;
+	return count > 0 ? total / count : undefined;
 };
 
 export const aggregationFns = {

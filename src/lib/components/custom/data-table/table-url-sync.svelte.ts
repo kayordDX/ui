@@ -76,19 +76,22 @@ export function useTableUrlSync<TData extends RowData>(
 	if (enabled.pagination) table.setPageIndex(decodePageIndex());
 	if (enabled.columnFilters) table.setColumnFilters(decodeColumnFilters() ?? []);
 
-	// When navigating with new sort/search/filter params, snap back to page 1.
+	// When navigating with new sort/search/filter params, snap back to the first page
+	// unless the target URL explicitly points at a later page.
 	beforeNavigate((navigation) => {
-		if (enabled.pagination && Number(navigation.to?.url.searchParams.get("page") ?? "0") > 0) {
-			const queryChanged =
-				(enabled.sorting &&
-					navigation.from?.url.searchParams.get("sort") != navigation.to?.url.searchParams.get("sort")) ||
-				(enabled.globalFilter &&
-					navigation.from?.url.searchParams.get("search") != navigation.to?.url.searchParams.get("search")) ||
-				(enabled.columnFilters &&
-					navigation.from?.url.searchParams.get("filter") != navigation.to?.url.searchParams.get("filter"));
-			if (queryChanged) {
-				table.resetPageIndex();
-			}
+		if (!enabled.pagination) return;
+
+		const targetPage = Number(navigation.to?.url.searchParams.get("page") ?? "0");
+		const queryChanged =
+			(enabled.sorting &&
+				navigation.from?.url.searchParams.get("sort") != navigation.to?.url.searchParams.get("sort")) ||
+			(enabled.globalFilter &&
+				navigation.from?.url.searchParams.get("search") != navigation.to?.url.searchParams.get("search")) ||
+			(enabled.columnFilters &&
+				navigation.from?.url.searchParams.get("filter") != navigation.to?.url.searchParams.get("filter"));
+
+		if (queryChanged && (!Number.isFinite(targetPage) || targetPage <= 0)) {
+			table.resetPageIndex();
 		}
 	});
 

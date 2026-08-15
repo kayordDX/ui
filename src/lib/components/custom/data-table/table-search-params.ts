@@ -16,10 +16,13 @@ export const encodeSorting = (state: State) => {
 };
 
 export const decodeSorting = () => {
-	return page.url.searchParams
-		.get("sort")
-		?.split(",")
-		.map((s) => ({ id: s[0] === "-" ? s.slice(1) : s.slice(0), desc: s[0] === "-" }));
+	const sort = page.url.searchParams.get("sort");
+	if (!sort) return undefined;
+
+	return sort
+		.split(",")
+		.filter(Boolean)
+		.map((s) => ({ id: s[0] === "-" ? s.slice(1) : s, desc: s[0] === "-" }));
 };
 
 export const encodeGlobalFilter = (state: State) => {
@@ -35,7 +38,8 @@ export const encodePageIndex = (state: State) => {
 	return state.pagination?.pageIndex?.toString() ?? "";
 };
 export const decodePageIndex = () => {
-	return Number(page.url.searchParams.get("page") ?? "0");
+	const pageIndex = Number(page.url.searchParams.get("page") ?? "0");
+	return Number.isFinite(pageIndex) ? pageIndex : 0;
 };
 
 export const encodeColumnFilters = (state: State) => {
@@ -47,19 +51,25 @@ export const encodeColumnFilters = (state: State) => {
 };
 
 export const decodeColumnFilters = () => {
-	return page.url.searchParams
-		.get("filter")
-		?.split(",")
-		.map((v) => {
-			const [id, stringValue] = v.split(".");
-			if (!id) throw new Error("Invalid columnFilters");
-			if (stringValue === undefined) throw new Error("Invalid columnFilters");
-			return {
-				id,
-				value: stringValue === "undefined" ? undefined : JSON.parse(decodeURIComponent(stringValue)),
-			};
-		})
-		.filter((x) => x !== null);
+	const filter = page.url.searchParams.get("filter");
+	if (!filter) return undefined;
+
+	return filter.split(",").flatMap((v) => {
+		if (!v) return [];
+
+		const separatorIndex = v.indexOf(".");
+		if (separatorIndex === -1) return [];
+
+		const id = v.slice(0, separatorIndex);
+		const stringValue = v.slice(separatorIndex + 1);
+		if (!id || !stringValue) return [];
+
+		try {
+			return [{ id, value: stringValue === "undefined" ? undefined : JSON.parse(decodeURIComponent(stringValue)) }];
+		} catch {
+			return [];
+		}
+	});
 };
 
 interface Options {

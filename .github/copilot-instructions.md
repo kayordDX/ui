@@ -13,22 +13,22 @@
   - Use the `cn` utility from `$lib/utils.js` for conditional class names.
   - Data attributes (e.g., `data-slot`, `data-orientation`) are used for styling and state.
 - **Styling:**
-  - Global styles in `src/app.css` define color variables and custom variants (e.g., `@custom-variant dark`).
-  - Always import `app.css` and `tailwindcss-animate` in new projects.
+  - Global styles in `src/layout.css` define color variables and custom variants (e.g., `@custom-variant dark`).
+  - Always import `layout.css` and `tw-animate-css` in new projects.
 - **Theming:**
-  - Color and radius variables are defined in `:root` and `.dark` selectors in `app.css`.
+  - Color and radius variables are defined in `:root` and `.dark` selectors in `layout.css`.
   - Use CSS variables for all color and spacing values in components.
 - **Component Usage:**
   - Import components from `$lib` (e.g., `import { Button, Card } from "$lib"`).
   - Many components are compound (e.g., `Card.Root`, `Card.Header`, `Card.Content`).
   - Use `data-slot` and `class` props to customize appearance and behavior.
 - **TypeScript:**
-  - Types for data tables and forms are extended via module augmentation (see `README.md` Data Table Types section).
+  - Data tables use the TanStack v9 feature set (`DataTableFeatures`); no module augmentation is needed (see `README.md` Data Table Types section).
 
 ## Developer Workflows
 
 - **Install dependencies:**
-  - `pnpm add -D @kayord/ui @lucide/svelte zod sveltekit-superforms tailwindcss-animate`
+  - `pnpm add -D @kayord/ui @lucide/svelte zod sveltekit-superforms tw-animate-css`
   - For charts: `pnpm add -D layerchart@next d3-scale d3-shape @types/d3-scale @types/d3-shape`
 - **Update components:**
   - Use `npx shadcn-svelte@latest` and `npx shadcn-svelte@latest update -a` for updates.
@@ -52,7 +52,7 @@
 ## Examples & References
 
 - See `src/routes/+page.svelte` and other route files for usage examples.
-- Refer to `src/app.css` for theming and custom variant patterns.
+- Refer to `src/layout.css` for theming and custom variant patterns.
 - For custom data table types, see the Data Table Types section in `README.md`.
 
 ---

@@ -20,7 +20,7 @@
 				Icon Text
 			</Button>
 			<Button variant="outline" size="icon">
-				<ChevronRight className="h-4 w-4" />
+				<ChevronRight class="h-4 w-4" />
 			</Button>
 			<CopyButton text="text to copy to clipboard" />
 		</div>
