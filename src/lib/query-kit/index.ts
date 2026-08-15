@@ -9,7 +9,6 @@ export {
 	parseQueryKitSort,
 	toQueryKitFilter,
 	toQueryKitSort,
-	QUERY_OPERATOR,
 	type ParsedQueryKitFilter,
 	type ToQueryKitFilterOptions,
 } from "./query-kit-filter";

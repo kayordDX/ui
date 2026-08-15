@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import type { ExtendedColumnFilter } from "../components/custom/data-table/filter-list-utils";
 import {
 	fromQueryKitFilter,
@@ -139,6 +139,14 @@ describe("fromQueryKitFilter", () => {
 		expect(fromQueryKitFilter('Title ~~ "doon"')).toEqual([]);
 		expect(fromQueryKitFilter("")).toEqual([]);
 		expect(fromQueryKitFilter("Age == ")).toEqual([]);
+	});
+
+	it("warns when a condition compares against a property or arithmetic value", () => {
+		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+		expect(fromQueryKitFilter("FirstName == LastName")).toEqual([]);
+		expect(fromQueryKitFilter("Total > (Price * Quantity)")).toEqual([]);
+		expect(warn).toHaveBeenCalled();
+		warn.mockRestore();
 	});
 
 	it("merges consecutive has conditions into one multi-select chip", () => {

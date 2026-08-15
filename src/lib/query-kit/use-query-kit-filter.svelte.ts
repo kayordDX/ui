@@ -53,6 +53,8 @@ export function useQueryKitFilter<TData extends RowData>(
 	const globalFilterColumns = options?.globalFilterColumns ?? [];
 	const resetPageIndex = options?.resetPageIndex ?? true;
 
+	let hasRun = false;
+
 	const params = useSearchParams(
 		z.object({
 			[param]: z.string().default(""),
@@ -82,7 +84,8 @@ export function useQueryKitFilter<TData extends RowData>(
 				globalFilterColumns,
 			});
 			if (sortParam && sorting) params[sortParam] = toQueryKitSort(sorting);
-			if (resetPageIndex) table.setPageIndex(0);
+			if (resetPageIndex && hasRun) table.setPageIndex(0);
+			hasRun = true;
 		});
 	});
 }

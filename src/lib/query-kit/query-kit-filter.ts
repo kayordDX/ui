@@ -32,28 +32,6 @@ function isExactEquals(value: unknown): boolean {
 	return typeof value === "number" || typeof value === "boolean" || isDateString(value);
 }
 
-const QUERY_OPERATOR: Record<string, string> = {
-	contains: "@=*",
-	notContains: "!@=*",
-	startsWith: "_=*",
-	doesNotStartWith: "!_=*",
-	endsWith: "_-=*",
-	doesNotEndWith: "!_-=*",
-	equals: "==*",
-	notEquals: "!=*",
-	greaterThan: ">",
-	greaterThanOrEqual: ">=",
-	lessThan: "<",
-	lessThanOrEqual: "<=",
-	after: ">",
-	before: "<",
-	includesSome: "^$*",
-	includesAll: "^$*",
-	includesNone: "!^$*",
-	isEmpty: "== null",
-	isNotEmpty: "!= null",
-};
-
 interface FilterPart {
 	text: string;
 	multi: boolean;
@@ -252,6 +230,10 @@ function conditionToChip(expr: ConditionExpr): ExtendedColumnFilter | null {
 		console.warn("[query-kit] arithmetic left-hand sides are not supported — filter skipped");
 		return null;
 	}
+	if (expr.rhs.kind === "property" || expr.rhs.kind === "arith") {
+		console.warn("[query-kit] property/arithmetic values are not supported — filter skipped");
+		return null;
+	}
 	const id = expr.lhs.path;
 	const { operator } = expr;
 	const rhs = expr.rhs;
@@ -398,5 +380,3 @@ export function parseQueryKitFilter(input: string): ParsedQueryKitFilter {
 export function fromQueryKitFilter(input: string): ExtendedColumnFilter[] {
 	return parseQueryKitFilter(input).filters;
 }
-
-export { QUERY_OPERATOR };

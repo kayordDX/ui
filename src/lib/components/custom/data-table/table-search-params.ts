@@ -39,23 +39,37 @@ export const decodePageIndex = () => {
 };
 
 export const encodeColumnFilters = (state: State) => {
-	return (
-		state.columnFilters
-			?.map((filter) => `${filter.id}.${encodeURIComponent(JSON.stringify(filter).replaceAll(".", "%2E"))}`)
-			.join(",") ?? ""
-	);
+	return encodeURIComponent(JSON.stringify(state.columnFilters ?? []));
 };
 
 export const decodeColumnFilters = () => {
-	return page.url.searchParams
-		.get("filter")
-		?.split(",")
+	const raw = page.url.searchParams.get("filter");
+	if (!raw) return [];
+
+	// Current format: a single percent-encoded JSON array of filter entries.
+	try {
+		const parsed = JSON.parse(decodeURIComponent(raw));
+		if (Array.isArray(parsed)) return parsed;
+	} catch {
+		// fall through to the legacy codec below
+	}
+
+	// Legacy format: comma-separated `id.<json value>` pairs. The value may
+	// still be a full entry or a bare value; object values are wrapped rather
+	// than spread so the entry shape is preserved.
+	return raw
+		.split(",")
 		.map((v) => {
 			const [id, stringValue] = v.split(".");
 			if (!id) throw new Error("Invalid columnFilters");
 			if (stringValue === undefined) throw new Error("Invalid columnFilters");
-			const parsed = JSON.parse(decodeURIComponent(stringValue));
-			const entry = parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : { value: parsed };
+			const parsed = stringValue === "undefined" ? undefined : JSON.parse(decodeURIComponent(stringValue));
+			const isEntry =
+				parsed &&
+				typeof parsed === "object" &&
+				!Array.isArray(parsed) &&
+				("filterId" in parsed || "joinOperator" in parsed || "operator" in parsed);
+			const entry = isEntry ? parsed : { value: parsed };
 			return {
 				...entry,
 				id,
