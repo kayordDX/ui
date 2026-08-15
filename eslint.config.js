@@ -36,13 +36,6 @@ export default defineConfig(
 		},
 	},
 	{
-		// shadcn-svelte components may use `any` for flexibility; suppress the rule for those files
-		files: ["src/lib/components/ui/stepper/**"],
-		rules: {
-			"@typescript-eslint/no-explicit-any": "off",
-		},
-	},
-	{
 		files: ["**/*.svelte", "**/*.svelte.ts", "**/*.svelte.js"],
 		languageOptions: {
 			parserOptions: {

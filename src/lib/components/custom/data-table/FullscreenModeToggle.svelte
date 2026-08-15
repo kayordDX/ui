@@ -9,18 +9,23 @@
 
 	let { isFullscreen = $bindable(), end }: Props = $props();
 
-	$effect.pre(() => {
+	let previous = isFullscreen;
+
+	$effect(() => {
+		if (isFullscreen === previous) return;
+		previous = isFullscreen;
+
 		if (isFullscreen) {
 			document.body.classList.add("overflow-hidden");
 			document.body.scrollIntoView({ behavior: "smooth", block: "start" });
 		} else {
-			if (!end) {
-				document.body.classList.remove("overflow-hidden");
-				return;
-			}
-			end.scrollIntoView({ behavior: "smooth", block: "start" });
 			document.body.classList.remove("overflow-hidden");
+			end?.scrollIntoView({ behavior: "smooth", block: "start" });
 		}
+
+		return () => {
+			document.body.classList.remove("overflow-hidden");
+		};
 	});
 </script>
 

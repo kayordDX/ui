@@ -12,6 +12,13 @@
 
 	let { header, disableUISorting = false }: Props<T> = $props();
 
+	function headerSizeStyle(width: number, min?: number, max?: number) {
+		const styles = [`width: ${width}px`];
+		if (min !== undefined) styles.push(`min-width: ${min}px`);
+		if (max !== undefined) styles.push(`max-width: ${max}px`);
+		return styles.join("; ");
+	}
+
 	const isSortingEnabled = $derived(disableUISorting !== true);
 	const sorted = $derived(header.column.getIsSorted());
 	const ariaSort = $derived(sorted === "asc" ? "ascending" : sorted === "desc" ? "descending" : undefined);
@@ -21,7 +28,7 @@
 	colspan={header.colSpan}
 	aria-sort={ariaSort}
 	class="bg-muted/20"
-	style={`width: ${header.getSize()}px; min-width:${header.column.columnDef.minSize}px; max-width:${header.column.columnDef.maxSize}px`}
+	style={headerSizeStyle(header.getSize(), header.column.columnDef.minSize, header.column.columnDef.maxSize)}
 >
 	{#if !header.isPlaceholder}
 		<div class="flex items-center gap-1">

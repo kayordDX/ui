@@ -35,7 +35,6 @@
 	class={cn(className)}
 	type="button"
 	name="copy"
-	tabindex={-1}
 	onclick={async () => {
 		const status = await clipboard.copy(text);
 

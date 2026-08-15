@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { Button } from "$lib";
-	import { page } from "$app/stores";
+	import { page } from "$app/state";
 	interface Props {
 		path: string;
 		text: string;
 	}
 
 	let { path, text }: Props = $props();
-	let isActive = $derived($page.url.pathname == path);
+	let isActive = $derived(page.url.pathname == path);
 </script>
 
 <div class="space-y-1">

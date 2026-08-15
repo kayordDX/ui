@@ -9,8 +9,6 @@
 		isLoading?: boolean;
 	}
 
-	export { className as class };
-
 	interface Props {
 		class?: string | undefined | null;
 		isLoading?: boolean;

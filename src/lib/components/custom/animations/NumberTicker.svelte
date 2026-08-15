@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { cubicOut } from "svelte/easing";
-	import { onMount } from "svelte";
 	import { Tween } from "svelte/motion";
 	import { cn } from "$lib/utils";
 
@@ -19,8 +18,8 @@
 		easing: cubicOut,
 	});
 
-	onMount(() => {
-		num.set(value);
+	$effect(() => {
+		num.set(value, { duration, easing: cubicOut });
 	});
 </script>
 

@@ -24,6 +24,7 @@ Kayord UI exports components individually. Some components require additional pe
 ### Core Peer Dependencies (required for most components)
 
 - `svelte`
+- `@sveltejs/kit`
 - `@lucide/svelte`
 - `mode-watcher`
 
@@ -33,23 +34,23 @@ Kayord UI exports components individually. Some components require additional pe
 | ------------------------------- | -------------------------------------------------------------------------- |
 | **Charts** (`chart/`)           | `layerchart`, `d3-scale`, `d3-shape`, `@types/d3-scale`, `@types/d3-shape` |
 | **Carousel** (`carousel/`)      | `embla-carousel-svelte`                                                    |
-| **Data Table** (`data-table/`)  | `@tanstack/svelte-table`                                                   |
+| **Data Table** (`data-table/`)  | `@tanstack/svelte-table`, `runed`, `zod`                                   |
 | **Drawer** (`drawer/`)          | `vaul-svelte`                                                              |
 | **Form** (`form/`)              | `formsnap`, `sveltekit-superforms`                                         |
 | **Date/Calendar** (`calendar/`) | `@internationalized/date`                                                  |
 | **Resizable** (`resizable/`)    | `paneforge`                                                                |
 | **Notifications** (`sonner/`)   | `svelte-sonner`                                                            |
 
-> **Note:** All above dependencies are listed as optional peer dependencies. Only install those required for the components you use.
+> **Note:** Optional peers are marked optional in `package.json`. The core peers (`svelte`, `@sveltejs/kit`, `@lucide/svelte`, and `mode-watcher`) are required. Install the others only if you use the corresponding feature.
 
 ### Example Installation
 
 ```bash
 # Core dependencies
-pnpm add -D svelte @lucide/svelte tailwindcss-animate mode-watcher shadcn-svelte
+pnpm add -D svelte @sveltejs/kit @lucide/svelte tw-animate-css mode-watcher shadcn-svelte
 
 # Most likely dependencies
-pnpm add -D svelte @lucide/svelte tailwindcss-animate mode-watcher formsnap zod sveltekit-superforms @internationalized/date svelte-sonner
+pnpm add -D svelte @sveltejs/kit @lucide/svelte tw-animate-css mode-watcher formsnap zod sveltekit-superforms @internationalized/date svelte-sonner
 
 # For charts
 pnpm add -D layerchart d3-scale d3-shape @types/d3-scale @types/d3-shape
@@ -58,7 +59,7 @@ pnpm add -D layerchart d3-scale d3-shape @types/d3-scale @types/d3-shape
 pnpm add -D embla-carousel-svelte
 
 # For data table
-pnpm add -D @tanstack/svelte-table
+pnpm add -D @tanstack/svelte-table runed zod
 
 # For drawer @next for now
 pnpm add -D vaul-svelte@next
@@ -76,7 +77,7 @@ pnpm add -D paneforge
 pnpm add -D svelte-sonner
 ```
 
-### Add app.css and also include tailwindcss-animate
+### Add app.css and also include tw-animate-css
 
 ```css
 @import "tailwindcss";
