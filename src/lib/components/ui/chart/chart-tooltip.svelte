@@ -32,8 +32,7 @@
 		labelKey?: string;
 		hideIndicator?: boolean;
 		labelClassName?: string;
-		labelFormatter?:
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		labelFormatter?: // eslint-disable-next-line @typescript-eslint/no-explicit-any
 			((value: any, payload: TooltipPayload[]) => string | number | Snippet) | null;
 		formatter?: Snippet<
 			[
@@ -53,7 +52,9 @@
 
 	// Filter to series with defined values (important for item-based charts like Pie/Arc
 	// where only the hovered item has a value)
-	const visibleSeries = $derived(chartCtx.tooltip.series.filter((s: TooltipPayload) => s.value !== undefined));
+	const visibleSeries = $derived(
+		chartCtx.tooltip.series.filter((s: TooltipPayload) => s.value !== undefined)
+	);
 
 	const formattedLabel = $derived.by(() => {
 		if (hideLabel || !visibleSeries?.length) return null;
@@ -105,7 +106,7 @@
 	<div
 		bind:this={ref}
 		class={cn(
-			"border-border/50 bg-background grid min-w-[9rem] items-start gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs shadow-xl",
+			"grid min-w-[9rem] items-start gap-1.5 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl",
 			className
 		)}
 		{...restProps}
@@ -116,11 +117,16 @@
 		<div class="grid gap-1.5">
 			{#each visibleSeries as item, i (item.key + i)}
 				{@const key = `${nameKey || item.key || item.label || "value"}`}
-				{@const itemConfig = getPayloadConfigFromPayload(chart.config, item, key, chartCtx.tooltip.data)}
+				{@const itemConfig = getPayloadConfigFromPayload(
+					chart.config,
+					item,
+					key,
+					chartCtx.tooltip.data
+				)}
 				{@const indicatorColor = color || item.config?.color || item.color}
 				<div
 					class={cn(
-						"[&>svg]:text-muted-foreground flex w-full flex-wrap items-stretch gap-2 [&>svg]:size-2.5",
+						"flex w-full flex-wrap items-stretch gap-2 [&>svg]:size-2.5 [&>svg]:text-muted-foreground",
 						indicator === "dot" && "items-center"
 					)}
 				>
@@ -147,7 +153,10 @@
 							></div>
 						{/if}
 						<div
-							class={cn("flex flex-1 shrink-0 justify-between leading-none", nestLabel ? "items-end" : "items-center")}
+							class={cn(
+								"flex flex-1 shrink-0 justify-between leading-none",
+								nestLabel ? "items-end" : "items-center"
+							)}
 						>
 							<div class="grid gap-1.5">
 								{#if nestLabel}
@@ -158,7 +167,7 @@
 								</span>
 							</div>
 							{#if item.value !== undefined}
-								<span class="text-foreground font-mono font-medium tabular-nums">
+								<span class="font-mono font-medium text-foreground tabular-nums">
 									{item.value.toLocaleString()}
 								</span>
 							{/if}

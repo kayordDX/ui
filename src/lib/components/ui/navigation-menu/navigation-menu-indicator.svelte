@@ -2,7 +2,11 @@
 	import { NavigationMenu as NavigationMenuPrimitive } from "bits-ui";
 	import { cn } from "$lib/utils.js";
 
-	let { ref = $bindable(null), class: className, ...restProps }: NavigationMenuPrimitive.IndicatorProps = $props();
+	let {
+		ref = $bindable(null),
+		class: className,
+		...restProps
+	}: NavigationMenuPrimitive.IndicatorProps = $props();
 </script>
 
 <NavigationMenuPrimitive.Indicator
@@ -14,5 +18,5 @@
 	)}
 	{...restProps}
 >
-	<div class="bg-border relative top-[60%] h-2 w-2 rotate-45 rounded-tl-sm shadow-md"></div>
+	<div class="rounded-tl-sm bg-border shadow-md relative top-[60%] h-2 w-2 rotate-45"></div>
 </NavigationMenuPrimitive.Indicator>

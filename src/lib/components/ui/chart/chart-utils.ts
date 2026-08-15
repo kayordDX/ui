@@ -7,7 +7,10 @@ export type ChartConfig = {
 	[k in string]: {
 		label?: string;
 		icon?: Component;
-	} & ({ color?: string; theme?: never } | { color?: never; theme: Record<keyof typeof THEMES, string> });
+	} & (
+		| { color?: string; theme?: never }
+		| { color?: never; theme: Record<keyof typeof THEMES, string> }
+	);
 };
 
 export type ExtractSnippetParams<T> = T extends Snippet<[infer P]> ? P : never;
@@ -25,7 +28,9 @@ export function getPayloadConfigFromPayload(
 	if (typeof payload !== "object" || payload === null) return undefined;
 
 	const payloadConfig =
-		"config" in payload && typeof payload.config === "object" && payload.config !== null ? payload.config : undefined;
+		"config" in payload && typeof payload.config === "object" && payload.config !== null
+			? payload.config
+			: undefined;
 
 	let configLabelKey: string = key;
 

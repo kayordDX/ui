@@ -24,7 +24,10 @@
 
 {#if collapsible === "none"}
 	<div
-		class={cn("bg-sidebar text-sidebar-foreground flex h-full w-(--sidebar-width) flex-col", className)}
+		class={cn(
+			"flex h-full w-(--sidebar-width) flex-col bg-sidebar text-sidebar-foreground",
+			className
+		)}
 		bind:this={ref}
 		{...restProps}
 	>
@@ -37,7 +40,10 @@
 			data-sidebar="sidebar"
 			data-slot="sidebar"
 			data-mobile="true"
-			class={cn("bg-sidebar text-sidebar-foreground w-(--sidebar-width) p-0 [&>button]:hidden", className)}
+			class={cn(
+				"w-(--sidebar-width) bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden",
+				className
+			)}
 			style="--sidebar-width: {SIDEBAR_WIDTH_MOBILE};"
 			{side}
 		>
@@ -53,7 +59,7 @@
 {:else}
 	<div
 		bind:this={ref}
-		class="group peer text-sidebar-foreground hidden md:block"
+		class="group peer hidden text-sidebar-foreground md:block"
 		data-state={sidebar.state}
 		data-collapsible={sidebar.state === "collapsed" ? collapsible : ""}
 		data-variant={variant}
@@ -64,7 +70,7 @@
 		<div
 			data-slot="sidebar-gap"
 			class={cn(
-				"relative w-(--sidebar-width) bg-transparent transition-[width] duration-200 ease-linear",
+				"transition-[width] duration-200 ease-linear relative w-(--sidebar-width) bg-transparent",
 				"group-data-[collapsible=offcanvas]:w-0",
 				"group-data-[side=right]:rotate-180",
 				variant === "floating" || variant === "inset"
@@ -90,7 +96,7 @@
 			<div
 				data-sidebar="sidebar"
 				data-slot="sidebar-inner"
-				class="bg-sidebar group-data-[variant=floating]:ring-sidebar-border flex size-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:shadow-sm group-data-[variant=floating]:ring-1"
+				class="bg-sidebar group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:shadow-sm group-data-[variant=floating]:ring-1 group-data-[variant=floating]:ring-sidebar-border flex size-full flex-col"
 			>
 				{@render children?.()}
 			</div>

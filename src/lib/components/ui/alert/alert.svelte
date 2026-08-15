@@ -6,8 +6,7 @@
 		variants: {
 			variant: {
 				default: "bg-card text-card-foreground",
-				destructive:
-					"bg-card text-destructive *:data-[slot=alert-description]:text-destructive/90 *:[svg]:text-current",
+				destructive: "bg-card text-destructive *:data-[slot=alert-description]:text-destructive/90 *:[svg]:text-current",
 			},
 		},
 		defaultVariants: {
@@ -33,6 +32,12 @@
 	} = $props();
 </script>
 
-<div bind:this={ref} data-slot="alert" role="alert" class={cn(alertVariants({ variant }), className)} {...restProps}>
+<div
+	bind:this={ref}
+	data-slot="alert"
+	role="alert"
+	class={cn(alertVariants({ variant }), className)}
+	{...restProps}
+>
 	{@render children?.()}
 </div>
