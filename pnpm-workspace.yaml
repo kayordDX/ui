@@ -1,6 +1,9 @@
 minimumReleaseAgeExclude:
   - "@internationalized/date@3.12.2"
   - "@lucide/svelte@1.17.0"
+  - esrap@2.3.4
+overrides:
+  esrap: 2.3.4
 onlyBuiltDependencies:
   - "@tailwindcss/oxide"
   - "esbuild"

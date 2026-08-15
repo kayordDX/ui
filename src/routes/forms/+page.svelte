@@ -18,7 +18,7 @@
 	import { Form } from "$lib/form";
 
 	import { z } from "zod";
-	import { superForm } from "sveltekit-superforms";
+	import { superForm } from "sveltekit-superforms/client";
 	import { zod4Client } from "sveltekit-superforms/adapters";
 
 	const formSchema = z.object({
