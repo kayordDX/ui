@@ -15,6 +15,15 @@ describe("getFilterOperators", () => {
 		expect(getFilterOperators("date").map((o) => o.value)).toContain("inRange");
 		expect(getFilterOperators("text").map((o) => o.value)).not.toContain("inRange");
 	});
+
+	it("exposes the QueryKit-parity operators", () => {
+		const text = getFilterOperators("text").map((o) => o.value);
+		expect(text).toContain("doesNotStartWith");
+		expect(text).toContain("doesNotEndWith");
+
+		const multi = getFilterOperators("multi-select").map((o) => o.value);
+		expect(multi).toContain("includesNone");
+	});
 });
 
 describe("isExtendedColumnFilter", () => {
@@ -45,6 +54,13 @@ describe("applyFilterOperator", () => {
 		expect(applyFilterOperator("Alice", "endsWith", "CE")).toBe(true);
 		expect(applyFilterOperator("Alice", "equals", "alice")).toBe(true);
 		expect(applyFilterOperator("Alice", "notEquals", "bob")).toBe(true);
+	});
+
+	it("handles doesNotStartWith / doesNotEndWith", () => {
+		expect(applyFilterOperator("alice", "doesNotStartWith", "al")).toBe(false);
+		expect(applyFilterOperator("bob", "doesNotStartWith", "al")).toBe(true);
+		expect(applyFilterOperator("alice", "doesNotEndWith", "CE")).toBe(false);
+		expect(applyFilterOperator("alice", "doesNotEndWith", "bob")).toBe(true);
 	});
 
 	it("handles numeric comparison operators", () => {
@@ -84,5 +100,12 @@ describe("applyFilterOperator", () => {
 		expect(applyFilterOperator(["admin", "editor"], "includesAll", ["editor", "viewer"])).toBe(false);
 		expect(applyFilterOperator(["admin", "editor"], "includesAll", ["admin", "editor"])).toBe(true);
 		expect(applyFilterOperator("admin", "includesSome", ["admin"])).toBe(true);
+	});
+
+	it("handles includesNone", () => {
+		expect(applyFilterOperator(["admin", "editor"], "includesNone", ["viewer"])).toBe(true);
+		expect(applyFilterOperator(["admin", "editor"], "includesNone", ["admin"])).toBe(false);
+		expect(applyFilterOperator("admin", "includesNone", ["admin", "viewer"])).toBe(false);
+		expect(applyFilterOperator("viewer", "includesNone", ["admin"])).toBe(true);
 	});
 });

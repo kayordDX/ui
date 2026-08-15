@@ -276,19 +276,13 @@
 		>
 			{#if index === 0}
 				<span class="text-muted-foreground text-center text-sm">Where</span>
-			{:else if index === 1}
+			{:else}
 				<Select.Root
 					type="single"
 					value={filter.joinOperator ?? "and"}
 					onValueChange={(value) => {
-						if (columnFilters.length > 0) {
-							setColumnFilters(
-								columnFilters.map((f) => ({
-									...f,
-									joinOperator: value as "and" | "or",
-								}))
-							);
-						}
+						if (!filter.filterId) return;
+						onFilterUpdate(filter.filterId, { joinOperator: value as "and" | "or" });
 					}}
 				>
 					<Select.Trigger class="h-8" aria-label="Select join operator" aria-controls={fieldListboxId}>
@@ -299,10 +293,6 @@
 						<Select.Item value="or" label="or" />
 					</Select.Content>
 				</Select.Root>
-			{:else}
-				<span class="text-muted-foreground text-center text-sm">
-					{filter.joinOperator ?? "and"}
-				</span>
 			{/if}
 			<Popover.Root>
 				<Popover.Trigger>

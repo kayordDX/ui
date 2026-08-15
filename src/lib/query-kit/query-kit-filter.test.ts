@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import type { ExtendedColumnFilter } from "../components/custom/data-table/filter-list-utils";
 import { fromQueryKitFilter, toQueryKitFilter } from "./query-kit-filter";
 
@@ -65,6 +65,21 @@ describe("toQueryKitFilter", () => {
 		expect(toQueryKitFilter([{ id: "name", value: "", operator: "equals" }])).toBe("");
 		expect(toQueryKitFilter([])).toBe("");
 	});
+
+	it("serializes date ranges and booleans", () => {
+		expect(
+			toQueryKitFilter([
+				{ id: "joined", value: ["2025-01-01T00:00:00.000Z", "2025-12-31T00:00:00.000Z"], operator: "inRange" },
+			])
+		).toBe('(joined >= "2025-01-01T00:00:00.000Z" && joined <= "2025-12-31T00:00:00.000Z")');
+		expect(toQueryKitFilter([{ id: "active", value: true, operator: "equals" }])).toBe("active == true");
+	});
+
+	it("escapes quotes in string values", () => {
+		expect(toQueryKitFilter([{ id: "title", value: 'say "hi"', operator: "contains" }])).toBe(
+			'title @=* "say \\"hi\\""'
+		);
+	});
 });
 
 describe("fromQueryKitFilter", () => {
@@ -79,6 +94,12 @@ describe("fromQueryKitFilter", () => {
 		const chips = fromQueryKitFilter("A == 1 || B == 2");
 		expect(chips[0].joinOperator).toBe("and");
 		expect(chips[1].joinOperator).toBe("or");
+	});
+
+	it("flattens parenthesized groups into per-chip joins", () => {
+		const chips = fromQueryKitFilter("(A == 1 || B == 2) && C == 3");
+		expect(chips.map((c) => c.id)).toEqual(["A", "B", "C"]);
+		expect(chips.map((c) => c.joinOperator)).toEqual(["and", "or", "and"]);
 	});
 
 	it("maps dates to before/after", () => {
@@ -109,6 +130,13 @@ describe("fromQueryKitFilter", () => {
 		expect(fromQueryKitFilter("Age == ")).toEqual([]);
 	});
 
+	it("skips property-group left-hand sides with a warning", () => {
+		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+		expect(fromQueryKitFilter('(FirstName, LastName) @=* "king"')).toEqual([]);
+		expect(warn).toHaveBeenCalled();
+		warn.mockRestore();
+	});
+
 	it("round-trips through toQueryKitFilter", () => {
 		const filters: ExtendedColumnFilter[] = [
 			{ id: "name", value: "ali", operator: "contains", filterId: "x", joinOperator: "and" },
@@ -127,5 +155,20 @@ describe("fromQueryKitFilter", () => {
 		const roundTripped = fromQueryKitFilter(toQueryKitFilter(filters));
 		expect(roundTripped).toHaveLength(1);
 		expect(roundTripped[0]).toMatchObject({ id: "tags", operator: "includesSome", value: ["a", "b"] });
+	});
+
+	it("round-trips mixed and/or joins with the same per-filter joins", () => {
+		const filters: ExtendedColumnFilter[] = [
+			{ id: "a", value: 1, operator: "equals", filterId: "x", joinOperator: "and" },
+			{ id: "b", value: 2, operator: "equals", filterId: "y", joinOperator: "or" },
+			{ id: "c", value: 3, operator: "equals", filterId: "z", joinOperator: "and" },
+		];
+		const serialized = toQueryKitFilter(filters);
+		expect(serialized).toBe("((a == 1 || b == 2) && c == 3)");
+
+		const roundTripped = fromQueryKitFilter(serialized);
+		expect(roundTripped.map((c) => c.id)).toEqual(["a", "b", "c"]);
+		expect(roundTripped.map((c) => c.joinOperator)).toEqual(["and", "or", "and"]);
+		expect(roundTripped.map((c) => c.value)).toEqual([1, 2, 3]);
 	});
 });

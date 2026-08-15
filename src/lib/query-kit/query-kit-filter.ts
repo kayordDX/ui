@@ -12,8 +12,9 @@ function isDateString(value: unknown): boolean {
 	return typeof value === "string" && ISO_DATE_PATTERN.test(value) && !Number.isNaN(Date.parse(value));
 }
 
-function toExactValue(value: unknown): string | number {
-	return typeof value === "number" ? value : String(value ?? "");
+function toExactValue(value: unknown): string | number | boolean {
+	if (typeof value === "number" || typeof value === "boolean") return value;
+	return String(value ?? "");
 }
 
 function stringValue(value: unknown): string {

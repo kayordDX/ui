@@ -71,6 +71,46 @@ describe("createFilterListRowModel", () => {
 		expect(rowValues(table)).toEqual(["alice", "charlie"]);
 	});
 
+	it("combines mixed and/or joins left-to-right", async () => {
+		const table = createTable();
+		table.getRowModel();
+		setFilters(table, [
+			{ id: "id", value: 1, operator: "greaterThan", filterId: "f1", joinOperator: "and" },
+			{ id: "name", value: "charlie", operator: "notEquals", filterId: "f2", joinOperator: "or" },
+			{ id: "day", value: "Mon", operator: "equals", filterId: "f3", joinOperator: "and" },
+		]);
+		table.getRowModel();
+		await flushMicrotasks();
+
+		// (id > 1 || name != "charlie") && day == "Mon"
+		// alice:  false || true  → true  && Mon → included
+		// bob:    true  || true  → true  && Tue → excluded
+		// charlie:true  || false → true  && Mon → included
+		expect(rowValues(table)).toEqual(["alice", "charlie"]);
+	});
+
+	it("evaluates doesNotStartWith / doesNotEndWith through the table", async () => {
+		const table = createTable();
+		table.getRowModel();
+		setFilters(table, [{ id: "name", value: "al", operator: "doesNotStartWith", filterId: "f1", joinOperator: "and" }]);
+		table.getRowModel();
+		await flushMicrotasks();
+
+		expect(rowValues(table)).toEqual(["bob", "charlie"]);
+	});
+
+	it("evaluates includesNone through the table", async () => {
+		const table = createTable();
+		table.getRowModel();
+		setFilters(table, [
+			{ id: "tags", value: ["admin"], operator: "includesNone", filterId: "f1", joinOperator: "and" },
+		]);
+		table.getRowModel();
+		await flushMicrotasks();
+
+		expect(rowValues(table)).toEqual(["bob", "charlie"]);
+	});
+
 	it("keeps stock semantics for plain filters", async () => {
 		const table = createTable();
 		table.getRowModel();
