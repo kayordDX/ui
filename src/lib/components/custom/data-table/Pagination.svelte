@@ -26,10 +26,8 @@
 			</p>
 		{/if}
 		<p>
-			{#if !table.options.manualPagination}
-				{table.getPrePaginatedRowModel().rows.length.toLocaleString()}
-				of {table.options.data.length.toLocaleString()} rows
-			{/if}
+			{table.getRowModel().rows.length.toLocaleString()}
+			of {table.getRowCount().toLocaleString()} rows
 		</p>
 	</div>
 	<div class="flex items-center gap-6 lg:gap-8">

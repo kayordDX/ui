@@ -33,6 +33,7 @@
 
 	const table = createShadTable({
 		columns,
+		manualPagination: true,
 		get data() {
 			return data.value;
 		},

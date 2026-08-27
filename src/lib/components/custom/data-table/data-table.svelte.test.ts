@@ -42,11 +42,15 @@ describe("DataTable (TanStack Table v9)", () => {
 		const { container } = await render(Harness);
 
 		await expect.poll(() => nameCells(container).length).toBe(10); // default page size
+		const bodyText = () => (container.textContent ?? "").replace(/\s+/g, " ");
+		await expect.poll(() => bodyText()).toContain("10 of 12 rows");
 
 		// Use a Playwright locator (auto-waits) rather than a snapshot element.
 		await page.getByRole("button", { name: "Go to next page" }).click();
 
-		await expect.poll(() => nameCells(container).length).toBe(2); // 12 rows => 10 + 2
+		// 12 rows => 10 + 2, and the footer tracks the visible page
+		await expect.poll(() => nameCells(container).length).toBe(2);
+		await expect.poll(() => bodyText()).toContain("2 of 12 rows");
 	});
 
 	test("column filter (search) narrows rows", async () => {
@@ -127,6 +131,7 @@ describe("DataTable server-side pagination (TanStack Table v9)", () => {
 	test("rowCount change updates getPageCount", async () => {
 		const { container } = await render(ServerHarness);
 		const text = (id: string) => container.querySelector<HTMLElement>(`[data-testid="${id}"]`)?.textContent ?? "";
+		const bodyText = () => (container.textContent ?? "").replace(/\s+/g, " ");
 
 		// total starts at 0 => 0 pages
 		await expect.poll(() => text("page-count")).toBe("0");
@@ -136,5 +141,8 @@ describe("DataTable server-side pagination (TanStack Table v9)", () => {
 		// total 42 / pageSize 10 => 5 pages, current page has 10 rows
 		await expect.poll(() => text("page-count")).toBe("5");
 		await expect.poll(() => text("row-count")).toBe("10");
+
+		// Pagination footer: server total comes from `rowCount`, not `data.length`.
+		await expect.poll(() => bodyText()).toContain("10 of 42 rows");
 	});
 });
