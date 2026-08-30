@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { createShadTable, type ColumnDef, type DataTableFeatures } from "$lib/data-table";
+	import { createShadTable, DataTable, type ColumnDef, type DataTableFeatures } from "$lib/data-table";
 	import { Button } from "$lib";
 
 	interface Row {
@@ -36,3 +36,4 @@
 <Button onclick={load}>Load</Button>
 <div data-testid="page-count">{table.getPageCount()}</div>
 <div data-testid="row-count">{table.getRowModel().rows.length}</div>
+<DataTable {table} />

@@ -16,23 +16,26 @@ export type ControlledState = Partial<TableState<DataTableFeatures>>;
 export type ShadTableOptions<TData extends RowData> = BaseOptions<TData> & {
 	enableRowSelectionUI?: boolean;
 	controlledState?: ControlledState;
-	resetPageIndexOn?: Array<keyof ControlledState>;
+	resetPageIndexOn?: Array<keyof ControlledState> | undefined;
 };
 
 export function createShadTable<TData extends RowData>(
 	shadOptions: ShadTableOptions<TData>
 ): Table<DataTableFeatures, TData> {
-	const { enableRowSelectionUI = true, controlledState, resetPageIndexOn = [], ...rest } = shadOptions;
+	const { enableRowSelectionUI = true, controlledState, resetPageIndexOn, ...rest } = shadOptions;
 
 	const externalHandlers: Record<string, (updater: unknown) => void> = {};
 
 	if (controlledState) {
+		// Default: reset the page index on any controlled state change.
+		const resetKeys = resetPageIndexOn ?? Object.keys(controlledState);
 		for (const key of Object.keys(controlledState)) {
-			const resetPage = resetPageIndexOn.includes(key as keyof ControlledState);
+			const resetPage = resetKeys.includes(key as keyof ControlledState);
 			externalHandlers[`on${key.charAt(0).toUpperCase()}${key.slice(1)}Change`] = (updater) => {
 				const record = controlledState as Record<string, unknown>;
 				record[key] = functionalUpdate(updater, record[key]);
-				if (resetPage && controlledState.pagination) {
+				// Never reset the page because the page itself changed.
+				if (resetPage && key !== "pagination" && controlledState.pagination) {
 					controlledState.pagination = { ...controlledState.pagination, pageIndex: 0 };
 				}
 			};

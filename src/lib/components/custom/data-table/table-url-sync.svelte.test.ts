@@ -11,6 +11,7 @@ vi.mock("$app/state", () => ({
 vi.mock("$app/navigation", () => ({
 	goto: vi.fn(() => Promise.resolve()),
 	beforeNavigate: vi.fn(),
+	afterNavigate: vi.fn(),
 }));
 
 vi.mock("$app/environment", () => ({
