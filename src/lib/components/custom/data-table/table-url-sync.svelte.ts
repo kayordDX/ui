@@ -1,5 +1,5 @@
 import { untrack } from "svelte";
-import { beforeNavigate } from "$app/navigation";
+import { afterNavigate, beforeNavigate } from "$app/navigation";
 import { useSearchParams } from "runed/kit";
 import type { RowData, Table } from "@tanstack/svelte-table";
 import type { DataTableFeatures } from "./features";
@@ -76,23 +76,37 @@ export function useTableUrlSync<TData extends RowData>(
 	if (enabled.pagination) table.setPageIndex(decodePageIndex());
 	if (enabled.columnFilters) table.setColumnFilters(decodeColumnFilters() ?? []);
 
-	// When navigating with new sort/search/filter params, snap back to the first page
-	// unless the target URL explicitly points at a later page.
+	// When navigating with new sort/search/filter params, snap back to the first
+	// page unless the target URL explicitly points at a later page. Only same-route
+	// query changes count: resetting on a cross-route navigation would mutate state
+	// mid-navigation, and the write-back effect below would then issue a competing
+	// `goto("?…")` that cancels the in-flight navigation (links off the table page
+	// would "do nothing" whenever the table isn't already on page 1).
+	let leavePage = false;
 	beforeNavigate((navigation) => {
+		const from = navigation.from?.url;
+		const to = navigation.to?.url;
+		if (!from || !to) return;
+
+		if (from.pathname !== to.pathname) {
+			leavePage = true;
+			return;
+		}
 		if (!enabled.pagination) return;
 
-		const targetPage = Number(navigation.to?.url.searchParams.get("page") ?? "0");
+		const targetPage = Number(to.searchParams.get("page") ?? "0");
 		const queryChanged =
-			(enabled.sorting &&
-				navigation.from?.url.searchParams.get("sort") != navigation.to?.url.searchParams.get("sort")) ||
-			(enabled.globalFilter &&
-				navigation.from?.url.searchParams.get("search") != navigation.to?.url.searchParams.get("search")) ||
-			(enabled.columnFilters &&
-				navigation.from?.url.searchParams.get("filter") != navigation.to?.url.searchParams.get("filter"));
+			(enabled.sorting && from.searchParams.get("sort") != to.searchParams.get("sort")) ||
+			(enabled.globalFilter && from.searchParams.get("search") != to.searchParams.get("search")) ||
+			(enabled.columnFilters && from.searchParams.get("filter") != to.searchParams.get("filter"));
 
 		if (queryChanged && (!Number.isFinite(targetPage) || targetPage <= 0)) {
 			table.resetPageIndex();
 		}
+	});
+
+	afterNavigate(() => {
+		leavePage = false;
 	});
 
 	// Write atoms back to the URL. Only the enabled atoms are read (and thus
@@ -104,6 +118,9 @@ export function useTableUrlSync<TData extends RowData>(
 		const sorting = enabled.sorting ? table.atoms.sorting.get() : undefined;
 		const columnFilters = enabled.columnFilters ? table.atoms.columnFilters.get() : undefined;
 		untrack(() => {
+			// Skip writes while leaving the route: state mutating mid-navigation
+			// (e.g. a debounced filter landing) must not `goto` over the target URL.
+			if (leavePage) return;
 			if (enabled.globalFilter) params.search = search;
 			if (enabled.pagination && page !== undefined) params.page = page;
 			if (enabled.sorting) params.sort = encodeSorting({ sorting });

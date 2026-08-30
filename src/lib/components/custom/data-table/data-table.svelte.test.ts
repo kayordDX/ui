@@ -13,6 +13,7 @@ vi.mock("$app/state", () => ({
 }));
 vi.mock("$app/navigation", () => ({
 	beforeNavigate: () => {},
+	afterNavigate: () => {},
 	onNavigate: () => {},
 	goto: () => {},
 }));
