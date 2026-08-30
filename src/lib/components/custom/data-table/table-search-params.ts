@@ -15,8 +15,8 @@ export const encodeSorting = (state: State) => {
 	return state.sorting?.map((s) => `${s.desc ? "-" : ""}${s.id}`).join(",") ?? "";
 };
 
-export const decodeSorting = () => {
-	const sort = page.url.searchParams.get("sort");
+export const decodeSorting = (url: URL = page.url) => {
+	const sort = url.searchParams.get("sort");
 	if (!sort) return undefined;
 
 	return sort
@@ -29,16 +29,16 @@ export const encodeGlobalFilter = (state: State) => {
 	return state.globalFilter;
 };
 
-export const decodeGlobalFilter = (): string | undefined => {
-	const globalFilter = page.url.searchParams.get("search");
+export const decodeGlobalFilter = (url: URL = page.url): string | undefined => {
+	const globalFilter = url.searchParams.get("search");
 	return globalFilter != null ? globalFilter : undefined;
 };
 
 export const encodePageIndex = (state: State) => {
 	return state.pagination?.pageIndex?.toString() ?? "";
 };
-export const decodePageIndex = () => {
-	const pageIndex = Number(page.url.searchParams.get("page") ?? "0");
+export const decodePageIndex = (url: URL = page.url) => {
+	const pageIndex = Number(url.searchParams.get("page") ?? "0");
 	return Number.isFinite(pageIndex) ? pageIndex : 0;
 };
 
@@ -50,8 +50,8 @@ export const encodeColumnFilters = (state: State) => {
 	);
 };
 
-export const decodeColumnFilters = () => {
-	const filter = page.url.searchParams.get("filter");
+export const decodeColumnFilters = (url: URL = page.url) => {
+	const filter = url.searchParams.get("filter");
 	if (!filter) return undefined;
 
 	return filter.split(",").flatMap((v) => {

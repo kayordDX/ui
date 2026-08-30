@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { createShadTable, useTableUrlSync, type ColumnDef, type DataTableFeatures } from "$lib/data-table";
+	import DataTable from "./DataTable.svelte";
 
 	interface DataType {
 		id: number;
@@ -12,6 +13,8 @@
 		{ accessorKey: "name", size: 100000 },
 		{ accessorKey: "day", size: 100, minSize: 150 },
 	];
+
+	let { renderTable = false }: { renderTable?: boolean } = $props();
 
 	const tableData: DataType[] = Array.from({ length: 50 }, (_, i) => ({
 		id: i + 1,
@@ -27,3 +30,7 @@
 
 	useTableUrlSync(table);
 </script>
+
+{#if renderTable}
+	<DataTable {table} />
+{/if}
