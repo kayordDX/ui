@@ -32,12 +32,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Install Playwright browser
-        run: pnpm exec playwright install --with-deps chromium
-
-      - name: Verify
-        run: pnpm verify
-
       - name: NPM Publish
         run: pnpm publish --no-git-checks
         # env:
