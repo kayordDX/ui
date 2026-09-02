@@ -31,6 +31,9 @@
 		columns,
 		data: data.value,
 		enableRowSelection: false,
+		initialState: {
+			sorting: [{ id: "name", desc: false }],
+		},
 	});
 
 	// Keep search / sort / filter / page in sync with the URL.

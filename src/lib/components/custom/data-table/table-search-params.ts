@@ -37,9 +37,12 @@ export const decodeGlobalFilter = (): string | undefined => {
 export const encodePageIndex = (state: State) => {
 	return state.pagination?.pageIndex?.toString() ?? "";
 };
-export const decodePageIndex = () => {
-	const pageIndex = Number(page.url.searchParams.get("page") ?? "0");
-	return Number.isFinite(pageIndex) ? pageIndex : 0;
+export const decodePageIndex = (): number | undefined => {
+	const raw = page.url.searchParams.get("page");
+	if (raw == null) return undefined;
+
+	const pageIndex = Number(raw);
+	return Number.isFinite(pageIndex) ? pageIndex : undefined;
 };
 
 export const encodeColumnFilters = (state: State) => {
@@ -80,15 +83,16 @@ interface Options {
 }
 
 export const decodeTableState = (): State => {
-	return {
-		pagination: {
-			pageIndex: decodePageIndex(),
-			pageSize: 10,
-		},
+	const pageIndex = decodePageIndex();
+	const state: State = {
 		sorting: decodeSorting(),
 		columnFilters: decodeColumnFilters(),
 		globalFilter: decodeGlobalFilter(),
 	};
+	if (pageIndex !== undefined) {
+		state.pagination = { pageIndex, pageSize: 10 };
+	}
+	return state;
 };
 
 export const encodeTableState = (state: State, options?: Options, searchParams?: URLSearchParams) => {

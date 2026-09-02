@@ -48,7 +48,9 @@ export interface TableUrlSyncOptions {
  *
  * The table is hydrated from the URL immediately, before the first render, so
  * row-model auto-resets (which are skipped on their first run) can't clobber
- * the URL-backed state.
+ * the URL-backed state. URL params override `initialState`; params missing
+ * from the URL leave `initialState` in place, and the initial state is then
+ * written back to the URL like any other state.
  *
  * By default all four params are synced; pass {@link TableUrlSyncOptions} to
  * enable only a subset, e.g. `useTableUrlSync(table, { pagination: true })`.
@@ -67,14 +69,28 @@ export function useTableUrlSync<TData extends RowData>(
 
 	const params = useSearchParams(defaultSearchParamSchema, { pushHistory: false });
 
-	// Hydrate from the URL before the first render. Sorting/filter/data changes
-	// defer an autoResetPageIndex microtask via the adapter's schedule; row
-	// models skip auto-resets on their first run, so applying the URL state
-	// up-front can't be undone by them (a post-mount hydration would be).
-	if (enabled.globalFilter) table.setGlobalFilter(decodeGlobalFilter() ?? "");
-	if (enabled.sorting) table.setSorting(decodeSorting() ?? []);
-	if (enabled.pagination) table.setPageIndex(decodePageIndex());
-	if (enabled.columnFilters) table.setColumnFilters(decodeColumnFilters() ?? []);
+	// Hydrate from the URL before the first render, but only for params the URL
+	// actually carries — absent params leave the table's `initialState` in place
+	// (the write-back effect below then publishes it to the URL). Sorting/filter/
+	// data changes defer an autoResetPageIndex microtask via the adapter's
+	// schedule; row models skip auto-resets on their first run, so applying the
+	// URL state up-front can't be undone by them (a post-mount hydration would be).
+	if (enabled.globalFilter) {
+		const globalFilter = decodeGlobalFilter();
+		if (globalFilter !== undefined) table.setGlobalFilter(globalFilter);
+	}
+	if (enabled.sorting) {
+		const sorting = decodeSorting();
+		if (sorting !== undefined) table.setSorting(sorting);
+	}
+	if (enabled.pagination) {
+		const pageIndex = decodePageIndex();
+		if (pageIndex !== undefined) table.setPageIndex(pageIndex);
+	}
+	if (enabled.columnFilters) {
+		const columnFilters = decodeColumnFilters();
+		if (columnFilters !== undefined) table.setColumnFilters(columnFilters);
+	}
 
 	// When navigating with new sort/search/filter params, snap back to the first
 	// page unless the target URL explicitly points at a later page. Only same-route
