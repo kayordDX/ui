@@ -12,7 +12,7 @@
 		canChangePageSize?: boolean;
 	}
 
-	let { table, canChangePageSize = true }: Props<T> = $props();
+	let { table, canChangePageSize = false }: Props<T> = $props();
 
 	const pagination = $derived(table.atoms.pagination.get());
 </script>
@@ -24,11 +24,12 @@
 				{table.getFilteredSelectedRowModel().rows.length} of
 				{table.getFilteredRowModel().rows.length} row(s) selected.
 			</p>
+		{:else}
+			<p>
+				{table.getRowModel().rows.length.toLocaleString()}
+				of {table.getRowCount().toLocaleString()} rows
+			</p>
 		{/if}
-		<p>
-			{table.getRowModel().rows.length.toLocaleString()}
-			of {table.getRowCount().toLocaleString()} rows
-		</p>
 	</div>
 	<div class="flex items-center gap-6 lg:gap-8">
 		{#if canChangePageSize}
