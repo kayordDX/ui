@@ -12,12 +12,8 @@
 
 <div
 	bind:this={ref}
-	data-slot="drawer-header"
-	class={cn(
-		"gap-0.5 p-4 md:gap-0.5 md:text-left flex flex-col",
-		"group-data-[vaul-drawer-direction=bottom]/drawer-content:text-center group-data-[vaul-drawer-direction=top]/drawer-content:text-center",
-		className
-	)}
+	data-slot="attachment-actions"
+	class={cn("relative z-20 group-data-[orientation=vertical]/attachment:absolute group-data-[orientation=vertical]/attachment:top-3 group-data-[orientation=vertical]/attachment:right-3 group-data-[orientation=vertical]/attachment:gap-1 flex shrink-0 items-center", className)}
 	{...restProps}
 >
 	{@render children?.()}

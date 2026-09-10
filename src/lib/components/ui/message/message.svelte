@@ -5,17 +5,20 @@
 	let {
 		ref = $bindable(null),
 		class: className,
+		align = "start",
 		children,
 		...restProps
-	}: WithElementRef<HTMLAttributes<HTMLDivElement>> = $props();
+	}: WithElementRef<HTMLAttributes<HTMLDivElement>> & {
+		align?: "start" | "end";
+	} = $props();
 </script>
 
 <div
 	bind:this={ref}
-	data-slot="drawer-header"
+	data-slot="message"
+	data-align={align}
 	class={cn(
-		"gap-0.5 p-4 md:gap-0.5 md:text-left flex flex-col",
-		"group-data-[vaul-drawer-direction=bottom]/drawer-content:text-center group-data-[vaul-drawer-direction=top]/drawer-content:text-center",
+		"gap-2 text-sm group/message relative flex w-full min-w-0 data-[align=end]:flex-row-reverse",
 		className
 	)}
 	{...restProps}

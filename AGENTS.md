@@ -14,3 +14,4 @@ UI component library reused across apps. Components live in `src/lib/components/
 - Do not add comments unless necessary.
 - Never edit `src/lib/components/ui/`; regenerate it with `pnpm lib`.
 - Follow existing patterns and run `pnpm verify` before finishing.
+- Make sure `pnpm check` passes before committing.

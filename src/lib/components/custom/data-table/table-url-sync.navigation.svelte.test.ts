@@ -24,11 +24,6 @@ vi.mock("$app/navigation", () => ({
 	afterNavigate: vi.fn((callback: () => void) => handlers.after.push(callback)),
 }));
 
-vi.mock("$app/environment", () => ({
-	browser: true,
-	building: false,
-}));
-
 import UrlSyncHarness from "./url-sync-harness.svelte";
 
 const wait = () => new Promise((r) => setTimeout(r, 0));
