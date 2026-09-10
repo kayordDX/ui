@@ -12,10 +12,9 @@
 
 <div
 	bind:this={ref}
-	data-slot="drawer-header"
+	data-slot="message-avatar"
 	class={cn(
-		"gap-0.5 p-4 md:gap-0.5 md:text-left flex flex-col",
-		"group-data-[vaul-drawer-direction=bottom]/drawer-content:text-center group-data-[vaul-drawer-direction=top]/drawer-content:text-center",
+		"min-w-8 group-has-data-[slot=message-footer]/message:-translate-y-8 flex w-fit shrink-0 items-center justify-center self-end overflow-hidden rounded-full bg-muted",
 		className
 	)}
 	{...restProps}

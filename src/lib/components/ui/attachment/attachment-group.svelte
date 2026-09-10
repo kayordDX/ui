@@ -12,10 +12,9 @@
 
 <div
 	bind:this={ref}
-	data-slot="drawer-header"
+	data-slot="attachment-group"
 	class={cn(
-		"gap-0.5 p-4 md:gap-0.5 md:text-left flex flex-col",
-		"group-data-[vaul-drawer-direction=bottom]/drawer-content:text-center group-data-[vaul-drawer-direction=top]/drawer-content:text-center",
+		"scroll-px-1 gap-3 py-1 no-scrollbar flex min-w-0 scroll-fade-x snap-x snap-mandatory overflow-x-auto overscroll-x-contain *:data-[slot=attachment]:flex-none *:data-[slot=attachment]:snap-start",
 		className
 	)}
 	{...restProps}
