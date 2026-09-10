@@ -15,11 +15,15 @@
 	let { table, canChangePageSize = false }: Props<T> = $props();
 
 	const pagination = $derived(table.atoms.pagination.get());
+
+	// `enableRowSelection` defaults to `true` in TanStack v9 (feature-level
+	// default), so the select column is the real signal of selection UI.
+	const hasSelectionColumn = $derived(table.getAllLeafColumns().some((column) => column.id === "select"));
 </script>
 
 <div class="flex items-center justify-between gap-4 px-2 py-4">
 	<div class="text-muted-foreground flex-1 text-sm">
-		{#if table.options.enableRowSelection}
+		{#if hasSelectionColumn}
 			<p>
 				{table.getFilteredSelectedRowModel().rows.length} of
 				{table.getFilteredRowModel().rows.length} row(s) selected.
