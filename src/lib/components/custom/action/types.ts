@@ -1,10 +1,10 @@
 import type { ButtonVariant } from "$lib/components/ui/button";
-import { type Icon } from "@lucide/svelte";
+import { type LucideIcon } from "@lucide/svelte";
 import type { Snippet } from "svelte";
 
 export interface ActionType {
 	text: string;
-	icon?: typeof Icon;
+	icon?: LucideIcon;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	action?: (...args: any[]) => void;
 	href?: string;
@@ -32,7 +32,7 @@ export const isActionGroup = (
 export interface ActionsType {
 	actions: Array<ActionType | ActionGroupType | ActionSeparatorType>;
 	text?: string;
-	icon?: typeof Icon;
+	icon?: LucideIcon;
 	class?: string;
 	variant?: ButtonVariant;
 }
