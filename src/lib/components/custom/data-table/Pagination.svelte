@@ -4,7 +4,7 @@
 	import ChevronRight from "@lucide/svelte/icons/chevron-right";
 	import ChevronsLeft from "@lucide/svelte/icons/chevrons-left";
 	import ChevronsRight from "@lucide/svelte/icons/chevrons-right";
-	import { Select, Button } from "$lib";
+	import { Select, Button } from "#lib";
 	import type { DataTableFeatures } from "./features";
 
 	interface Props<T extends RowData> {

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { ComponentProps } from "svelte";
-	import { cn } from "$lib/utils";
+	import { cn } from "#lib/utils.js";
 	import { type Icon } from "@lucide/svelte";
 	import LoaderCircleIcon from "@lucide/svelte/icons/loader-circle";
 	import { scale } from "svelte/transition";

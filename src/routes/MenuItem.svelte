@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button } from "$lib";
+	import { Button } from "#lib";
 	import { page } from "$app/state";
 	interface Props {
 		path: string;

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { createShadTable, DataTable, type ColumnDef, type DataTableFeatures } from "$lib/data-table";
-	import { Button } from "$lib";
+	import { createShadTable, DataTable, type ColumnDef, type DataTableFeatures } from "#lib/data-table/index.js";
+	import { Button } from "#lib";
 
 	interface Row {
 		id: number;

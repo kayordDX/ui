@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Card, TreeView } from "$lib";
+	import { Card, TreeView } from "#lib";
 	import { LayoutGridIcon } from "@lucide/svelte";
 </script>
 

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { Card, Chip, ColorPicker, DateStrip, DynamicSelect, StatusDot, Stepper, Timeline } from "$lib";
-	import AudioWave from "$lib/components/ui/audio-wave/audio-wave.svelte";
+	import { Card, Chip, ColorPicker, DateStrip, DynamicSelect, StatusDot, Stepper, Timeline } from "#lib";
+	import AudioWave from "#lib/components/ui/audio-wave/audio-wave.svelte";
 
 	const frameworks = [
 		{ label: "react", value: "React" },

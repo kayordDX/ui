@@ -7,8 +7,8 @@ vi.mock("$app/state", () => ({
 	},
 }));
 
-vi.mock("$lib/data-table", async () => {
-	const { default: Skeleton } = await import("$lib/components/ui/skeleton/skeleton.svelte");
+vi.mock("#lib/data-table/index.js", async () => {
+	const { default: Skeleton } = await import("#lib/components/ui/skeleton/skeleton.svelte");
 
 	const atoms = () => ({
 		globalFilter: { get: () => "" },
@@ -31,7 +31,7 @@ vi.mock("./employees.remote", () => ({
 	getEmployees: vi.fn(() => Promise.resolve({ data: [], total: 0, page: 0, size: 10 })),
 }));
 
-vi.mock("$lib/components/custom/data-table/shad-table.svelte", () => ({
+vi.mock("#lib/components/custom/data-table/shad-table.svelte.js", () => ({
 	createShadTable: vi.fn(() => ({
 		options: {},
 		atoms: {

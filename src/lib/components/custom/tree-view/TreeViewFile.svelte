@@ -2,7 +2,7 @@
 	import type { Snippet } from "svelte";
 	import { File } from "@lucide/svelte";
 	import type { HTMLButtonAttributes } from "svelte/elements";
-	import { cn } from "$lib/utils";
+	import { cn } from "#lib/utils.js";
 
 	interface Props extends HTMLButtonAttributes {
 		name: string;

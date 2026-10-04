@@ -39,5 +39,6 @@ describe("useTableUrlSync write-back", () => {
 		expect(urls.at(-1)).toContain("sort=-name");
 		expect(urls.at(-1)).toContain("page=2");
 		expect(urls.at(-1)).toContain("search=alice");
+		expect(vi.mocked(goto).mock.calls.at(-1)?.[1]).toEqual({ replace: true, reset: false });
 	});
 });

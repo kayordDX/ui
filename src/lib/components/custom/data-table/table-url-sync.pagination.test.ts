@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { createShadTable, type ColumnDef, type DataTableFeatures } from "$lib/data-table";
+import { createShadTable, type ColumnDef, type DataTableFeatures } from "#lib/data-table/index.js";
 
 interface Row {
 	id: number;

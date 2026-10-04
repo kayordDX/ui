@@ -1,7 +1,13 @@
 <script lang="ts">
-	import { DataTable, createShadTable, useTableUrlSync, type ColumnDef, type DataTableFeatures } from "$lib/data-table";
-	import Input from "$lib/components/ui/input/input.svelte";
-	import { Button } from "$lib";
+	import {
+		DataTable,
+		createShadTable,
+		useTableUrlSync,
+		type ColumnDef,
+		type DataTableFeatures,
+	} from "#lib/data-table/index.js";
+	import Input from "#lib/components/ui/input/input.svelte";
+	import { Button } from "#lib";
 
 	interface Todo {
 		userId: number;

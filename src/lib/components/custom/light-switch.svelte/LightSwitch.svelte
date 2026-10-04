@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { SunIcon, MoonIcon } from "@lucide/svelte";
 	import { toggleMode } from "mode-watcher";
-	import { Button } from "$lib/components/ui/button/index.js";
+	import { Button } from "#lib/components/ui/button/index.js";
 
 	type Props = {
 		variant?: "outline" | "ghost";

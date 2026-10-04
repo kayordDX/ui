@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { Card, AlertDialog, Button, DropdownMenu, buttonVariants } from "$lib";
-	import { toast } from "$lib/sonner";
-	import { Drawer } from "$lib/drawer";
+	import { Card, AlertDialog, Button, DropdownMenu, buttonVariants } from "#lib";
+	import { toast } from "#lib/sonner/index.js";
+	import { Drawer } from "#lib/drawer/index.js";
 </script>
 
 <Card.Root class="m-5">

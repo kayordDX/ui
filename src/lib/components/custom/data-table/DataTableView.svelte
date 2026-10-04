@@ -1,8 +1,8 @@
 <script lang="ts" generics="TData extends RowData">
 	import type { RowData, Table } from "@tanstack/svelte-table";
-	import { cn } from "$lib/utils.js";
-	import { Button } from "$lib/components/ui/button";
-	import { Popover, PopoverContent, PopoverTrigger } from "$lib/components/ui/popover";
+	import { cn } from "#lib/utils.js";
+	import { Button } from "#lib/components/ui/button/index.js";
+	import { Popover, PopoverContent, PopoverTrigger } from "#lib/components/ui/popover/index.js";
 	import {
 		Command,
 		CommandEmpty,
@@ -10,7 +10,7 @@
 		CommandInput,
 		CommandItem,
 		CommandList,
-	} from "$lib/components/ui/command/index.js";
+	} from "#lib/components/ui/command/index.js";
 	import type { DataTableFeatures } from "./features";
 
 	// Icons

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cn, type WithElementRef } from "$lib/utils.js";
+	import { cn, type WithElementRef } from "#lib/utils.js";
 	import type { HTMLAttributes } from "svelte/elements";
 
 	let {
@@ -18,7 +18,7 @@
 	data-slot="message"
 	data-align={align}
 	class={cn(
-		"gap-2 text-sm group/message relative flex w-full min-w-0 data-[align=end]:flex-row-reverse",
+		"text-sm gap-2 group/message relative flex w-full min-w-0 data-[align=end]:flex-row-reverse",
 		className
 	)}
 	{...restProps}

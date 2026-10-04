@@ -2,7 +2,7 @@
 	import { Menubar as MenubarPrimitive } from "bits-ui";
 	import MinusIcon from '@lucide/svelte/icons/minus';
 	import CheckIcon from '@lucide/svelte/icons/check';
-	import { cn, type WithoutChildrenOrChild } from "$lib/utils.js";
+	import { cn, type WithoutChildrenOrChild } from "#lib/utils.js";
 	import type { Snippet } from "svelte";
 
 	let {
@@ -12,6 +12,7 @@
 		indeterminate = $bindable(false),
 		inset,
 		children: childrenProp,
+		closeOnSelect = false,
 		...restProps
 	}: WithoutChildrenOrChild<MenubarPrimitive.CheckboxItemProps> & {
 		inset?: boolean;
@@ -21,12 +22,13 @@
 
 <MenubarPrimitive.CheckboxItem
 	bind:ref
+	{closeOnSelect}
 	bind:checked
 	bind:indeterminate
 	data-slot="menubar-checkbox-item"
 	data-inset={inset}
 	class={cn(
-		"gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground data-inset:pl-7 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+		"focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-inset:pl-7 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0",
 		className
 	)}
 	{...restProps}

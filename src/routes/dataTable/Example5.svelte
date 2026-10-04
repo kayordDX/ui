@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { ColumnDef, PaginationState, SortingState } from "@tanstack/svelte-table";
-	import { DataTable, createShadTable, useTableUrlSync, type DataTableFeatures } from "$lib/data-table";
+	import { DataTable, createShadTable, useTableUrlSync, type DataTableFeatures } from "#lib/data-table/index.js";
 	import { getEmployees } from "./employees.remote";
-	import Input from "$lib/components/ui/input/input.svelte";
+	import Input from "#lib/components/ui/input/input.svelte";
 
 	interface Employee {
 		id: number;

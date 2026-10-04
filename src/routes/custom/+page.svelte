@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { Loader, LightSwitch, Actions, ThemeSelector, NumberTicker, AvatarGroup } from "$lib";
-	import Meter from "$lib/components/custom/meter/meter.svelte";
-	import ProgressLoading from "$lib/components/custom/progress-loading/ProgressLoading.svelte";
-	import { Button, Card } from "$lib/components/ui";
-	import Spinner from "$lib/components/ui/spinner/spinner.svelte";
+	import { Loader, LightSwitch, Actions, ThemeSelector, NumberTicker, AvatarGroup } from "#lib";
+	import Meter from "#lib/components/custom/meter/meter.svelte";
+	import ProgressLoading from "#lib/components/custom/progress-loading/ProgressLoading.svelte";
+	import { Button, Card } from "#lib/components/ui/index.js";
+	import Spinner from "#lib/components/ui/spinner/spinner.svelte";
 	import { HouseIcon, EllipsisIcon } from "@lucide/svelte";
-	import * as StarRating from "$lib/components/custom/star-rating";
+	import * as StarRating from "#lib/components/custom/star-rating/index.js";
 
 	let starValue = $state(0);
 	let isLoading = $state(true);

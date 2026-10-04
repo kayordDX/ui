@@ -1,8 +1,8 @@
 <script lang="ts">
 	import "../layout.css";
-	import { LightSwitch } from "$lib";
+	import { LightSwitch } from "#lib";
 	import { ModeWatcher } from "mode-watcher";
-	import { Toaster } from "$lib/components/ui/sonner";
+	import { Toaster } from "#lib/components/ui/sonner/index.js";
 	import Menu from "./Menu.svelte";
 	import type { Snippet } from "svelte";
 	interface Props {

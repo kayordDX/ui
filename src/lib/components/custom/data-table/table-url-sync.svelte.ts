@@ -100,6 +100,8 @@ export function useTableUrlSync<TData extends RowData>(
 	// would "do nothing" whenever the table isn't already on page 1).
 	let leavePage = false;
 	beforeNavigate((navigation) => {
+		if (navigation.shallow) return;
+
 		const from = navigation.from?.url;
 		const to = navigation.to?.url;
 		if (!from || !to) return;
@@ -121,7 +123,9 @@ export function useTableUrlSync<TData extends RowData>(
 		}
 	});
 
-	afterNavigate(() => {
+	afterNavigate(({ shallow }) => {
+		if (shallow) return;
+
 		leavePage = false;
 	});
 

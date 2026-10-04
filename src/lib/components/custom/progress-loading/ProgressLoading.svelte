@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { type ProgressRootProps, Progress } from "bits-ui";
-	import { cn } from "$lib/utils";
+	import { cn } from "#lib/utils.js";
 
 	interface Props {
 		class?: ProgressRootProps["class"];

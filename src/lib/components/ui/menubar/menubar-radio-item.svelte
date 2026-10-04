@@ -1,13 +1,14 @@
 <script lang="ts">
 	import { Menubar as MenubarPrimitive } from "bits-ui";
 	import CheckIcon from '@lucide/svelte/icons/check';
-	import { cn, type WithoutChild } from "$lib/utils.js";
+	import { cn, type WithoutChild } from "#lib/utils.js";
 
 	let {
 		ref = $bindable(null),
 		class: className,
 		inset,
 		children: childrenProp,
+		closeOnSelect = false,
 		...restProps
 	}: WithoutChild<MenubarPrimitive.RadioItemProps> & {
 		inset?: boolean;
@@ -16,10 +17,11 @@
 
 <MenubarPrimitive.RadioItem
 	bind:ref
+	{closeOnSelect}
 	data-slot="menubar-radio-item"
 	data-inset={inset}
 	class={cn(
-		"gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground data-inset:pl-7 data-disabled:opacity-50 [&_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0",
+		"focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0",
 		className
 	)}
 	{...restProps}
