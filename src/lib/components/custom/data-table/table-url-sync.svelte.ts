@@ -1,9 +1,9 @@
 import { untrack } from "svelte";
-import { afterNavigate, beforeNavigate } from "$app/navigation";
-import { useSearchParams } from "runed/kit";
+import { SvelteURL } from "svelte/reactivity";
+import { afterNavigate, beforeNavigate, goto } from "$app/navigation";
+import { page } from "$app/state";
 import type { RowData, Table } from "@tanstack/svelte-table";
 import type { DataTableFeatures } from "./features";
-import { defaultSearchParamSchema } from "./types";
 import {
 	decodeColumnFilters,
 	decodeGlobalFilter,
@@ -66,8 +66,6 @@ export function useTableUrlSync<TData extends RowData>(
 		pagination: true,
 		...options,
 	};
-
-	const params = useSearchParams(defaultSearchParamSchema, { pushHistory: false });
 
 	// Hydrate from the URL before the first render, but only for params the URL
 	// actually carries — absent params leave the table's `initialState` in place
@@ -134,17 +132,26 @@ export function useTableUrlSync<TData extends RowData>(
 	// selection), and disabled params are left untouched in the URL.
 	$effect(() => {
 		const search = enabled.globalFilter ? table.atoms.globalFilter.get() : undefined;
-		const page: number | undefined = enabled.pagination ? table.atoms.pagination.get().pageIndex : undefined;
+		const pageIndex: number | undefined = enabled.pagination ? table.atoms.pagination.get().pageIndex : undefined;
 		const sorting = enabled.sorting ? table.atoms.sorting.get() : undefined;
 		const columnFilters = enabled.columnFilters ? table.atoms.columnFilters.get() : undefined;
 		untrack(() => {
 			// Skip writes while leaving the route: state mutating mid-navigation
 			// (e.g. a debounced filter landing) must not `goto` over the target URL.
 			if (leavePage) return;
-			if (enabled.globalFilter) params.search = search;
-			if (enabled.pagination && page !== undefined) params.page = page;
-			if (enabled.sorting) params.sort = encodeSorting({ sorting });
-			if (enabled.columnFilters) params.filter = encodeColumnFilters({ columnFilters });
+			const url = new SvelteURL(page.url.href);
+			const setParam = (key: string, value: string) => {
+				if (value) url.searchParams.set(key, value);
+				else url.searchParams.delete(key);
+			};
+			if (enabled.globalFilter) setParam("search", search == null ? "" : String(search));
+			if (enabled.pagination && pageIndex !== undefined) {
+				setParam("page", pageIndex === 0 ? "" : String(pageIndex));
+			}
+			if (enabled.sorting) setParam("sort", encodeSorting({ sorting }));
+			if (enabled.columnFilters) setParam("filter", encodeColumnFilters({ columnFilters }));
+			if (url.href === page.url.href) return;
+			void goto(`?${url.searchParams.toString()}${url.hash}`, { replace: true, reset: false }).catch(console.error);
 		});
 	});
 }

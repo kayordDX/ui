@@ -34,7 +34,7 @@ Kayord UI exports components individually. Some components require additional pe
 | ------------------------------- | -------------------------------------------------------------------------- |
 | **Charts** (`chart/`)           | `layerchart`, `d3-scale`, `d3-shape`, `@types/d3-scale`, `@types/d3-shape` |
 | **Carousel** (`carousel/`)      | `embla-carousel-svelte`                                                    |
-| **Data Table** (`data-table/`)  | `@tanstack/svelte-table`, `runed`, `zod`                                   |
+| **Data Table** (`data-table/`)  | `@tanstack/svelte-table`, `zod`                                   |
 | **Drawer** (`drawer/`)          | `vaul-svelte`                                                              |
 | **Form** (`form/`)              | `formsnap`, `sveltekit-superforms`                                         |
 | **Date/Calendar** (`calendar/`) | `@internationalized/date`                                                  |
@@ -59,7 +59,7 @@ pnpm add -D layerchart d3-scale d3-shape @types/d3-scale @types/d3-shape
 pnpm add -D embla-carousel-svelte
 
 # For data table
-pnpm add -D @tanstack/svelte-table runed zod
+pnpm add -D @tanstack/svelte-table zod
 
 # For drawer @next for now
 pnpm add -D vaul-svelte@next

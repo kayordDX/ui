@@ -165,9 +165,6 @@ settings:
 overrides:
   esrap: 2.3.4
 
-patchedDependencies:
-  runed@0.37.1: af13b05fb97d0153245224e24367684576d7027720764504b6503bec38f6ae78
-
 importers:
 
   .:
@@ -178,9 +175,6 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
-      runed:
-        specifier: ^0.37.1
-        version: 0.37.1(patch_hash=af13b05fb97d0153245224e24367684576d7027720764504b6503bec38f6ae78)(@sveltejs/kit@3.0.0(@sveltejs/vite-plugin-svelte@7.3.0(svelte@5.57.1(@typescript-eslint/types@8.70.0))(vite@8.2.2(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.70.0))(typescript@6.0.3)(vite@8.2.2(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.70.0))(zod@4.6.5)
       tailwind-merge:
         specifier: ^3.6.0
         version: 3.6.0
@@ -3430,7 +3424,7 @@ snapshots:
       d3-tile: 1.0.0
       d3-time: 3.1.0
       memoize: 10.2.0
-      runed: 0.37.1(patch_hash=af13b05fb97d0153245224e24367684576d7027720764504b6503bec38f6ae78)(@sveltejs/kit@3.0.0(@sveltejs/vite-plugin-svelte@7.3.0(svelte@5.57.1(@typescript-eslint/types@8.70.0))(vite@8.2.2(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.70.0))(typescript@6.0.3)(vite@8.2.2(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.70.0))(zod@4.6.5)
+      runed: 0.37.1(@sveltejs/kit@3.0.0(@sveltejs/vite-plugin-svelte@7.3.0(svelte@5.57.1(@typescript-eslint/types@8.70.0))(vite@8.2.2(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.70.0))(typescript@6.0.3)(vite@8.2.2(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.70.0))(zod@4.6.5)
       svelte: 5.57.1(@typescript-eslint/types@8.70.0)
     transitivePeerDependencies:
       - '@sveltejs/kit'
@@ -3764,7 +3758,7 @@ snapshots:
     optionalDependencies:
       '@sveltejs/kit': 3.0.0(@sveltejs/vite-plugin-svelte@7.3.0(svelte@5.57.1(@typescript-eslint/types@8.70.0))(vite@8.2.2(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.70.0))(typescript@6.0.3)(vite@8.2.2(jiti@2.7.0))
 
-  runed@0.37.1(patch_hash=af13b05fb97d0153245224e24367684576d7027720764504b6503bec38f6ae78)(@sveltejs/kit@3.0.0(@sveltejs/vite-plugin-svelte@7.3.0(svelte@5.57.1(@typescript-eslint/types@8.70.0))(vite@8.2.2(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.70.0))(typescript@6.0.3)(vite@8.2.2(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.70.0))(zod@4.6.5):
+  runed@0.37.1(@sveltejs/kit@3.0.0(@sveltejs/vite-plugin-svelte@7.3.0(svelte@5.57.1(@typescript-eslint/types@8.70.0))(vite@8.2.2(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.70.0))(typescript@6.0.3)(vite@8.2.2(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.70.0))(zod@4.6.5):
     dependencies:
       dequal: 2.0.3
       esm-env: 1.2.2

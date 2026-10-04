@@ -1,10 +1,6 @@
 # SvelteKit 3 compatibility
 
-This project requires SvelteKit 3. The demo uses a temporary pnpm patch registered in `pnpm-workspace.yaml`:
-
-- `patches/runed@0.37.1.patch` migrates search-param navigation to `replace`/`reset` and handles rejected navigation promises. Search-param updates target the current application route.
-
-This patch is not automatically applied when another application installs the published UI library. Applications using `useTableUrlSync` must copy the Runed patch and its `patchedDependencies` entry into their own pnpm project (using this exact dependency version), until upstream releases support SvelteKit 3. Remove the patch only after verifying URL history behavior with a compatible release.
+This project requires SvelteKit 3. Data-table URL syncing uses SvelteKit navigation directly, with `replace`/`reset` options and rejection handling. No Runed dependency or compatibility patch is required.
 
 Superforms uses `3.0.0-next.1` without a compatibility patch. The demo's Zod adapter requires Zod 4.6 or newer.
 
