@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { Card, Chip, ColorPicker, DateStrip, DynamicSelect, StatusDot, Stepper, Timeline } from "#lib";
+	import { Button, Card, Chip, ColorPicker, DateStrip, DynamicSelect, StatusDot, Stepper, Timeline } from "#lib";
+	import { X } from "@lucide/svelte";
 	import AudioWave from "#lib/components/ui/audio-wave/audio-wave.svelte";
 
 	const frameworks = [
@@ -11,6 +12,7 @@
 
 	const steps = [{ label: "Test" }, { label: "Another" }];
 	let currentStep = $state(0);
+	let showReactChip = $state(true);
 </script>
 
 <Card.Root class="m-5">
@@ -22,7 +24,14 @@
 		<div>
 			<div class="text-muted-foreground mb-2 text-xs">Chip</div>
 			<Chip.Root>Test</Chip.Root>
-			<Chip.Root removable>React</Chip.Root>
+			{#if showReactChip}
+				<div class="inline-flex items-center gap-1">
+					<Chip.Root>React</Chip.Root>
+					<Button variant="ghost" size="icon" aria-label="Remove React" onclick={() => (showReactChip = false)}>
+						<X class="h-3 w-3" />
+					</Button>
+				</div>
+			{/if}
 		</div>
 		<div>
 			<div class="text-muted-foreground mb-2 text-xs">Color Picker</div>
