@@ -9,4 +9,3 @@ onlyBuiltDependencies:
   - "esbuild"
 patchedDependencies:
   runed@0.37.1: patches/runed@0.37.1.patch
-  sveltekit-superforms@2.31.0: patches/sveltekit-superforms@2.31.0.patch
