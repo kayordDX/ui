@@ -4,10 +4,9 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/*[data-vaul-drawer][data-state="closed"],
-[data-vaul-overlay][data-state="closed"] {
+[data-state="closed"] {
 	animation-fill-mode: forwards;
-}*/
+}
 
 /* Button Defaults */
 @layer base {

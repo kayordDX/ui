@@ -37,6 +37,20 @@ describe("drawer animation", () => {
 });
 
 describe("show dialog", () => {
+	test("retains the final closing frame for alert dialogs too", async () => {
+		const screen = await render(Page);
+		await screen.getByRole("button", { name: "Show Dialog" }).click();
+		const content = document.querySelector<HTMLElement>('[data-slot="alert-dialog-content"]');
+		const overlay = document.querySelector<HTMLElement>('[data-slot="alert-dialog-overlay"]');
+		expect(content).not.toBeNull();
+		expect(overlay).not.toBeNull();
+		await screen.getByRole("button", { name: "Cancel", exact: true }).click();
+		expect(content!.getAttribute("data-state")).toBe("closed");
+		expect(getComputedStyle(content!).animationFillMode).toBe("forwards");
+		expect(getComputedStyle(overlay!).animationFillMode).toBe("forwards");
+		await expect.poll(() => content!.isConnected).toBe(false);
+	});
+
 	test("should have dialog shown", async () => {
 		const screen = await render(Page);
 
