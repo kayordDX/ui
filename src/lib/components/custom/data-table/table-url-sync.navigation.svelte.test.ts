@@ -3,6 +3,7 @@ import { render } from "vitest-browser-svelte";
 import { tick } from "svelte";
 
 interface MockNavigation {
+	shallow?: boolean;
 	from: { url: URL } | null;
 	to: { url: URL } | null;
 }
@@ -21,7 +22,7 @@ vi.mock("$app/state", () => ({
 vi.mock("$app/navigation", () => ({
 	goto: vi.fn(() => Promise.resolve()),
 	beforeNavigate: vi.fn((callback: (navigation: unknown) => void) => handlers.before.push(callback)),
-	afterNavigate: vi.fn((callback: () => void) => handlers.after.push(callback)),
+	afterNavigate: vi.fn((callback: (navigation: unknown) => void) => handlers.after.push(callback)),
 }));
 
 import UrlSyncHarness from "./url-sync-harness.svelte";
@@ -35,8 +36,8 @@ const navigateBefore = (navigation: MockNavigation) => {
 	for (const callback of handlers.before) callback(navigation);
 };
 
-const navigateAfter = () => {
-	for (const callback of handlers.after) callback(undefined);
+const navigateAfter = (shallow = false) => {
+	for (const callback of handlers.after) callback({ shallow });
 };
 
 describe("useTableUrlSync navigation", () => {
@@ -95,6 +96,17 @@ describe("useTableUrlSync navigation", () => {
 		const urls = vi.mocked(goto).mock.calls.map((c) => c[0]);
 		expect(urls.at(-1)).toContain("search=bob");
 		expect(urls.at(-1)).toContain("page=3");
+	});
+
+	test("shallow query changes do not reset pagination", async () => {
+		const { component } = await render(UrlSyncHarness);
+		navigateBefore({
+			shallow: true,
+			from: { url: tableRoute() },
+			to: { url: tableRoute("?search=7") },
+		});
+		await tick();
+		expect(component.table.atoms.pagination.get().pageIndex).toBe(2);
 	});
 
 	test("same-route query change still snaps back to page 1", async () => {

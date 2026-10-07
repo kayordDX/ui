@@ -6,8 +6,6 @@ import SelectionHarness from "./data-table-selection-harness.svelte";
 import ColumnsHarness from "./data-table-columns-harness.svelte";
 import ServerHarness from "./data-table-server-harness.svelte";
 
-// DataTable.svelte pulls in SvelteKit navigation + the runed search-params
-// helper. They are not relevant to these behaviour tests, so they are stubbed.
 vi.mock("$app/state", () => ({
 	page: { url: new URL("http://localhost/") },
 }));
@@ -15,10 +13,7 @@ vi.mock("$app/navigation", () => ({
 	beforeNavigate: () => {},
 	afterNavigate: () => {},
 	onNavigate: () => {},
-	goto: () => {},
-}));
-vi.mock("runed/kit", () => ({
-	useSearchParams: () => ({ search: "", page: 0, sort: "", filter: "" }),
+	goto: () => Promise.resolve(),
 }));
 
 const nameCells = (c: HTMLElement) =>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { cubicOut } from "svelte/easing";
 	import { Tween } from "svelte/motion";
-	import { cn } from "$lib/utils";
+	import { cn } from "#lib/utils.js";
 
 	interface Props {
 		value: number;

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { Button, type ButtonProps } from "$lib/components/ui/button";
-	import { UseClipboard } from "$lib/hooks/use-clipboard.svelte";
-	import { cn } from "$lib/utils";
+	import { Button, type ButtonProps } from "#lib/components/ui/button/index.js";
+	import { UseClipboard } from "#lib/hooks/use-clipboard.svelte.js";
+	import { cn } from "#lib/utils.js";
 	import { Check, Copy, X } from "@lucide/svelte";
 	import type { Snippet } from "svelte";
 	import { scale } from "svelte/transition";

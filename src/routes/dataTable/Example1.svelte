@@ -5,8 +5,14 @@
 	}
 
 	import { data } from "./data.svelte";
-	import { DataTable, createShadTable, renderSnippet, type ColumnDef, type DataTableFeatures } from "$lib/data-table";
-	import { aggregationFns } from "$lib/components/custom/data-table/data-table-utils";
+	import {
+		DataTable,
+		createShadTable,
+		renderSnippet,
+		type ColumnDef,
+		type DataTableFeatures,
+	} from "#lib/data-table/index.js";
+	import { aggregationFns } from "#lib/components/custom/data-table/data-table-utils.js";
 	import { CloudIcon, SunIcon } from "@lucide/svelte";
 
 	const columns: ColumnDef<DataTableFeatures, DataType>[] = [

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { createShadTable, useTableUrlSync, type ColumnDef, type DataTableFeatures } from "$lib/data-table";
+	import { createShadTable, useTableUrlSync, type ColumnDef, type DataTableFeatures } from "#lib/data-table/index.js";
 
 	interface DataType {
 		id: number;

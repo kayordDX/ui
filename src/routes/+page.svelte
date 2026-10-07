@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Card, Button, CopyButton } from "$lib";
+	import { Card, Button, CopyButton } from "#lib";
 	import Mail from "@lucide/svelte/icons/mail";
 	import ChevronRight from "@lucide/svelte/icons/chevron-right";
 </script>

@@ -1,10 +1,10 @@
 <script lang="ts">
-	import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
-	import { buttonVariants } from "$lib/components/ui/button";
+	import * as DropdownMenu from "#lib/components/ui/dropdown-menu/index.js";
+	import { buttonVariants } from "#lib/components/ui/button/index.js";
 	import EllipsisVerticalIcon from "@lucide/svelte/icons/ellipsis-vertical";
 	import { isActionGroup, isActionType, type ActionsType } from "./types";
 	import Action from "./Action.svelte";
-	import { cn } from "$lib/utils";
+	import { cn } from "#lib/utils.js";
 
 	let { actions, text, class: className, icon, variant = "ghost" }: ActionsType = $props();
 

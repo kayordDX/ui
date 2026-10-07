@@ -1,14 +1,14 @@
 <script lang="ts" generics="T extends RowData">
 	import type { RowData, Table as TableType } from "@tanstack/svelte-table";
 	import type { DataTableFeatures } from "./features";
-	import { FlexRender } from "$lib/components/ui/data-table";
-	import { Skeleton, Table } from "$lib/components/ui";
+	import { FlexRender } from "#lib/components/ui/data-table/index.js";
+	import { Skeleton, Table } from "#lib/components/ui/index.js";
 	import Pagination from "./Pagination.svelte";
 	import { type Snippet } from "svelte";
 	import { fade } from "svelte/transition";
 	import { ProgressLoading } from "../progress-loading";
 	import FullscreenModeToggle from "./FullscreenModeToggle.svelte";
-	import { cn } from "$lib/utils";
+	import { cn } from "#lib/utils.js";
 	import { TableStore } from "./table.svelte";
 	import DataTableHeader from "./DataTableHeader.svelte";
 	import DataTableFooter from "./DataTableFooter.svelte";

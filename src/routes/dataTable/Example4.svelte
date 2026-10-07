@@ -4,7 +4,7 @@
 		name: string;
 	}
 
-	import { DataTable, createShadTable, type ColumnDef, type DataTableFeatures } from "$lib/data-table";
+	import { DataTable, createShadTable, type ColumnDef, type DataTableFeatures } from "#lib/data-table/index.js";
 
 	const data: Array<DataType> = [
 		{

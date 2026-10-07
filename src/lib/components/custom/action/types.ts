@@ -1,4 +1,4 @@
-import type { ButtonVariant } from "$lib/components/ui/button";
+import type { ButtonVariant } from "#lib/components/ui/button/index.js";
 import { type LucideIcon } from "@lucide/svelte";
 import type { Snippet } from "svelte";
 

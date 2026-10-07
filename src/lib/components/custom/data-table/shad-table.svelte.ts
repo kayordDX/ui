@@ -7,7 +7,7 @@ import {
 	type TableState,
 } from "@tanstack/svelte-table";
 import DataTableCheckbox from "./DataTableCheckbox.svelte";
-import { renderComponent } from "$lib/components/ui/data-table";
+import { renderComponent } from "#lib/components/ui/data-table/index.js";
 import { features, type DataTableFeatures } from "./features";
 import type { BaseOptions } from "./types";
 

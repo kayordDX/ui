@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Card, Button, Sheet } from "$lib";
+	import { Card, Button, Sheet } from "#lib";
 </script>
 
 <Card.Root class="m-5">

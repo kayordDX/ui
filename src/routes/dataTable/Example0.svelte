@@ -5,8 +5,14 @@
 	}
 
 	import { data } from "./data.svelte";
-	import { DataTable, createShadTable, useTableUrlSync, type ColumnDef, type DataTableFeatures } from "$lib/data-table";
-	import Input from "$lib/components/ui/input/input.svelte";
+	import {
+		DataTable,
+		createShadTable,
+		useTableUrlSync,
+		type ColumnDef,
+		type DataTableFeatures,
+	} from "#lib/data-table/index.js";
+	import Input from "#lib/components/ui/input/input.svelte";
 
 	const columns: ColumnDef<DataTableFeatures, DataType>[] = [
 		{

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Card, Alert, Avatar, Badge, Progress } from "$lib";
+	import { Card, Alert, Avatar, Badge, Progress } from "#lib";
 	import AlertCircle from "@lucide/svelte/icons/circle-alert";
 </script>
 

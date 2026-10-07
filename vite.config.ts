@@ -1,11 +1,22 @@
-/// <reference types="vitest/config" />
+import adapter from "@sveltejs/adapter-auto";
+import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
+
 import { sveltekit } from "@sveltejs/kit/vite";
 import tailwindcss from "@tailwindcss/vite";
-import { defineConfig } from "vite";
+import { defineConfig } from "vitest/config";
 import { playwright } from "@vitest/browser-playwright";
 
 export default defineConfig({
-	plugins: [tailwindcss(), sveltekit()],
+	plugins: [
+		tailwindcss(),
+		sveltekit({
+			preprocess: vitePreprocess(),
+			compilerOptions: { experimental: { async: true } },
+			inspector: { showToggleButton: "never" },
+			adapter: adapter(),
+			experimental: { remoteFunctions: true },
+		}),
+	],
 	test: {
 		expect: { requireAssertions: true },
 		projects: [

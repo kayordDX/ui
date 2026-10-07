@@ -7,8 +7,8 @@ vi.mock("$app/state", () => ({
 	},
 }));
 
-vi.mock("$lib/data-table", async () => {
-	const { default: Skeleton } = await import("$lib/components/ui/skeleton/skeleton.svelte");
+vi.mock("#lib/data-table/index.js", async () => {
+	const { default: Skeleton } = await import("#lib/components/ui/skeleton/skeleton.svelte");
 
 	return {
 		DataTable: Skeleton,

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Tabs } from "$lib";
+	import { Tabs } from "#lib";
 	import Example0 from "./Example0.svelte";
 	import Example1 from "./Example1.svelte";
 	import Example2 from "./Example2.svelte";

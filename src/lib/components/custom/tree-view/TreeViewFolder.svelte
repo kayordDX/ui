@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { Snippet } from "svelte";
-	import * as Collapsible from "$lib/components/ui/collapsible/index.js";
+	import * as Collapsible from "#lib/components/ui/collapsible/index.js";
 	import { Folder, FolderOpen } from "@lucide/svelte";
-	import { cn } from "$lib/utils";
+	import { cn } from "#lib/utils.js";
 
 	type Props = {
 		name: string;

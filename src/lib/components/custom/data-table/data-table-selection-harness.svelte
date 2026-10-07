@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { DataTable, createShadTable, type ColumnDef, type DataTableFeatures } from "$lib/data-table";
+	import { DataTable, createShadTable, type ColumnDef, type DataTableFeatures } from "#lib/data-table/index.js";
 
 	interface SelectionRow {
 		id: number;

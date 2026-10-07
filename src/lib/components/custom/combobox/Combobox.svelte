@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { buttonVariants, Command, Popover } from "$lib";
-	import { cn } from "$lib/utils";
+	import { buttonVariants, Command, Popover } from "#lib";
+	import { cn } from "#lib/utils.js";
 	import { CheckIcon, ChevronsUpDown } from "@lucide/svelte";
 	import { tick } from "svelte";
 	import Loader from "../loader/Loader.svelte";

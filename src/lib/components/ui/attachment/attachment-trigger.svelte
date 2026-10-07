@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cn, type WithElementRef } from "$lib/utils.js";
+	import { cn, type WithElementRef } from "#lib/utils.js";
 	import type { Snippet } from "svelte";
 	import type { HTMLButtonAttributes } from "svelte/elements";
 
@@ -14,7 +14,7 @@
 	} = $props();
 
 	const mergedProps = $derived({
-		class: cn("absolute inset-0 z-10 outline-none absolute inset-0 z-10 outline-none", className),
+		class: cn("absolute inset-0 z-10 outline-none", className),
 		"data-slot": "attachment-trigger",
 		...restProps,
 	});

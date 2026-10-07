@@ -14,8 +14,8 @@
 		Toggle,
 		ToggleGroup,
 		NativeSelect,
-	} from "$lib";
-	import { Form } from "$lib/form";
+	} from "#lib";
+	import { Form } from "#lib/form/index.js";
 
 	import { z } from "zod";
 	import { superForm } from "sveltekit-superforms/client";

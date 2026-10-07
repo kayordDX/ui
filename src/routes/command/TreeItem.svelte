@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Command } from "$lib";
+	import { Command } from "#lib";
 	import type { TreeNode } from "./types";
 	const { id, name, children }: TreeNode = $props();
 	import TreeItem from "./TreeItem.svelte";

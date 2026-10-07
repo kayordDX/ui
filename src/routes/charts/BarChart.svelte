@@ -3,8 +3,8 @@
 	import { BarChart, Highlight } from "layerchart";
 	import TrendingUpIcon from "@lucide/svelte/icons/trending-up";
 	import { cubicInOut } from "svelte/easing";
-	import { Card } from "$lib";
-	import { Chart } from "$lib/chart";
+	import { Card } from "#lib";
+	import { Chart } from "#lib/chart/index.js";
 
 	const chartData = [
 		{ month: "January", desktop: 186, color: "var(--chart-1)" },

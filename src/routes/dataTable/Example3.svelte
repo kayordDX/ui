@@ -5,8 +5,8 @@
 	}
 
 	import { data } from "./data.svelte";
-	import { Button } from "$lib";
-	import { DataTable, createShadTable, type ColumnDef, type DataTableFeatures } from "$lib/data-table";
+	import { Button } from "#lib";
+	import { DataTable, createShadTable, type ColumnDef, type DataTableFeatures } from "#lib/data-table/index.js";
 
 	const columns: ColumnDef<DataTableFeatures, DataType>[] = [
 		{
