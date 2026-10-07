@@ -41,6 +41,17 @@ Kayord UI exports components individually. Some components require additional pe
 | **Resizable** (`resizable/`)    | `paneforge`                                                                |
 | **Notifications** (`sonner/`)   | `svelte-sonner`                                                            |
 
+**Message Scroller** (`@kayord/ui/message-scroller`) and **Questionnaire** (`@kayord/ui/questionnaire`) require the optional peer `@shadcn-svelte/primitives`:
+
+```bash
+pnpm add -D @shadcn-svelte/primitives
+```
+
+```ts
+import { MessageScroller } from "@kayord/ui/message-scroller";
+import { Questionnaire } from "@kayord/ui/questionnaire";
+```
+
 > **Note:** Optional peers are marked optional in `package.json`. The core peers (`svelte`, `@sveltejs/kit`, `@lucide/svelte`, and `mode-watcher`) are required. Install the others only if you use the corresponding feature.
 
 ### Example Installation

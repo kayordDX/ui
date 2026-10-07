@@ -56,6 +56,14 @@
 			"types": "./dist/hooks/index.d.ts",
 			"default": "./dist/hooks/index.js"
 		},
+		"./message-scroller": {
+			"types": "./dist/message-scroller/index.d.ts",
+			"default": "./dist/message-scroller/index.js"
+		},
+		"./questionnaire": {
+			"types": "./dist/questionnaire/index.d.ts",
+			"default": "./dist/questionnaire/index.js"
+		},
 		"./resizable": {
 			"types": "./dist/resizable/index.d.ts",
 			"default": "./dist/resizable/index.js"
@@ -78,6 +86,7 @@
 	"peerDependencies": {
 		"@internationalized/date": "^3.10.0",
 		"@lucide/svelte": ">= 1.0.0 < 2.0.0",
+		"@shadcn-svelte/primitives": "^0.0.1",
 		"@sveltejs/kit": "^3.0.0",
 		"@tanstack/svelte-table": ">= 9.0.0 < 10.0.0",
 		"embla-carousel-svelte": "^8.6.0",
@@ -92,6 +101,9 @@
 		"vaul-svelte": "^1.0.0-next.7"
 	},
 	"peerDependenciesMeta": {
+		"@shadcn-svelte/primitives": {
+			"optional": true
+		},
 		"layerchart": {
 			"optional": true
 		},
@@ -135,6 +147,7 @@
 		"@eslint/js": "^10.0.1",
 		"@internationalized/date": "^3.12.4",
 		"@lucide/svelte": "^1.52.0",
+		"@shadcn-svelte/primitives": "^0.0.1",
 		"@sveltejs/adapter-auto": "^8.0.0",
 		"@sveltejs/kit": "^3.0.1",
 		"@sveltejs/load-config": "^0.2.2",
