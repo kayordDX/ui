@@ -37,7 +37,7 @@ export const features = tableFeatures({
 	filteredRowModel: createFilteredRowModel(),
 	filterFns,
 	sortFns,
-	aggregationFns,
+	aggregationFns: aggregationFns as typeof import("@tanstack/svelte-table").aggregationFns,
 	columnMeta: metaHelper<CustomColumnMeta>(),
 	tableMeta: metaHelper<CustomOptions>(),
 });
