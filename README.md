@@ -41,6 +41,24 @@ Kayord UI exports components individually. Some components require additional pe
 | **Resizable** (`resizable/`)    | `paneforge`                                                                |
 | **Notifications** (`sonner/`)   | `svelte-sonner`                                                            |
 
+**Code Block** has a separate entry point so syntax highlighting stays out of the main entry point. Install its optional peer when using this path:
+
+```bash
+pnpm add -D shiki
+```
+
+```ts
+import { CodeBlock, useHighlightedCode, highlightCode } from "@kayord/ui/code-block";
+```
+
+`loadHighlighter`, `Highlighter`, `HighlightedLine`, and `HighlightedToken` are also exported from this path.
+
+The lightweight `Attachment`, `Bubble`, `Marker`, `Message`, and `Trace` component groups are available from the main entry point without additional dependencies:
+
+```ts
+import { Attachment, Bubble, Marker, Message, Trace } from "@kayord/ui";
+```
+
 **Message Scroller** (`@kayord/ui/message-scroller`) and **Questionnaire** (`@kayord/ui/questionnaire`) require the optional peer `@shadcn-svelte/primitives`:
 
 ```bash
