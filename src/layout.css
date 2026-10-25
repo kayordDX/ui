@@ -4,10 +4,6 @@
 
 @custom-variant dark (&:is(.dark *));
 
-[data-state="closed"] {
-	animation-fill-mode: forwards;
-}
-
 /* Button Defaults */
 @layer base {
 	button:not(:disabled),
